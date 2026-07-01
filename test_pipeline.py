@@ -140,3 +140,14 @@ def test_rate_ticker_not_found_raises():
             assert False, "expected NotFound"
         except pipeline.NotFound:
             pass
+
+def test_rate_ticker_compute_error_returns_partial():
+    with patch("app.pipeline.fetch_all", _fake_fetch_all("KO")), \
+         patch("app.pipeline.kmv_engine.rate_company", side_effect=RuntimeError("boom")):
+        out = pipeline.rate_ticker("KO", days=400, st_debt_fallback="strict",
+                                   horizon_days=365.0, fallback_rate=0.045)
+    assert out["result"]["compute_error"] and "boom" in out["result"]["compute_error"]
+    assert out["result"]["partial"] is True
+    assert out["result"]["unrateable_reason"] is None
+    assert out["intermediate"]["day_inputs"]        # inputs still shown
+    json.dumps(out)                                 # still JSON-safe

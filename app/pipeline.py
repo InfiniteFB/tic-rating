@@ -34,16 +34,19 @@ import ttc_conversion
 from app import serialize
 
 
-class RateLimited(Exception):
-    """Raised when the upstream data provider appears to be rate-limiting us."""
-
-
 class NotFound(Exception):
     """Raised when the ticker is invalid or the provider has no data for it."""
 
 
 def _has_signal(sample: dict[str, Any]) -> bool:
-    """True if ``sample.responses`` has any of the fields we depend on."""
+    """True if ``sample.responses`` has any of the fields we depend on.
+
+    Only inspects ``ticker_overview`` / ``balance_sheet`` presence to tell
+    "provider returned *something*" (transient/rate-limit -> retry & warn) apart
+    from "provider has no such ticker" (-> NotFound). This is a *different layer*
+    of failure classification from ``build_inputs``' ``unrateable_reason``, which
+    judges whether the (present) data is rich enough to actually rate.
+    """
     responses = (sample or {}).get("responses", {}) or {}
     return bool(responses.get("ticker_overview")) or bool(responses.get("balance_sheet"))
 
