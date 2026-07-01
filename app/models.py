@@ -13,9 +13,3 @@ class RateRequest(BaseModel):
     st_debt_fallback: Literal["strict", "zero", "curliab"] = "strict"
     horizon_days: float = 365.0
     fallback_rate: float = 0.045
-
-
-class ExplainRequest(BaseModel):
-    model_config = {"extra": "allow"}
-
-    ticker: str | None = None

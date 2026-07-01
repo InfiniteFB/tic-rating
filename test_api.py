@@ -1,8 +1,9 @@
 import json
+import os
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
-from app.main import app
+from app.main import app, load_dotenv
 
 client = TestClient(app)
 
@@ -67,3 +68,15 @@ def test_explain_endpoint_degrades():
 def test_index_served():
     r = client.get("/")
     assert r.status_code == 200 and "text/html" in r.headers["content-type"]
+
+
+def test_load_dotenv_handles_utf8_bom(tmp_path):
+    env_file = tmp_path / ".env"
+    # Write with a UTF-8 BOM prefix so the first key would be corrupted
+    # (﻿FOO_BOMTEST) if the loader read it as plain utf-8.
+    env_file.write_text("﻿FOO_BOMTEST=bar\n", encoding="utf-8")
+    try:
+        load_dotenv(env_file)
+        assert os.environ.get("FOO_BOMTEST") == "bar"
+    finally:
+        os.environ.pop("FOO_BOMTEST", None)

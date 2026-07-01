@@ -10,20 +10,33 @@ import os
 from pathlib import Path
 
 
-def _load_dotenv() -> None:
-    """Minimal .env loader: sets os.environ[KEY]=VALUE for keys not already set."""
-    for candidate in (Path(__file__).resolve().parent.parent / ".env",):
-        if not candidate.is_file():
+def _unquote(value: str) -> str:
+    """Strip a single matching pair of surrounding single/double quotes."""
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+        return value[1:-1]
+    return value
+
+
+def load_dotenv(path: Path | None = None) -> None:
+    """Minimal .env loader: sets os.environ[KEY]=VALUE for keys not already set.
+
+    Reads with ``utf-8-sig`` so a UTF-8 BOM never corrupts the first key
+    (otherwise the leading key becomes ``\\ufeffKEY`` and lookups miss).
+    Strips a matching pair of surrounding quotes from values. Missing file
+    is a no-op. Never prints any values.
+    """
+    candidate = path or (Path(__file__).resolve().parent.parent / ".env")
+    if not candidate.is_file():
+        return
+    for line in candidate.read_text(encoding="utf-8-sig").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
             continue
-        for line in candidate.read_text().splitlines():
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, _, value = line.partition("=")
-            os.environ.setdefault(key.strip(), value.strip())
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), _unquote(value.strip()))
 
 
-_load_dotenv()
+load_dotenv()
 
 from fastapi import FastAPI, HTTPException  # noqa: E402
 from fastapi.responses import FileResponse, JSONResponse  # noqa: E402
@@ -59,7 +72,11 @@ def api_rate(req: RateRequest):
         return pipeline.rate_ticker(**req.model_dump())
     except pipeline.NotFound as exc:
         raise HTTPException(status_code=404, detail=str(exc))
-    except Exception as exc:  # noqa: BLE001 - surfaced as JSON, not re-raised
+    except Exception as exc:  # noqa: BLE001
+        # In-route catch: guarantees an immediate, identical {error, detail} 500
+        # under any ASGI/TestClient config (TestClient defaults to
+        # raise_server_exceptions=True, which would re-raise past the global
+        # handler). Kept intentionally alongside the global handler below.
         return JSONResponse(
             status_code=500,
             content={"error": str(exc), "detail": type(exc).__name__},
@@ -78,6 +95,8 @@ async def http_exception_handler(request, exc: StarletteHTTPException) -> JSONRe
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request, exc: Exception) -> JSONResponse:
+    # Production safety net for every other route: any unexpected exception
+    # becomes the same {error, detail} 500 shape as the in-route catch above.
     return JSONResponse(
         status_code=500,
         content={"error": str(exc), "detail": type(exc).__name__},
