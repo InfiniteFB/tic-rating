@@ -1,0 +1,4938 @@
+{
+  "ticker": "AMZN",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "AMZN",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "AMZN",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "AMZN",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "AMZN"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "AMZN"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [
+      {
+        "date": "2026-03-31",
+        "symbol": "AMZN",
+        "reportedCurrency": "USD",
+        "cik": "0001018724",
+        "filingDate": "2026-04-30",
+        "acceptedDate": "2026-04-29 18:48:09",
+        "fiscalYear": "2026",
+        "period": "Q1",
+        "cashAndCashEquivalents": 101816000000,
+        "shortTermInvestments": 41273000000,
+        "cashAndShortTermInvestments": 143089000000,
+        "netReceivables": 75532000000,
+        "accountsReceivables": 75532000000,
+        "otherReceivables": 0,
+        "inventory": 36534000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 0,
+        "totalCurrentAssets": 255155000000,
+        "propertyPlantEquipmentNet": 486199000000,
+        "goodwill": 23449000000,
+        "intangibleAssets": 0,
+        "goodwillAndIntangibleAssets": 23449000000,
+        "longTermInvestments": 0,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 151827000000,
+        "totalNonCurrentAssets": 661475000000,
+        "otherAssets": 0,
+        "totalAssets": 916630000000,
+        "totalPayables": 124749000000,
+        "accountPayables": 124749000000,
+        "otherPayables": 0,
+        "accruedExpenses": 71120000000,
+        "shortTermDebt": 0,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 20887000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 216756000000,
+        "longTermDebt": 119074000000,
+        "capitalLeaseObligationsNonCurrent": 90814000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 0,
+        "otherNonCurrentLiabilities": 48072000000,
+        "totalNonCurrentLiabilities": 257960000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 90814000000,
+        "totalLiabilities": 474716000000,
+        "treasuryStock": -7837000000,
+        "preferredStock": 0,
+        "commonStock": 113000000,
+        "retainedEarnings": 280791000000,
+        "additionalPaidInCapital": 143979000000,
+        "accumulatedOtherComprehensiveIncomeLoss": 24868000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 441914000000,
+        "totalEquity": 441914000000,
+        "minorityInterest": 0,
+        "totalLiabilitiesAndTotalEquity": 916630000000,
+        "totalInvestments": 41273000000,
+        "totalDebt": 209888000000,
+        "netDebt": 108072000000
+      },
+      {
+        "date": "2025-12-31",
+        "symbol": "AMZN",
+        "reportedCurrency": "USD",
+        "cik": "0001018724",
+        "filingDate": "2026-02-06",
+        "acceptedDate": "2026-02-05 18:44:31",
+        "fiscalYear": "2025",
+        "period": "Q4",
+        "cashAndCashEquivalents": 86810000000,
+        "shortTermInvestments": 36219000000,
+        "cashAndShortTermInvestments": 123029000000,
+        "netReceivables": 67729000000,
+        "accountsReceivables": 67729000000,
+        "otherReceivables": 0,
+        "inventory": 38325000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 0,
+        "totalCurrentAssets": 229083000000,
+        "propertyPlantEquipmentNet": 443079000000,
+        "goodwill": 23273000000,
+        "intangibleAssets": 9197000000,
+        "goodwillAndIntangibleAssets": 32470000000,
+        "longTermInvestments": 0,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 113410000000,
+        "totalNonCurrentAssets": 588959000000,
+        "otherAssets": 0,
+        "totalAssets": 818042000000,
+        "totalPayables": 121909000000,
+        "accountPayables": 121909000000,
+        "otherPayables": 0,
+        "accruedExpenses": 75520000000,
+        "shortTermDebt": 0,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 20576000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 218005000000,
+        "longTermDebt": 65648000000,
+        "capitalLeaseObligationsNonCurrent": 87339000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 0,
+        "otherNonCurrentLiabilities": 35985000000,
+        "totalNonCurrentLiabilities": 188972000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 87339000000,
+        "totalLiabilities": 406977000000,
+        "treasuryStock": -7837000000,
+        "preferredStock": 0,
+        "commonStock": 112000000,
+        "retainedEarnings": 250536000000,
+        "additionalPaidInCapital": 140024000000,
+        "accumulatedOtherComprehensiveIncomeLoss": 28230000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 411065000000,
+        "totalEquity": 411065000000,
+        "minorityInterest": 0,
+        "totalLiabilitiesAndTotalEquity": 818042000000,
+        "totalInvestments": 36219000000,
+        "totalDebt": 152987000000,
+        "netDebt": 66177000000
+      },
+      {
+        "date": "2025-09-30",
+        "symbol": "AMZN",
+        "reportedCurrency": "USD",
+        "cik": "0001018724",
+        "filingDate": "2025-10-31",
+        "acceptedDate": "2025-10-30 18:18:21",
+        "fiscalYear": "2025",
+        "period": "Q3",
+        "cashAndCashEquivalents": 66922000000,
+        "shortTermInvestments": 27275000000,
+        "cashAndShortTermInvestments": 94197000000,
+        "netReceivables": 61175000000,
+        "accountsReceivables": 61175000000,
+        "otherReceivables": 0,
+        "inventory": 41494000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 0,
+        "totalCurrentAssets": 196866000000,
+        "propertyPlantEquipmentNet": 407891000000,
+        "goodwill": 23260000000,
+        "intangibleAssets": 0,
+        "goodwillAndIntangibleAssets": 23260000000,
+        "longTermInvestments": 0,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 99904000000,
+        "totalNonCurrentAssets": 531055000000,
+        "otherAssets": 0,
+        "totalAssets": 727921000000,
+        "totalPayables": 106032000000,
+        "accountPayables": 106032000000,
+        "otherPayables": 0,
+        "accruedExpenses": 68051000000,
+        "shortTermDebt": 0,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 21113000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 195196000000,
+        "longTermDebt": 50742000000,
+        "capitalLeaseObligationsNonCurrent": 84677000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 0,
+        "otherNonCurrentLiabilities": 27675000000,
+        "totalNonCurrentLiabilities": 163094000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 84677000000,
+        "totalLiabilities": 358290000000,
+        "treasuryStock": -7837000000,
+        "preferredStock": 0,
+        "commonStock": 112000000,
+        "retainedEarnings": 229344000000,
+        "additionalPaidInCapital": 135679000000,
+        "accumulatedOtherComprehensiveIncomeLoss": 12333000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 369631000000,
+        "totalEquity": 369631000000,
+        "minorityInterest": 0,
+        "totalLiabilitiesAndTotalEquity": 727921000000,
+        "totalInvestments": 27275000000,
+        "totalDebt": 135419000000,
+        "netDebt": 68497000000
+      },
+      {
+        "date": "2025-06-30",
+        "symbol": "AMZN",
+        "reportedCurrency": "USD",
+        "cik": "0001018724",
+        "filingDate": "2025-08-01",
+        "acceptedDate": "2025-07-31 18:13:08",
+        "fiscalYear": "2025",
+        "period": "Q2",
+        "cashAndCashEquivalents": 57741000000,
+        "shortTermInvestments": 35439000000,
+        "cashAndShortTermInvestments": 93180000000,
+        "netReceivables": 57415000000,
+        "accountsReceivables": 57415000000,
+        "otherReceivables": 0,
+        "inventory": 40825000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 0,
+        "totalCurrentAssets": 191420000000,
+        "propertyPlantEquipmentNet": 379741000000,
+        "goodwill": 23155000000,
+        "intangibleAssets": 0,
+        "goodwillAndIntangibleAssets": 23155000000,
+        "longTermInvestments": 0,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 87854000000,
+        "totalNonCurrentAssets": 490750000000,
+        "otherAssets": 0,
+        "totalAssets": 682170000000,
+        "totalPayables": 98285000000,
+        "accountPayables": 98285000000,
+        "otherPayables": 0,
+        "accruedExpenses": 66974000000,
+        "shortTermDebt": 0,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 21662000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 186921000000,
+        "longTermDebt": 50718000000,
+        "capitalLeaseObligationsNonCurrent": 83221000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 0,
+        "otherNonCurrentLiabilities": 27535000000,
+        "totalNonCurrentLiabilities": 161474000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 83221000000,
+        "totalLiabilities": 348395000000,
+        "treasuryStock": -7837000000,
+        "preferredStock": 0,
+        "commonStock": 112000000,
+        "retainedEarnings": 208157000000,
+        "additionalPaidInCapital": 130923000000,
+        "accumulatedOtherComprehensiveIncomeLoss": 2420000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 333775000000,
+        "totalEquity": 333775000000,
+        "minorityInterest": 0,
+        "totalLiabilitiesAndTotalEquity": 682170000000,
+        "totalInvestments": 35439000000,
+        "totalDebt": 133939000000,
+        "netDebt": 76198000000
+      },
+      {
+        "date": "2025-03-31",
+        "symbol": "AMZN",
+        "reportedCurrency": "USD",
+        "cik": "0001018724",
+        "filingDate": "2025-05-02",
+        "acceptedDate": "2025-05-01 18:14:53",
+        "fiscalYear": "2025",
+        "period": "Q1",
+        "cashAndCashEquivalents": 66207000000,
+        "shortTermInvestments": 28358000000,
+        "cashAndShortTermInvestments": 94565000000,
+        "netReceivables": 54216000000,
+        "accountsReceivables": 54216000000,
+        "otherReceivables": 0,
+        "inventory": 35864000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 0,
+        "totalCurrentAssets": 184645000000,
+        "propertyPlantEquipmentNet": 351276000000,
+        "goodwill": 23089000000,
+        "intangibleAssets": 0,
+        "goodwillAndIntangibleAssets": 23089000000,
+        "longTermInvestments": 0,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 84246000000,
+        "totalNonCurrentAssets": 458611000000,
+        "otherAssets": 0,
+        "totalAssets": 643256000000,
+        "totalPayables": 89241000000,
+        "accountPayables": 89241000000,
+        "otherPayables": 0,
+        "accruedExpenses": 66331000000,
+        "shortTermDebt": 0,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 20599000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 176171000000,
+        "longTermDebt": 53374000000,
+        "capitalLeaseObligationsNonCurrent": 79871000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 0,
+        "otherNonCurrentLiabilities": 27973000000,
+        "totalNonCurrentLiabilities": 161218000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 79871000000,
+        "totalLiabilities": 337389000000,
+        "treasuryStock": -7837000000,
+        "preferredStock": 0,
+        "commonStock": 111000000,
+        "retainedEarnings": 189993000000,
+        "additionalPaidInCapital": 124514000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -914000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 305867000000,
+        "totalEquity": 305867000000,
+        "minorityInterest": 0,
+        "totalLiabilitiesAndTotalEquity": 643256000000,
+        "totalInvestments": 28358000000,
+        "totalDebt": 133245000000,
+        "netDebt": 67038000000
+      }
+    ],
+    "prices": [
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-26",
+        "adjOpen": 227.21,
+        "adjHigh": 233.9,
+        "adjLow": 226.13,
+        "adjClose": 232.69,
+        "volume": 248372085
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-25",
+        "adjOpen": 232.02,
+        "adjHigh": 232.32,
+        "adjLow": 225.55,
+        "adjClose": 227.01,
+        "volume": 77858500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-24",
+        "adjOpen": 233.85,
+        "adjHigh": 242.42,
+        "adjLow": 232.95,
+        "adjClose": 234.27,
+        "volume": 70282600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-23",
+        "adjOpen": 232.55,
+        "adjHigh": 236.87,
+        "adjLow": 232,
+        "adjClose": 234.11,
+        "volume": 60492600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-22",
+        "adjOpen": 240.08,
+        "adjHigh": 242,
+        "adjLow": 232.24,
+        "adjClose": 232.79,
+        "volume": 68388526
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-18",
+        "adjOpen": 240.12,
+        "adjHigh": 245.73,
+        "adjLow": 236.02,
+        "adjClose": 244.39,
+        "volume": 75624415
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-17",
+        "adjOpen": 244.9,
+        "adjHigh": 245.91,
+        "adjLow": 236,
+        "adjClose": 237.5,
+        "volume": 44780800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-16",
+        "adjOpen": 248,
+        "adjHigh": 249.51,
+        "adjLow": 245.45,
+        "adjClose": 246,
+        "volume": 35187406
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-15",
+        "adjOpen": 245.02,
+        "adjHigh": 247.81,
+        "adjLow": 244.73,
+        "adjClose": 246.02,
+        "volume": 41711600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-12",
+        "adjOpen": 243.21,
+        "adjHigh": 243.36,
+        "adjLow": 233.59,
+        "adjClose": 238.55,
+        "volume": 51251141
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-11",
+        "adjOpen": 237.93,
+        "adjHigh": 242.14,
+        "adjLow": 235.18,
+        "adjClose": 241.51,
+        "volume": 41335400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-10",
+        "adjOpen": 243.61,
+        "adjHigh": 244.07,
+        "adjLow": 237.45,
+        "adjClose": 238,
+        "volume": 38590237
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-09",
+        "adjOpen": 247.73,
+        "adjHigh": 250.43,
+        "adjLow": 240.4,
+        "adjClose": 244.19,
+        "volume": 44425400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-08",
+        "adjOpen": 246.68,
+        "adjHigh": 249.42,
+        "adjLow": 243.36,
+        "adjClose": 245.22,
+        "volume": 33899525
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-05",
+        "adjOpen": 254.26,
+        "adjHigh": 256.38,
+        "adjLow": 245.78,
+        "adjClose": 246.03,
+        "volume": 55607844
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-04",
+        "adjOpen": 253.12,
+        "adjHigh": 255.83,
+        "adjLow": 251.75,
+        "adjClose": 253.79,
+        "volume": 35609800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-03",
+        "adjOpen": 254.7,
+        "adjHigh": 257.09,
+        "adjLow": 247.71,
+        "adjClose": 250.02,
+        "volume": 51394200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-02",
+        "adjOpen": 257.16,
+        "adjHigh": 261.2,
+        "adjLow": 254.37,
+        "adjClose": 256.52,
+        "volume": 41811000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-01",
+        "adjOpen": 266.29,
+        "adjHigh": 266.63,
+        "adjLow": 260.7,
+        "adjClose": 261.26,
+        "volume": 53604400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-29",
+        "adjOpen": 271.29,
+        "adjHigh": 274.75,
+        "adjLow": 269.64,
+        "adjClose": 270.64,
+        "volume": 54749600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-28",
+        "adjOpen": 272.27,
+        "adjHigh": 274.5,
+        "adjLow": 267.44,
+        "adjClose": 274,
+        "volume": 40630400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-27",
+        "adjOpen": 266.15,
+        "adjHigh": 272.41,
+        "adjLow": 265.7,
+        "adjClose": 271.85,
+        "volume": 40061900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-26",
+        "adjOpen": 267.94,
+        "adjHigh": 269.3,
+        "adjLow": 262.07,
+        "adjClose": 265.29,
+        "volume": 38028118
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-22",
+        "adjOpen": 268.65,
+        "adjHigh": 269.79,
+        "adjLow": 266.24,
+        "adjClose": 266.32,
+        "volume": 27535526
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-21",
+        "adjOpen": 263.5,
+        "adjHigh": 269.49,
+        "adjLow": 261.37,
+        "adjClose": 268.46,
+        "volume": 36591743
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-20",
+        "adjOpen": 260.05,
+        "adjHigh": 265.58,
+        "adjLow": 259.53,
+        "adjClose": 265.01,
+        "volume": 34933200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-19",
+        "adjOpen": 262.04,
+        "adjHigh": 262.25,
+        "adjLow": 255.19,
+        "adjClose": 259.34,
+        "volume": 40340700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-18",
+        "adjOpen": 263.87,
+        "adjHigh": 268.85,
+        "adjLow": 262.53,
+        "adjClose": 264.86,
+        "volume": 33690800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-15",
+        "adjOpen": 262.5,
+        "adjHigh": 264.36,
+        "adjLow": 260.89,
+        "adjClose": 264.14,
+        "volume": 40770344
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-14",
+        "adjOpen": 269.15,
+        "adjHigh": 270.78,
+        "adjLow": 266.63,
+        "adjClose": 267.22,
+        "volume": 31338435
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-13",
+        "adjOpen": 264.43,
+        "adjHigh": 270.72,
+        "adjLow": 263.2,
+        "adjClose": 270.13,
+        "volume": 39670915
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-12",
+        "adjOpen": 266.71,
+        "adjHigh": 267.65,
+        "adjLow": 262.63,
+        "adjClose": 265.82,
+        "volume": 36776221
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-11",
+        "adjOpen": 269.83,
+        "adjHigh": 273.63,
+        "adjLow": 268.48,
+        "adjClose": 268.99,
+        "volume": 38176700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-08",
+        "adjOpen": 271.63,
+        "adjHigh": 274,
+        "adjLow": 269.95,
+        "adjClose": 272.68,
+        "volume": 34732700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-07",
+        "adjOpen": 275.02,
+        "adjHigh": 276.63,
+        "adjLow": 270.49,
+        "adjClose": 271.17,
+        "volume": 35892900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-06",
+        "adjOpen": 272.89,
+        "adjHigh": 277.8,
+        "adjLow": 272.21,
+        "adjClose": 274.99,
+        "volume": 44552000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-05",
+        "adjOpen": 276.08,
+        "adjHigh": 278.56,
+        "adjLow": 272.38,
+        "adjClose": 273.55,
+        "volume": 41908529
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-04",
+        "adjOpen": 268.8,
+        "adjHigh": 276.1,
+        "adjLow": 268.8,
+        "adjClose": 272.05,
+        "volume": 49083734
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-05-01",
+        "adjOpen": 265.58,
+        "adjHigh": 273.32,
+        "adjLow": 262.74,
+        "adjClose": 268.26,
+        "volume": 50825231
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-30",
+        "adjOpen": 273.17,
+        "adjHigh": 273.88,
+        "adjLow": 256.16,
+        "adjClose": 265.06,
+        "volume": 100974900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-29",
+        "adjOpen": 257.99,
+        "adjHigh": 265.91,
+        "adjLow": 257.7,
+        "adjClose": 263.04,
+        "volume": 72367910
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-28",
+        "adjOpen": 258.39,
+        "adjHigh": 261.03,
+        "adjLow": 256.63,
+        "adjClose": 259.7,
+        "volume": 42204447
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-27",
+        "adjOpen": 263.46,
+        "adjHigh": 264.15,
+        "adjLow": 260.34,
+        "adjClose": 261.12,
+        "volume": 44906840
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-24",
+        "adjOpen": 259.98,
+        "adjHigh": 264.5,
+        "adjLow": 257.69,
+        "adjClose": 263.99,
+        "volume": 53777400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-23",
+        "adjOpen": 255.39,
+        "adjHigh": 258.79,
+        "adjLow": 253.07,
+        "adjClose": 255.08,
+        "volume": 39091400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-22",
+        "adjOpen": 252.44,
+        "adjHigh": 255.94,
+        "adjLow": 250.33,
+        "adjClose": 255.36,
+        "volume": 36065100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-21",
+        "adjOpen": 255.09,
+        "adjHigh": 255.09,
+        "adjLow": 249.1,
+        "adjClose": 249.91,
+        "volume": 42922400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-20",
+        "adjOpen": 249.19,
+        "adjHigh": 250.18,
+        "adjLow": 245.37,
+        "adjClose": 248.28,
+        "volume": 39463106
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-17",
+        "adjOpen": 254.99,
+        "adjHigh": 256.18,
+        "adjLow": 250.11,
+        "adjClose": 250.56,
+        "volume": 52029300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-16",
+        "adjOpen": 248.51,
+        "adjHigh": 250,
+        "adjLow": 244.2,
+        "adjClose": 249.7,
+        "volume": 41895711
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-15",
+        "adjOpen": 249.25,
+        "adjHigh": 250.44,
+        "adjLow": 247.2,
+        "adjClose": 248.5,
+        "volume": 43045200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-14",
+        "adjOpen": 241.78,
+        "adjHigh": 252.18,
+        "adjLow": 241.78,
+        "adjClose": 249.02,
+        "volume": 72685026
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-13",
+        "adjOpen": 237.45,
+        "adjHigh": 240,
+        "adjLow": 235.75,
+        "adjClose": 239.89,
+        "volume": 42166200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-10",
+        "adjOpen": 235.3,
+        "adjHigh": 240.43,
+        "adjLow": 235.21,
+        "adjClose": 238.38,
+        "volume": 56912842
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-09",
+        "adjOpen": 225.23,
+        "adjHigh": 233.8,
+        "adjLow": 223.27,
+        "adjClose": 233.65,
+        "volume": 65964200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-08",
+        "adjOpen": 223.79,
+        "adjHigh": 226.1,
+        "adjLow": 219.62,
+        "adjClose": 221.25,
+        "volume": 51092700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-07",
+        "adjOpen": 211.24,
+        "adjHigh": 213.97,
+        "adjLow": 209.08,
+        "adjClose": 213.77,
+        "volume": 28154600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-06",
+        "adjOpen": 209.8,
+        "adjHigh": 212.95,
+        "adjLow": 209.59,
+        "adjClose": 212.79,
+        "volume": 25385500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-02",
+        "adjOpen": 206.54,
+        "adjHigh": 212.21,
+        "adjLow": 204.9,
+        "adjClose": 209.77,
+        "volume": 31453039
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-04-01",
+        "adjOpen": 210.44,
+        "adjHigh": 213.58,
+        "adjLow": 208.19,
+        "adjClose": 210.57,
+        "volume": 45955400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-31",
+        "adjOpen": 204.85,
+        "adjHigh": 210.28,
+        "adjLow": 204.14,
+        "adjClose": 208.27,
+        "volume": 58470100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-30",
+        "adjOpen": 201.48,
+        "adjHigh": 203.8,
+        "adjLow": 199.98,
+        "adjClose": 200.95,
+        "volume": 46373800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-27",
+        "adjOpen": 206.46,
+        "adjHigh": 206.6,
+        "adjLow": 199.14,
+        "adjClose": 199.34,
+        "volume": 56009800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-26",
+        "adjOpen": 210.61,
+        "adjHigh": 212.89,
+        "adjLow": 207.12,
+        "adjClose": 207.54,
+        "volume": 46746000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-25",
+        "adjOpen": 211.56,
+        "adjHigh": 213.07,
+        "adjLow": 209.9,
+        "adjClose": 211.71,
+        "volume": 36388800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-24",
+        "adjOpen": 207.95,
+        "adjHigh": 209.35,
+        "adjLow": 206.64,
+        "adjClose": 207.24,
+        "volume": 35351425
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-23",
+        "adjOpen": 209.79,
+        "adjHigh": 212.8,
+        "adjLow": 209.51,
+        "adjClose": 210.14,
+        "volume": 44277400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-20",
+        "adjOpen": 207.4,
+        "adjHigh": 207.54,
+        "adjLow": 204.32,
+        "adjClose": 205.37,
+        "volume": 63694603
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-19",
+        "adjOpen": 207.06,
+        "adjHigh": 209.12,
+        "adjLow": 206.05,
+        "adjClose": 208.76,
+        "volume": 36440622
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-18",
+        "adjOpen": 213.93,
+        "adjHigh": 215.14,
+        "adjLow": 208.83,
+        "adjClose": 209.87,
+        "volume": 37846642
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-17",
+        "adjOpen": 212.82,
+        "adjHigh": 215.7,
+        "adjLow": 212.43,
+        "adjClose": 215.2,
+        "volume": 44969943
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-16",
+        "adjOpen": 208.35,
+        "adjHigh": 212.72,
+        "adjLow": 207.45,
+        "adjClose": 211.74,
+        "volume": 42209316
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-13",
+        "adjOpen": 209.61,
+        "adjHigh": 210.56,
+        "adjLow": 206.22,
+        "adjClose": 207.67,
+        "volume": 35662137
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-12",
+        "adjOpen": 210.39,
+        "adjHigh": 211.71,
+        "adjLow": 208.15,
+        "adjClose": 209.53,
+        "volume": 44349501
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-11",
+        "adjOpen": 215.71,
+        "adjHigh": 217,
+        "adjLow": 211.35,
+        "adjClose": 212.65,
+        "volume": 34199303
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-10",
+        "adjOpen": 214.19,
+        "adjHigh": 215.65,
+        "adjLow": 212.43,
+        "adjClose": 214.33,
+        "volume": 35678834
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-09",
+        "adjOpen": 210.45,
+        "adjHigh": 213.82,
+        "adjLow": 207.11,
+        "adjClose": 213.49,
+        "volume": 54642926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-06",
+        "adjOpen": 214.99,
+        "adjHigh": 217.32,
+        "adjLow": 212.53,
+        "adjClose": 213.21,
+        "volume": 51152716
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-05",
+        "adjOpen": 215.98,
+        "adjHigh": 220.47,
+        "adjLow": 215.59,
+        "adjClose": 218.94,
+        "volume": 60943447
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-04",
+        "adjOpen": 210.47,
+        "adjHigh": 217.54,
+        "adjLow": 210.15,
+        "adjClose": 216.82,
+        "volume": 54731101
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-03",
+        "adjOpen": 203.1,
+        "adjHigh": 209.18,
+        "adjLow": 202.48,
+        "adjClose": 208.73,
+        "volume": 43184918
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-03-02",
+        "adjOpen": 204.55,
+        "adjHigh": 209.73,
+        "adjLow": 203.46,
+        "adjClose": 208.39,
+        "volume": 46001010
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-27",
+        "adjOpen": 206.83,
+        "adjHigh": 210.33,
+        "adjLow": 205.2,
+        "adjClose": 210,
+        "volume": 57422800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-26",
+        "adjOpen": 210.73,
+        "adjHigh": 211.05,
+        "adjLow": 205.35,
+        "adjClose": 207.92,
+        "volume": 47756800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-25",
+        "adjOpen": 210.46,
+        "adjHigh": 211.59,
+        "adjLow": 208.93,
+        "adjClose": 210.64,
+        "volume": 41346400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-24",
+        "adjOpen": 205.47,
+        "adjHigh": 210.36,
+        "adjLow": 203.25,
+        "adjClose": 208.56,
+        "volume": 41137200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-23",
+        "adjOpen": 208.1,
+        "adjHigh": 208.43,
+        "adjLow": 203.11,
+        "adjClose": 205.27,
+        "volume": 53581508
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-20",
+        "adjOpen": 204.76,
+        "adjHigh": 211.17,
+        "adjLow": 203.75,
+        "adjClose": 210.11,
+        "volume": 65881611
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-19",
+        "adjOpen": 203.8,
+        "adjHigh": 205.64,
+        "adjLow": 202.81,
+        "adjClose": 204.86,
+        "volume": 35669611
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-18",
+        "adjOpen": 202.07,
+        "adjHigh": 206.86,
+        "adjLow": 201.51,
+        "adjClose": 204.79,
+        "volume": 51003300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-17",
+        "adjOpen": 198.13,
+        "adjHigh": 201.74,
+        "adjLow": 196,
+        "adjClose": 201.15,
+        "volume": 69879200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-13",
+        "adjOpen": 198.88,
+        "adjHigh": 201.16,
+        "adjLow": 197.28,
+        "adjClose": 198.79,
+        "volume": 66321600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-12",
+        "adjOpen": 203.96,
+        "adjHigh": 203.96,
+        "adjLow": 197.56,
+        "adjClose": 199.6,
+        "volume": 83975400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-11",
+        "adjOpen": 208.06,
+        "adjHigh": 208.57,
+        "adjLow": 202.49,
+        "adjClose": 204.08,
+        "volume": 65545500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-10",
+        "adjOpen": 208.8,
+        "adjHigh": 212.65,
+        "adjLow": 206.41,
+        "adjClose": 206.96,
+        "volume": 67175031
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-09",
+        "adjOpen": 208.97,
+        "adjHigh": 212.81,
+        "adjLow": 203.35,
+        "adjClose": 208.72,
+        "volume": 91178443
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-06",
+        "adjOpen": 202.7,
+        "adjHigh": 211.44,
+        "adjLow": 200.31,
+        "adjClose": 210.32,
+        "volume": 179383581
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-05",
+        "adjOpen": 224.91,
+        "adjHigh": 226.31,
+        "adjLow": 220.38,
+        "adjClose": 222.69,
+        "volume": 103509230
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-04",
+        "adjOpen": 238.86,
+        "adjHigh": 238.86,
+        "adjLow": 231.82,
+        "adjClose": 232.99,
+        "volume": 51299947
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-03",
+        "adjOpen": 244.98,
+        "adjHigh": 246.35,
+        "adjLow": 235.45,
+        "adjClose": 238.62,
+        "volume": 53831300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-02-02",
+        "adjOpen": 238.31,
+        "adjHigh": 245.63,
+        "adjLow": 238.17,
+        "adjClose": 242.96,
+        "volume": 37546102
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-30",
+        "adjOpen": 239.89,
+        "adjHigh": 243.32,
+        "adjLow": 237.64,
+        "adjClose": 239.3,
+        "volume": 46585024
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-29",
+        "adjOpen": 242.82,
+        "adjHigh": 243,
+        "adjLow": 236.74,
+        "adjClose": 241.73,
+        "volume": 47229643
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-28",
+        "adjOpen": 246.37,
+        "adjHigh": 247.78,
+        "adjLow": 241.53,
+        "adjClose": 243.01,
+        "volume": 40882700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-27",
+        "adjOpen": 239.69,
+        "adjHigh": 244.88,
+        "adjLow": 238.08,
+        "adjClose": 244.68,
+        "volume": 38029216
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-26",
+        "adjOpen": 239.98,
+        "adjHigh": 240.95,
+        "adjLow": 237.54,
+        "adjClose": 238.42,
+        "volume": 32825530
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-23",
+        "adjOpen": 234.96,
+        "adjHigh": 240.45,
+        "adjLow": 234.57,
+        "adjClose": 239.16,
+        "volume": 33778500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-22",
+        "adjOpen": 234.05,
+        "adjHigh": 235.72,
+        "adjLow": 230.9,
+        "adjClose": 234.34,
+        "volume": 31913325
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-21",
+        "adjOpen": 231.09,
+        "adjHigh": 232.3,
+        "adjLow": 226.88,
+        "adjClose": 231.31,
+        "volume": 47276100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-20",
+        "adjOpen": 233.76,
+        "adjHigh": 235.09,
+        "adjLow": 229.34,
+        "adjClose": 231,
+        "volume": 47737900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-16",
+        "adjOpen": 239.09,
+        "adjHigh": 239.57,
+        "adjLow": 236.41,
+        "adjClose": 239.12,
+        "volume": 45888300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-15",
+        "adjOpen": 239.31,
+        "adjHigh": 240.65,
+        "adjLow": 236.63,
+        "adjClose": 238.18,
+        "volume": 43003600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-14",
+        "adjOpen": 241.15,
+        "adjHigh": 241.28,
+        "adjLow": 236.22,
+        "adjClose": 236.65,
+        "volume": 41410600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-13",
+        "adjOpen": 246.53,
+        "adjHigh": 247.66,
+        "adjLow": 240.25,
+        "adjClose": 242.6,
+        "volume": 38371800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-12",
+        "adjOpen": 246.73,
+        "adjHigh": 248.94,
+        "adjLow": 245.96,
+        "adjClose": 246.47,
+        "volume": 35867800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-09",
+        "adjOpen": 244.57,
+        "adjHigh": 247.86,
+        "adjLow": 242.24,
+        "adjClose": 247.38,
+        "volume": 34560000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-08",
+        "adjOpen": 243.06,
+        "adjHigh": 246.41,
+        "adjLow": 241.88,
+        "adjClose": 246.29,
+        "volume": 39509844
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-07",
+        "adjOpen": 239.61,
+        "adjHigh": 245.29,
+        "adjLow": 239.52,
+        "adjClose": 241.56,
+        "volume": 42236531
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-06",
+        "adjOpen": 232.1,
+        "adjHigh": 243.18,
+        "adjLow": 232.07,
+        "adjClose": 240.93,
+        "volume": 53764700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-05",
+        "adjOpen": 228.84,
+        "adjHigh": 234,
+        "adjLow": 227.18,
+        "adjClose": 233.06,
+        "volume": 49733348
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2026-01-02",
+        "adjOpen": 231.34,
+        "adjHigh": 235.46,
+        "adjLow": 224.7,
+        "adjClose": 226.5,
+        "volume": 51456229
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-31",
+        "adjOpen": 232.91,
+        "adjHigh": 232.99,
+        "adjLow": 230.12,
+        "adjClose": 230.82,
+        "volume": 24383749
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-30",
+        "adjOpen": 231.21,
+        "adjHigh": 232.77,
+        "adjLow": 230.2,
+        "adjClose": 232.53,
+        "volume": 21910500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-29",
+        "adjOpen": 231.94,
+        "adjHigh": 232.6,
+        "adjLow": 230.77,
+        "adjClose": 232.07,
+        "volume": 19797909
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-26",
+        "adjOpen": 232.04,
+        "adjHigh": 232.99,
+        "adjLow": 231.18,
+        "adjClose": 232.52,
+        "volume": 15994726
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-24",
+        "adjOpen": 232.13,
+        "adjHigh": 232.95,
+        "adjLow": 231.33,
+        "adjClose": 232.38,
+        "volume": 11420543
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-23",
+        "adjOpen": 229.06,
+        "adjHigh": 232.45,
+        "adjLow": 228.73,
+        "adjClose": 232.14,
+        "volume": 29230233
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-22",
+        "adjOpen": 228.61,
+        "adjHigh": 229.48,
+        "adjLow": 226.71,
+        "adjClose": 228.43,
+        "volume": 32261329
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-19",
+        "adjOpen": 226.76,
+        "adjHigh": 229.13,
+        "adjLow": 225.58,
+        "adjClose": 227.35,
+        "volume": 85544400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-18",
+        "adjOpen": 225.71,
+        "adjHigh": 229.23,
+        "adjLow": 224.41,
+        "adjClose": 226.76,
+        "volume": 50272419
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-17",
+        "adjOpen": 224.66,
+        "adjHigh": 225.19,
+        "adjLow": 220.99,
+        "adjClose": 221.27,
+        "volume": 44034418
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-16",
+        "adjOpen": 223.04,
+        "adjHigh": 223.66,
+        "adjLow": 221.13,
+        "adjClose": 222.56,
+        "volume": 39298900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-15",
+        "adjOpen": 227.93,
+        "adjHigh": 227.93,
+        "adjLow": 221.5,
+        "adjClose": 222.54,
+        "volume": 47286100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-12",
+        "adjOpen": 229.87,
+        "adjHigh": 230.08,
+        "adjLow": 225.12,
+        "adjClose": 226.19,
+        "volume": 35639118
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-11",
+        "adjOpen": 230.71,
+        "adjHigh": 232.11,
+        "adjLow": 228.69,
+        "adjClose": 230.28,
+        "volume": 28249600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-10",
+        "adjOpen": 228.81,
+        "adjHigh": 232.42,
+        "adjLow": 228.46,
+        "adjClose": 231.78,
+        "volume": 38790736
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-09",
+        "adjOpen": 226.84,
+        "adjHigh": 228.57,
+        "adjLow": 225.11,
+        "adjClose": 227.92,
+        "volume": 25841743
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-08",
+        "adjOpen": 229.59,
+        "adjHigh": 230.83,
+        "adjLow": 226.27,
+        "adjClose": 226.89,
+        "volume": 35019200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-05",
+        "adjOpen": 230.32,
+        "adjHigh": 231.24,
+        "adjLow": 228.55,
+        "adjClose": 229.53,
+        "volume": 33117400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-04",
+        "adjOpen": 232.77,
+        "adjHigh": 233.5,
+        "adjLow": 226.8,
+        "adjClose": 229.11,
+        "volume": 45683224
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-03",
+        "adjOpen": 233.35,
+        "adjHigh": 233.38,
+        "adjLow": 230.61,
+        "adjClose": 232.38,
+        "volume": 35495100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-02",
+        "adjOpen": 235.01,
+        "adjHigh": 238.97,
+        "adjLow": 233.55,
+        "adjClose": 234.42,
+        "volume": 45785400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-12-01",
+        "adjOpen": 233.22,
+        "adjHigh": 235.8,
+        "adjLow": 232.25,
+        "adjClose": 233.88,
+        "volume": 42904000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-28",
+        "adjOpen": 231.24,
+        "adjHigh": 233.29,
+        "adjLow": 230.22,
+        "adjClose": 233.22,
+        "volume": 20292329
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-26",
+        "adjOpen": 230.74,
+        "adjHigh": 231.75,
+        "adjLow": 228.77,
+        "adjClose": 229.16,
+        "volume": 38497922
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-25",
+        "adjOpen": 226.38,
+        "adjHigh": 230.52,
+        "adjLow": 223.8,
+        "adjClose": 229.67,
+        "volume": 39379339
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-24",
+        "adjOpen": 222.56,
+        "adjHigh": 227.33,
+        "adjLow": 222.27,
+        "adjClose": 226.28,
+        "volume": 54318400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-21",
+        "adjOpen": 216.35,
+        "adjHigh": 222.21,
+        "adjLow": 215.18,
+        "adjClose": 220.69,
+        "volume": 68490500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-20",
+        "adjOpen": 227.05,
+        "adjHigh": 227.41,
+        "adjLow": 216.74,
+        "adjClose": 217.14,
+        "volume": 50309000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-19",
+        "adjOpen": 223.74,
+        "adjHigh": 223.74,
+        "adjLow": 218.52,
+        "adjClose": 222.69,
+        "volume": 58335643
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-18",
+        "adjOpen": 228.1,
+        "adjHigh": 230.2,
+        "adjLow": 222.42,
+        "adjClose": 222.55,
+        "volume": 60608442
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-17",
+        "adjOpen": 233.25,
+        "adjHigh": 234.6,
+        "adjLow": 229.19,
+        "adjClose": 232.87,
+        "volume": 59919018
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-14",
+        "adjOpen": 235.06,
+        "adjHigh": 238.73,
+        "adjLow": 232.89,
+        "adjClose": 234.69,
+        "volume": 38956700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-13",
+        "adjOpen": 243.05,
+        "adjHigh": 243.75,
+        "adjLow": 236.5,
+        "adjClose": 237.58,
+        "volume": 41401738
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-12",
+        "adjOpen": 250.24,
+        "adjHigh": 250.37,
+        "adjLow": 243.75,
+        "adjClose": 244.2,
+        "volume": 31190100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-11",
+        "adjOpen": 248.41,
+        "adjHigh": 249.75,
+        "adjLow": 247.23,
+        "adjClose": 249.1,
+        "volume": 23564100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-10",
+        "adjOpen": 248.34,
+        "adjHigh": 251.75,
+        "adjLow": 245.59,
+        "adjClose": 248.4,
+        "volume": 36476514
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-07",
+        "adjOpen": 242.9,
+        "adjHigh": 244.9,
+        "adjLow": 238.49,
+        "adjClose": 244.41,
+        "volume": 46374300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-06",
+        "adjOpen": 249.16,
+        "adjHigh": 250.38,
+        "adjLow": 242.17,
+        "adjClose": 243.04,
+        "volume": 46004203
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-05",
+        "adjOpen": 249.03,
+        "adjHigh": 251,
+        "adjLow": 246.16,
+        "adjClose": 250.2,
+        "volume": 40610702
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-04",
+        "adjOpen": 250.38,
+        "adjHigh": 257.01,
+        "adjLow": 248.66,
+        "adjClose": 249.32,
+        "volume": 51546311
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-11-03",
+        "adjOpen": 255.36,
+        "adjHigh": 258.6,
+        "adjLow": 252.9,
+        "adjClose": 254,
+        "volume": 95997816
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-31",
+        "adjOpen": 250.1,
+        "adjHigh": 250.5,
+        "adjLow": 243.98,
+        "adjClose": 244.22,
+        "volume": 166340808
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-30",
+        "adjOpen": 227.06,
+        "adjHigh": 228.44,
+        "adjLow": 222.75,
+        "adjClose": 222.86,
+        "volume": 102252937
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-29",
+        "adjOpen": 231.67,
+        "adjHigh": 232.82,
+        "adjLow": 227.76,
+        "adjClose": 230.3,
+        "volume": 52036200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-28",
+        "adjOpen": 228.22,
+        "adjHigh": 231.49,
+        "adjLow": 226.21,
+        "adjClose": 229.25,
+        "volume": 47100026
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-27",
+        "adjOpen": 227.66,
+        "adjHigh": 228.4,
+        "adjLow": 225.54,
+        "adjClose": 226.97,
+        "volume": 38267000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-24",
+        "adjOpen": 221.97,
+        "adjHigh": 225.4,
+        "adjLow": 221.9,
+        "adjClose": 224.21,
+        "volume": 38685100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-23",
+        "adjOpen": 219,
+        "adjHigh": 221.3,
+        "adjLow": 218.18,
+        "adjClose": 221.09,
+        "volume": 31540000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-22",
+        "adjOpen": 219.3,
+        "adjHigh": 220.01,
+        "adjLow": 216.52,
+        "adjClose": 217.95,
+        "volume": 44308538
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-21",
+        "adjOpen": 218.43,
+        "adjHigh": 223.32,
+        "adjLow": 217.99,
+        "adjClose": 222.03,
+        "volume": 50494600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-20",
+        "adjOpen": 213.88,
+        "adjHigh": 216.69,
+        "adjLow": 213.59,
+        "adjClose": 216.48,
+        "volume": 38882819
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-17",
+        "adjOpen": 214.56,
+        "adjHigh": 214.8,
+        "adjLow": 211.03,
+        "adjClose": 213.04,
+        "volume": 45986944
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-16",
+        "adjOpen": 215.67,
+        "adjHigh": 218.59,
+        "adjLow": 212.81,
+        "adjClose": 214.47,
+        "volume": 42414600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-15",
+        "adjOpen": 216.62,
+        "adjHigh": 217.71,
+        "adjLow": 212.66,
+        "adjClose": 215.57,
+        "volume": 45909500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-14",
+        "adjOpen": 215.56,
+        "adjHigh": 219.32,
+        "adjLow": 212.6,
+        "adjClose": 216.39,
+        "volume": 45665600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-13",
+        "adjOpen": 217.7,
+        "adjHigh": 220.68,
+        "adjLow": 217.04,
+        "adjClose": 220.07,
+        "volume": 37809700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-10",
+        "adjOpen": 226.21,
+        "adjHigh": 228.25,
+        "adjLow": 216,
+        "adjClose": 216.37,
+        "volume": 72367511
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-09",
+        "adjOpen": 225,
+        "adjHigh": 228.21,
+        "adjLow": 221.75,
+        "adjClose": 227.74,
+        "volume": 46412122
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-08",
+        "adjOpen": 222.92,
+        "adjHigh": 226.73,
+        "adjLow": 221.19,
+        "adjClose": 225.22,
+        "volume": 46686000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-07",
+        "adjOpen": 220.88,
+        "adjHigh": 222.89,
+        "adjLow": 220.17,
+        "adjClose": 221.78,
+        "volume": 31194700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-06",
+        "adjOpen": 221,
+        "adjHigh": 221.73,
+        "adjLow": 216.03,
+        "adjClose": 220.9,
+        "volume": 43690900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-03",
+        "adjOpen": 223.44,
+        "adjHigh": 224.2,
+        "adjLow": 219.34,
+        "adjClose": 219.51,
+        "volume": 43639033
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-02",
+        "adjOpen": 221.01,
+        "adjHigh": 222.81,
+        "adjLow": 218.95,
+        "adjClose": 222.41,
+        "volume": 41258600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-10-01",
+        "adjOpen": 217.36,
+        "adjHigh": 222.15,
+        "adjLow": 216.61,
+        "adjClose": 220.63,
+        "volume": 43933834
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-30",
+        "adjOpen": 222.03,
+        "adjHigh": 222.24,
+        "adjLow": 217.89,
+        "adjClose": 219.57,
+        "volume": 48396400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-29",
+        "adjOpen": 220.08,
+        "adjHigh": 222.6,
+        "adjLow": 219.3,
+        "adjClose": 222.17,
+        "volume": 44259200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-26",
+        "adjOpen": 219.08,
+        "adjHigh": 221.05,
+        "adjLow": 218.02,
+        "adjClose": 219.78,
+        "volume": 41650100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-25",
+        "adjOpen": 220.06,
+        "adjHigh": 220.67,
+        "adjLow": 216.47,
+        "adjClose": 218.15,
+        "volume": 52226328
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-24",
+        "adjOpen": 224.15,
+        "adjHigh": 224.56,
+        "adjLow": 219.45,
+        "adjClose": 220.21,
+        "volume": 49509033
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-23",
+        "adjOpen": 227.83,
+        "adjHigh": 227.86,
+        "adjLow": 220.07,
+        "adjClose": 220.71,
+        "volume": 70956200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-22",
+        "adjOpen": 230.56,
+        "adjHigh": 230.57,
+        "adjLow": 227.51,
+        "adjClose": 227.63,
+        "volume": 45914506
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-19",
+        "adjOpen": 232.37,
+        "adjHigh": 234.16,
+        "adjLow": 229.7,
+        "adjClose": 231.48,
+        "volume": 97943200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-18",
+        "adjOpen": 232.5,
+        "adjHigh": 233.48,
+        "adjLow": 228.79,
+        "adjClose": 231.23,
+        "volume": 37931738
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-17",
+        "adjOpen": 233.77,
+        "adjHigh": 234.3,
+        "adjLow": 228.71,
+        "adjClose": 231.62,
+        "volume": 42815230
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-16",
+        "adjOpen": 232.94,
+        "adjHigh": 235.9,
+        "adjLow": 232.23,
+        "adjClose": 234.05,
+        "volume": 38203912
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-15",
+        "adjOpen": 230.63,
+        "adjHigh": 233.73,
+        "adjLow": 230.32,
+        "adjClose": 231.43,
+        "volume": 33243328
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-12",
+        "adjOpen": 230.35,
+        "adjHigh": 230.79,
+        "adjLow": 226.29,
+        "adjClose": 228.15,
+        "volume": 38496218
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-11",
+        "adjOpen": 231.49,
+        "adjHigh": 231.53,
+        "adjLow": 229.34,
+        "adjClose": 229.95,
+        "volume": 37485600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-10",
+        "adjOpen": 237.52,
+        "adjHigh": 237.68,
+        "adjLow": 229.1,
+        "adjClose": 230.33,
+        "volume": 60907714
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-09",
+        "adjOpen": 236.36,
+        "adjHigh": 238.85,
+        "adjLow": 235.08,
+        "adjClose": 238.24,
+        "volume": 27033800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-08",
+        "adjOpen": 234.94,
+        "adjHigh": 237.6,
+        "adjLow": 233.75,
+        "adjClose": 235.84,
+        "volume": 33947104
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-05",
+        "adjOpen": 235.19,
+        "adjHigh": 236,
+        "adjLow": 231.93,
+        "adjClose": 232.33,
+        "volume": 36721802
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-04",
+        "adjOpen": 231.19,
+        "adjHigh": 235.77,
+        "adjLow": 230.78,
+        "adjClose": 235.68,
+        "volume": 59391800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-03",
+        "adjOpen": 225.21,
+        "adjHigh": 227.17,
+        "adjLow": 224.36,
+        "adjClose": 225.99,
+        "volume": 29223134
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-09-02",
+        "adjOpen": 223.52,
+        "adjHigh": 226.17,
+        "adjLow": 221.83,
+        "adjClose": 225.34,
+        "volume": 38843900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-29",
+        "adjOpen": 231.32,
+        "adjHigh": 231.81,
+        "adjLow": 228.16,
+        "adjClose": 229,
+        "volume": 26199200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-28",
+        "adjOpen": 229.01,
+        "adjHigh": 232.71,
+        "adjLow": 228.02,
+        "adjClose": 231.6,
+        "volume": 33679600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-27",
+        "adjOpen": 228.57,
+        "adjHigh": 229.87,
+        "adjLow": 227.81,
+        "adjClose": 229.12,
+        "volume": 21254500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-26",
+        "adjOpen": 227.11,
+        "adjHigh": 229,
+        "adjLow": 226.02,
+        "adjClose": 228.71,
+        "volume": 26105400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-25",
+        "adjOpen": 227.35,
+        "adjHigh": 229.6,
+        "adjLow": 227.31,
+        "adjClose": 227.94,
+        "volume": 22633700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-22",
+        "adjOpen": 222.79,
+        "adjHigh": 229.14,
+        "adjLow": 220.82,
+        "adjClose": 228.84,
+        "volume": 37315341
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-21",
+        "adjOpen": 222.65,
+        "adjHigh": 222.78,
+        "adjLow": 220.5,
+        "adjClose": 221.95,
+        "volume": 32140500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-20",
+        "adjOpen": 227.12,
+        "adjHigh": 227.27,
+        "adjLow": 220.92,
+        "adjClose": 223.81,
+        "volume": 36604319
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-19",
+        "adjOpen": 230.09,
+        "adjHigh": 230.53,
+        "adjLow": 227.12,
+        "adjClose": 228.01,
+        "volume": 29891012
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-18",
+        "adjOpen": 230.23,
+        "adjHigh": 231.91,
+        "adjLow": 228.33,
+        "adjClose": 231.49,
+        "volume": 25248900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-15",
+        "adjOpen": 232.58,
+        "adjHigh": 234.08,
+        "adjLow": 229.81,
+        "adjClose": 231.03,
+        "volume": 39649244
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-14",
+        "adjOpen": 227.4,
+        "adjHigh": 233.11,
+        "adjLow": 227.02,
+        "adjClose": 230.98,
+        "volume": 61545824
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-13",
+        "adjOpen": 222,
+        "adjHigh": 224.92,
+        "adjLow": 222,
+        "adjClose": 224.56,
+        "volume": 36508335
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-12",
+        "adjOpen": 222.23,
+        "adjHigh": 223.5,
+        "adjLow": 219.05,
+        "adjClose": 221.47,
+        "volume": 37254707
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-11",
+        "adjOpen": 221.78,
+        "adjHigh": 223.05,
+        "adjLow": 220.4,
+        "adjClose": 221.3,
+        "volume": 31646222
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-08",
+        "adjOpen": 223.14,
+        "adjHigh": 223.8,
+        "adjLow": 221.88,
+        "adjClose": 222.69,
+        "volume": 32970500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-07",
+        "adjOpen": 221,
+        "adjHigh": 226.22,
+        "adjLow": 220.82,
+        "adjClose": 223.13,
+        "volume": 40603513
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-06",
+        "adjOpen": 214.7,
+        "adjHigh": 222.65,
+        "adjLow": 213.74,
+        "adjClose": 222.31,
+        "volume": 54823045
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-05",
+        "adjOpen": 213.05,
+        "adjHigh": 216.3,
+        "adjLow": 212.87,
+        "adjClose": 213.75,
+        "volume": 51505121
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-04",
+        "adjOpen": 217.4,
+        "adjHigh": 217.44,
+        "adjLow": 211.42,
+        "adjClose": 211.65,
+        "volume": 77890146
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-08-01",
+        "adjOpen": 217.21,
+        "adjHigh": 220.44,
+        "adjLow": 212.8,
+        "adjClose": 214.75,
+        "volume": 122258801
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-31",
+        "adjOpen": 235.77,
+        "adjHigh": 236.53,
+        "adjLow": 231.4,
+        "adjClose": 234.11,
+        "volume": 104357300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-30",
+        "adjOpen": 231.64,
+        "adjHigh": 231.8,
+        "adjLow": 229.29,
+        "adjClose": 230.19,
+        "volume": 32993300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-29",
+        "adjOpen": 234.15,
+        "adjHigh": 234.72,
+        "adjLow": 230.31,
+        "adjClose": 231.01,
+        "volume": 33716220
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-28",
+        "adjOpen": 233.35,
+        "adjHigh": 234.29,
+        "adjLow": 232.25,
+        "adjClose": 232.79,
+        "volume": 26300138
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-25",
+        "adjOpen": 232.22,
+        "adjHigh": 232.48,
+        "adjLow": 231.18,
+        "adjClose": 231.44,
+        "volume": 28712100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-24",
+        "adjOpen": 229.17,
+        "adjHigh": 236,
+        "adjLow": 228.64,
+        "adjClose": 232.23,
+        "volume": 42902300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-23",
+        "adjOpen": 228.47,
+        "adjHigh": 228.79,
+        "adjLow": 227.09,
+        "adjClose": 228.29,
+        "volume": 28294900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-22",
+        "adjOpen": 229.68,
+        "adjHigh": 230,
+        "adjLow": 226.35,
+        "adjClose": 227.47,
+        "volume": 37483702
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-21",
+        "adjOpen": 225.84,
+        "adjHigh": 229.69,
+        "adjLow": 225.65,
+        "adjClose": 229.3,
+        "volume": 40297600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-18",
+        "adjOpen": 225.14,
+        "adjHigh": 226.4,
+        "adjLow": 222.98,
+        "adjClose": 226.13,
+        "volume": 37833807
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-17",
+        "adjOpen": 223.32,
+        "adjHigh": 224.5,
+        "adjLow": 222.51,
+        "adjClose": 223.88,
+        "volume": 31855831
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-16",
+        "adjOpen": 225.88,
+        "adjHigh": 226.1,
+        "adjLow": 222.18,
+        "adjClose": 223.19,
+        "volume": 39535926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-15",
+        "adjOpen": 226.2,
+        "adjHigh": 227.27,
+        "adjLow": 225.46,
+        "adjClose": 226.35,
+        "volume": 34907300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-14",
+        "adjOpen": 225.07,
+        "adjHigh": 226.66,
+        "adjLow": 224.24,
+        "adjClose": 225.69,
+        "volume": 35702600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-11",
+        "adjOpen": 223.58,
+        "adjHigh": 226.68,
+        "adjLow": 222.37,
+        "adjClose": 225.02,
+        "volume": 50518307
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-10",
+        "adjOpen": 221.55,
+        "adjHigh": 222.79,
+        "adjLow": 219.7,
+        "adjClose": 222.26,
+        "volume": 30370600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-09",
+        "adjOpen": 221.07,
+        "adjHigh": 224.29,
+        "adjLow": 220.47,
+        "adjClose": 222.54,
+        "volume": 38155121
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-08",
+        "adjOpen": 223.92,
+        "adjHigh": 224,
+        "adjLow": 218.43,
+        "adjClose": 219.36,
+        "volume": 45692000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-07",
+        "adjOpen": 223,
+        "adjHigh": 224.29,
+        "adjLow": 222.37,
+        "adjClose": 223.47,
+        "volume": 36604139
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-03",
+        "adjOpen": 221.82,
+        "adjHigh": 224.01,
+        "adjLow": 221.36,
+        "adjClose": 223.41,
+        "volume": 29632400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-02",
+        "adjOpen": 219.73,
+        "adjHigh": 221.6,
+        "adjLow": 219.06,
+        "adjClose": 219.92,
+        "volume": 30894200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-07-01",
+        "adjOpen": 219.5,
+        "adjHigh": 221.88,
+        "adjLow": 217.93,
+        "adjClose": 220.46,
+        "volume": 39256830
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-30",
+        "adjOpen": 223.52,
+        "adjHigh": 223.82,
+        "adjLow": 219.12,
+        "adjClose": 219.39,
+        "volume": 58887800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-27",
+        "adjOpen": 219.92,
+        "adjHigh": 223.3,
+        "adjLow": 216.74,
+        "adjClose": 223.3,
+        "volume": 119217138
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-26",
+        "adjOpen": 213.12,
+        "adjHigh": 218.04,
+        "adjLow": 212.01,
+        "adjClose": 217.12,
+        "volume": 50480814
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-25",
+        "adjOpen": 214.62,
+        "adjHigh": 216.03,
+        "adjLow": 211.11,
+        "adjClose": 211.99,
+        "volume": 31755700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-24",
+        "adjOpen": 212.14,
+        "adjHigh": 214.34,
+        "adjLow": 211.05,
+        "adjClose": 212.77,
+        "volume": 38378800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-23",
+        "adjOpen": 209.79,
+        "adjHigh": 210.39,
+        "adjLow": 207.31,
+        "adjClose": 208.47,
+        "volume": 37311725
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-20",
+        "adjOpen": 214.68,
+        "adjHigh": 214.89,
+        "adjLow": 208.27,
+        "adjClose": 209.69,
+        "volume": 75350733
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-18",
+        "adjOpen": 215.09,
+        "adjHigh": 217.96,
+        "adjLow": 212.34,
+        "adjClose": 212.52,
+        "volume": 44360509
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-17",
+        "adjOpen": 215.2,
+        "adjHigh": 217.41,
+        "adjLow": 214.56,
+        "adjClose": 214.82,
+        "volume": 32086300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-16",
+        "adjOpen": 212.31,
+        "adjHigh": 217.06,
+        "adjLow": 211.6,
+        "adjClose": 216.1,
+        "volume": 33284200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-13",
+        "adjOpen": 209.96,
+        "adjHigh": 214.05,
+        "adjLow": 209.62,
+        "adjClose": 212.1,
+        "volume": 29337800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-12",
+        "adjOpen": 211.78,
+        "adjHigh": 213.58,
+        "adjLow": 211.33,
+        "adjClose": 213.24,
+        "volume": 27640000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-11",
+        "adjOpen": 217.41,
+        "adjHigh": 218.4,
+        "adjLow": 212.89,
+        "adjClose": 213.2,
+        "volume": 39326000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-10",
+        "adjOpen": 216.78,
+        "adjHigh": 217.69,
+        "adjLow": 214.15,
+        "adjClose": 217.61,
+        "volume": 31303317
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-09",
+        "adjOpen": 214.75,
+        "adjHigh": 217.85,
+        "adjLow": 212.88,
+        "adjClose": 216.98,
+        "volume": 38102502
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-06",
+        "adjOpen": 212.4,
+        "adjHigh": 213.87,
+        "adjLow": 210.5,
+        "adjClose": 213.57,
+        "volume": 39832500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-05",
+        "adjOpen": 209.55,
+        "adjHigh": 212.81,
+        "adjLow": 207.56,
+        "adjClose": 207.91,
+        "volume": 51979243
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-04",
+        "adjOpen": 206.55,
+        "adjHigh": 208.18,
+        "adjLow": 205.18,
+        "adjClose": 207.23,
+        "volume": 29915600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-03",
+        "adjOpen": 207.11,
+        "adjHigh": 208.95,
+        "adjLow": 205.03,
+        "adjClose": 205.71,
+        "volume": 33139121
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-06-02",
+        "adjOpen": 204.98,
+        "adjHigh": 207,
+        "adjLow": 202.68,
+        "adjClose": 206.65,
+        "volume": 29113319
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-30",
+        "adjOpen": 204.84,
+        "adjHigh": 205.99,
+        "adjLow": 201.7,
+        "adjClose": 205.01,
+        "volume": 51679406
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-29",
+        "adjOpen": 208.03,
+        "adjHigh": 208.81,
+        "adjLow": 204.23,
+        "adjClose": 205.7,
+        "volume": 34700005
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-28",
+        "adjOpen": 205.92,
+        "adjHigh": 207.66,
+        "adjLow": 204.41,
+        "adjClose": 204.72,
+        "volume": 28549800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-27",
+        "adjOpen": 203.09,
+        "adjHigh": 206.69,
+        "adjLow": 202.19,
+        "adjClose": 206.02,
+        "volume": 34892044
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-23",
+        "adjOpen": 198.9,
+        "adjHigh": 202.37,
+        "adjLow": 197.85,
+        "adjClose": 200.99,
+        "volume": 33393545
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-22",
+        "adjOpen": 201.38,
+        "adjHigh": 205.76,
+        "adjLow": 200.16,
+        "adjClose": 203.1,
+        "volume": 38938900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-21",
+        "adjOpen": 201.61,
+        "adjHigh": 203.46,
+        "adjLow": 200.06,
+        "adjClose": 201.12,
+        "volume": 42460924
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-20",
+        "adjOpen": 204.63,
+        "adjHigh": 205.59,
+        "adjLow": 202.65,
+        "adjClose": 204.07,
+        "volume": 29470400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-19",
+        "adjOpen": 201.65,
+        "adjHigh": 206.62,
+        "adjLow": 201.26,
+        "adjClose": 206.16,
+        "volume": 34314810
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-16",
+        "adjOpen": 206.85,
+        "adjHigh": 206.85,
+        "adjLow": 204.37,
+        "adjClose": 205.59,
+        "volume": 43318500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-15",
+        "adjOpen": 206.45,
+        "adjHigh": 206.88,
+        "adjLow": 202.67,
+        "adjClose": 205.17,
+        "volume": 64347317
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-14",
+        "adjOpen": 211.45,
+        "adjHigh": 211.93,
+        "adjLow": 208.85,
+        "adjClose": 210.25,
+        "volume": 38492128
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-13",
+        "adjOpen": 211.08,
+        "adjHigh": 214.84,
+        "adjLow": 210.1,
+        "adjClose": 211.37,
+        "volume": 56193700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-12",
+        "adjOpen": 210.71,
+        "adjHigh": 211.66,
+        "adjLow": 205.75,
+        "adjClose": 208.64,
+        "volume": 75205042
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-09",
+        "adjOpen": 193.38,
+        "adjHigh": 194.69,
+        "adjLow": 191.16,
+        "adjClose": 193.06,
+        "volume": 29663143
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-08",
+        "adjOpen": 191.43,
+        "adjHigh": 194.33,
+        "adjLow": 188.82,
+        "adjClose": 192.08,
+        "volume": 41043620
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-07",
+        "adjOpen": 185.56,
+        "adjHigh": 190.99,
+        "adjLow": 185.01,
+        "adjClose": 188.71,
+        "volume": 44002926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-06",
+        "adjOpen": 184.57,
+        "adjHigh": 187.93,
+        "adjLow": 183.85,
+        "adjClose": 185.01,
+        "volume": 29314100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-05",
+        "adjOpen": 186.51,
+        "adjHigh": 188.18,
+        "adjLow": 185.53,
+        "adjClose": 186.35,
+        "volume": 35217500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-02",
+        "adjOpen": 191.44,
+        "adjHigh": 192.88,
+        "adjLow": 186.4,
+        "adjClose": 189.98,
+        "volume": 77903500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-05-01",
+        "adjOpen": 190.63,
+        "adjHigh": 191.81,
+        "adjLow": 187.5,
+        "adjClose": 190.2,
+        "volume": 74266000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-30",
+        "adjOpen": 182.17,
+        "adjHigh": 185.05,
+        "adjLow": 178.85,
+        "adjClose": 184.42,
+        "volume": 55176543
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-29",
+        "adjOpen": 183.99,
+        "adjHigh": 188.02,
+        "adjLow": 183.68,
+        "adjClose": 187.39,
+        "volume": 41667300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-28",
+        "adjOpen": 190.11,
+        "adjHigh": 190.22,
+        "adjLow": 184.89,
+        "adjClose": 187.7,
+        "volume": 33224732
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-25",
+        "adjOpen": 187.62,
+        "adjHigh": 189.94,
+        "adjLow": 185.49,
+        "adjClose": 188.99,
+        "volume": 36414330
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-24",
+        "adjOpen": 180.92,
+        "adjHigh": 186.74,
+        "adjLow": 180.18,
+        "adjClose": 186.54,
+        "volume": 43763200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-23",
+        "adjOpen": 183.45,
+        "adjHigh": 187.38,
+        "adjLow": 180.19,
+        "adjClose": 180.6,
+        "volume": 63470149
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-22",
+        "adjOpen": 169.85,
+        "adjHigh": 176.78,
+        "adjLow": 169.35,
+        "adjClose": 173.18,
+        "volume": 56607202
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-21",
+        "adjOpen": 169.6,
+        "adjHigh": 169.6,
+        "adjLow": 165.29,
+        "adjClose": 167.32,
+        "volume": 48126111
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-17",
+        "adjOpen": 176,
+        "adjHigh": 176.21,
+        "adjLow": 172,
+        "adjClose": 172.61,
+        "volume": 44726453
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-16",
+        "adjOpen": 176.29,
+        "adjHigh": 179.1,
+        "adjLow": 171.41,
+        "adjClose": 174.33,
+        "volume": 51875316
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-15",
+        "adjOpen": 181.41,
+        "adjHigh": 182.35,
+        "adjLow": 177.93,
+        "adjClose": 179.59,
+        "volume": 43642000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-14",
+        "adjOpen": 186.84,
+        "adjHigh": 187.44,
+        "adjLow": 179.23,
+        "adjClose": 182.12,
+        "volume": 48002540
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-11",
+        "adjOpen": 179.93,
+        "adjHigh": 185.86,
+        "adjLow": 178,
+        "adjClose": 184.87,
+        "volume": 50594339
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-10",
+        "adjOpen": 185.44,
+        "adjHigh": 186.87,
+        "adjLow": 175.85,
+        "adjClose": 181.22,
+        "volume": 68302045
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-09",
+        "adjOpen": 172.12,
+        "adjHigh": 192.65,
+        "adjLow": 169.93,
+        "adjClose": 191.1,
+        "volume": 116804328
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-08",
+        "adjOpen": 185.23,
+        "adjHigh": 185.9,
+        "adjLow": 168.57,
+        "adjClose": 170.66,
+        "volume": 87710400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-07",
+        "adjOpen": 162,
+        "adjHigh": 183.41,
+        "adjLow": 161.38,
+        "adjClose": 175.26,
+        "volume": 109327115
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-04",
+        "adjOpen": 167.15,
+        "adjHigh": 178.14,
+        "adjLow": 166,
+        "adjClose": 171,
+        "volume": 123159400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-03",
+        "adjOpen": 183,
+        "adjHigh": 184.13,
+        "adjLow": 176.92,
+        "adjClose": 178.41,
+        "volume": 95553617
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-02",
+        "adjOpen": 187.66,
+        "adjHigh": 198.34,
+        "adjLow": 187.66,
+        "adjClose": 196.01,
+        "volume": 53679200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-04-01",
+        "adjOpen": 187.86,
+        "adjHigh": 193.93,
+        "adjLow": 187.2,
+        "adjClose": 192.17,
+        "volume": 41267315
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-31",
+        "adjOpen": 188.19,
+        "adjHigh": 191.33,
+        "adjLow": 184.4,
+        "adjClose": 190.26,
+        "volume": 63547600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-28",
+        "adjOpen": 198.42,
+        "adjHigh": 199.26,
+        "adjLow": 191.88,
+        "adjClose": 192.72,
+        "volume": 52548226
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-27",
+        "adjOpen": 200.89,
+        "adjHigh": 203.79,
+        "adjLow": 199.28,
+        "adjClose": 201.36,
+        "volume": 27317700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-26",
+        "adjOpen": 205.84,
+        "adjHigh": 206.01,
+        "adjLow": 199.93,
+        "adjClose": 201.13,
+        "volume": 32991000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-25",
+        "adjOpen": 203.6,
+        "adjHigh": 206.21,
+        "adjLow": 203.22,
+        "adjClose": 205.71,
+        "volume": 31171200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-24",
+        "adjOpen": 200,
+        "adjHigh": 203.64,
+        "adjLow": 199.95,
+        "adjClose": 203.26,
+        "volume": 41625400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-21",
+        "adjOpen": 192.9,
+        "adjHigh": 196.99,
+        "adjLow": 192.52,
+        "adjClose": 196.21,
+        "volume": 60056917
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-20",
+        "adjOpen": 193.07,
+        "adjHigh": 199.32,
+        "adjLow": 192.3,
+        "adjClose": 194.95,
+        "volume": 38921113
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-19",
+        "adjOpen": 193.38,
+        "adjHigh": 195.97,
+        "adjLow": 191.96,
+        "adjClose": 195.54,
+        "volume": 39442900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-18",
+        "adjOpen": 192.52,
+        "adjHigh": 194,
+        "adjLow": 189.38,
+        "adjClose": 192.82,
+        "volume": 40414900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-17",
+        "adjOpen": 198.77,
+        "adjHigh": 199,
+        "adjLow": 194.32,
+        "adjClose": 195.74,
+        "volume": 47341800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-14",
+        "adjOpen": 197.41,
+        "adjHigh": 198.65,
+        "adjLow": 195.32,
+        "adjClose": 197.95,
+        "volume": 38096700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-13",
+        "adjOpen": 198.17,
+        "adjHigh": 198.88,
+        "adjLow": 191.82,
+        "adjClose": 193.89,
+        "volume": 41270800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-12",
+        "adjOpen": 200.72,
+        "adjHigh": 201.52,
+        "adjLow": 195.29,
+        "adjClose": 198.89,
+        "volume": 43679300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-11",
+        "adjOpen": 193.9,
+        "adjHigh": 200.18,
+        "adjLow": 193.4,
+        "adjClose": 196.59,
+        "volume": 54002900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-10",
+        "adjOpen": 195.6,
+        "adjHigh": 196.73,
+        "adjLow": 190.85,
+        "adjClose": 194.54,
+        "volume": 62350926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-07",
+        "adjOpen": 199.49,
+        "adjHigh": 202.27,
+        "adjLow": 192.53,
+        "adjClose": 199.25,
+        "volume": 59802821
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-06",
+        "adjOpen": 204.4,
+        "adjHigh": 205.77,
+        "adjLow": 198.3,
+        "adjClose": 200.7,
+        "volume": 49863800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-05",
+        "adjOpen": 204.8,
+        "adjHigh": 209.98,
+        "adjLow": 203.26,
+        "adjClose": 208.36,
+        "volume": 38610100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-04",
+        "adjOpen": 200.11,
+        "adjHigh": 206.8,
+        "adjLow": 197.43,
+        "adjClose": 203.8,
+        "volume": 60853100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-03-03",
+        "adjOpen": 213.35,
+        "adjHigh": 214.01,
+        "adjLow": 202.55,
+        "adjClose": 205.02,
+        "volume": 42948447
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-28",
+        "adjOpen": 208.65,
+        "adjHigh": 212.62,
+        "adjLow": 206.99,
+        "adjClose": 212.28,
+        "volume": 51771737
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-27",
+        "adjOpen": 218.35,
+        "adjHigh": 219.97,
+        "adjLow": 208.37,
+        "adjClose": 208.74,
+        "volume": 40548600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-26",
+        "adjOpen": 214.94,
+        "adjHigh": 218.16,
+        "adjLow": 213.09,
+        "adjClose": 214.35,
+        "volume": 39120603
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-25",
+        "adjOpen": 211.63,
+        "adjHigh": 213.34,
+        "adjLow": 204.16,
+        "adjClose": 212.8,
+        "volume": 58958000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-24",
+        "adjOpen": 217.45,
+        "adjHigh": 217.72,
+        "adjLow": 212.42,
+        "adjClose": 212.71,
+        "volume": 42387600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-21",
+        "adjOpen": 223.28,
+        "adjHigh": 223.31,
+        "adjLow": 214.74,
+        "adjClose": 216.58,
+        "volume": 55323900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-20",
+        "adjOpen": 224.78,
+        "adjHigh": 225.13,
+        "adjLow": 221.81,
+        "adjClose": 222.88,
+        "volume": 30001700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-19",
+        "adjOpen": 225.52,
+        "adjHigh": 226.83,
+        "adjLow": 223.71,
+        "adjClose": 226.63,
+        "volume": 28566709
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-18",
+        "adjOpen": 228.82,
+        "adjHigh": 229.3,
+        "adjLow": 223.72,
+        "adjClose": 226.65,
+        "volume": 42975133
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-14",
+        "adjOpen": 229.2,
+        "adjHigh": 229.89,
+        "adjLow": 227.23,
+        "adjClose": 228.68,
+        "volume": 27031100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-13",
+        "adjOpen": 228.85,
+        "adjHigh": 230.42,
+        "adjLow": 227.52,
+        "adjClose": 230.37,
+        "volume": 31346512
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-12",
+        "adjOpen": 230.46,
+        "adjHigh": 231.18,
+        "adjLow": 228.16,
+        "adjClose": 228.93,
+        "volume": 32285249
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-11",
+        "adjOpen": 231.92,
+        "adjHigh": 233.44,
+        "adjLow": 230.13,
+        "adjClose": 232.76,
+        "volume": 23713726
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-10",
+        "adjOpen": 230.55,
+        "adjHigh": 233.92,
+        "adjLow": 229.2,
+        "adjClose": 233.14,
+        "volume": 35419926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-07",
+        "adjOpen": 232.5,
+        "adjHigh": 234.81,
+        "adjLow": 228.06,
+        "adjClose": 229.15,
+        "volume": 78075433
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-06",
+        "adjOpen": 238.01,
+        "adjHigh": 239.66,
+        "adjLow": 236.01,
+        "adjClose": 238.83,
+        "volume": 60897100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-05",
+        "adjOpen": 237.02,
+        "adjHigh": 238.32,
+        "adjLow": 235.2,
+        "adjClose": 236.17,
+        "volume": 38832042
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-04",
+        "adjOpen": 239.01,
+        "adjHigh": 242.52,
+        "adjLow": 238.03,
+        "adjClose": 242.06,
+        "volume": 29713812
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-02-03",
+        "adjOpen": 234.06,
+        "adjHigh": 239.25,
+        "adjLow": 232.9,
+        "adjClose": 237.42,
+        "volume": 37285900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-31",
+        "adjOpen": 236.5,
+        "adjHigh": 240.29,
+        "adjLow": 236.41,
+        "adjClose": 237.68,
+        "volume": 36162400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-30",
+        "adjOpen": 237.14,
+        "adjHigh": 237.95,
+        "adjLow": 232.22,
+        "adjClose": 234.64,
+        "volume": 32020728
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-29",
+        "adjOpen": 239.02,
+        "adjHigh": 240.39,
+        "adjLow": 236.15,
+        "adjClose": 237.07,
+        "volume": 26091716
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-28",
+        "adjOpen": 234.29,
+        "adjHigh": 241.77,
+        "adjLow": 233.98,
+        "adjClose": 238.15,
+        "volume": 41587200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-27",
+        "adjOpen": 226.21,
+        "adjHigh": 235.61,
+        "adjLow": 225.86,
+        "adjClose": 235.42,
+        "volume": 49428332
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-24",
+        "adjOpen": 234.5,
+        "adjHigh": 236.4,
+        "adjLow": 232.93,
+        "adjClose": 234.85,
+        "volume": 25890738
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-23",
+        "adjOpen": 234.1,
+        "adjHigh": 235.52,
+        "adjLow": 231.51,
+        "adjClose": 235.42,
+        "volume": 26404400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-22",
+        "adjOpen": 232.02,
+        "adjHigh": 235.44,
+        "adjLow": 231.19,
+        "adjClose": 235.01,
+        "volume": 41448217
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-21",
+        "adjOpen": 228.9,
+        "adjHigh": 231.78,
+        "adjLow": 226.94,
+        "adjClose": 230.71,
+        "volume": 39951500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-17",
+        "adjOpen": 225.84,
+        "adjHigh": 226.51,
+        "adjLow": 223.08,
+        "adjClose": 225.94,
+        "volume": 42370123
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-16",
+        "adjOpen": 224.42,
+        "adjHigh": 224.65,
+        "adjLow": 220.31,
+        "adjClose": 220.66,
+        "volume": 24757300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-15",
+        "adjOpen": 222.83,
+        "adjHigh": 223.57,
+        "adjLow": 220.75,
+        "adjClose": 223.35,
+        "volume": 31291300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-14",
+        "adjOpen": 220.44,
+        "adjHigh": 221.82,
+        "adjLow": 216.2,
+        "adjClose": 217.76,
+        "volume": 24711700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-13",
+        "adjOpen": 218.06,
+        "adjHigh": 219.4,
+        "adjLow": 216.47,
+        "adjClose": 218.46,
+        "volume": 27262700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-10",
+        "adjOpen": 221.46,
+        "adjHigh": 221.71,
+        "adjLow": 216.5,
+        "adjClose": 218.94,
+        "volume": 36811525
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-08",
+        "adjOpen": 223.19,
+        "adjHigh": 223.52,
+        "adjLow": 220.2,
+        "adjClose": 222.13,
+        "volume": 25033300
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-07",
+        "adjOpen": 227.9,
+        "adjHigh": 228.38,
+        "adjLow": 221.46,
+        "adjClose": 222.11,
+        "volume": 28084200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-06",
+        "adjOpen": 226.78,
+        "adjHigh": 228.84,
+        "adjLow": 224.84,
+        "adjClose": 227.61,
+        "volume": 31849831
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-03",
+        "adjOpen": 222.51,
+        "adjHigh": 225.36,
+        "adjLow": 221.62,
+        "adjClose": 224.19,
+        "volume": 27515606
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2025-01-02",
+        "adjOpen": 222.03,
+        "adjHigh": 225.15,
+        "adjLow": 218.19,
+        "adjClose": 220.22,
+        "volume": 33956600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-31",
+        "adjOpen": 222.97,
+        "adjHigh": 223.23,
+        "adjLow": 218.94,
+        "adjClose": 219.39,
+        "volume": 24819700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-30",
+        "adjOpen": 220.06,
+        "adjHigh": 223,
+        "adjLow": 218.43,
+        "adjClose": 221.3,
+        "volume": 28321240
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-27",
+        "adjOpen": 225.6,
+        "adjHigh": 226.03,
+        "adjLow": 220.9,
+        "adjClose": 223.75,
+        "volume": 27367147
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-26",
+        "adjOpen": 228.5,
+        "adjHigh": 228.5,
+        "adjLow": 226.67,
+        "adjClose": 227.05,
+        "volume": 16174500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-24",
+        "adjOpen": 226.94,
+        "adjHigh": 229.14,
+        "adjLow": 226.13,
+        "adjClose": 229.05,
+        "volume": 15007500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-23",
+        "adjOpen": 225.01,
+        "adjHigh": 226.88,
+        "adjLow": 223.9,
+        "adjClose": 225.06,
+        "volume": 28070007
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-20",
+        "adjOpen": 219.84,
+        "adjHigh": 226.21,
+        "adjLow": 218.73,
+        "adjClose": 224.92,
+        "volume": 88279200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-19",
+        "adjOpen": 224.91,
+        "adjHigh": 226.09,
+        "adjLow": 222.92,
+        "adjClose": 223.29,
+        "volume": 39918739
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-18",
+        "adjOpen": 230.77,
+        "adjHigh": 231.4,
+        "adjLow": 220.11,
+        "adjClose": 220.52,
+        "volume": 43281443
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-17",
+        "adjOpen": 232.39,
+        "adjHigh": 232.73,
+        "adjLow": 227.85,
+        "adjClose": 231.15,
+        "volume": 35948131
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-16",
+        "adjOpen": 230.23,
+        "adjHigh": 233,
+        "adjLow": 228.01,
+        "adjClose": 232.93,
+        "volume": 37552100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-13",
+        "adjOpen": 228.4,
+        "adjHigh": 230.2,
+        "adjLow": 225.86,
+        "adjClose": 227.46,
+        "volume": 28768100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-12",
+        "adjOpen": 229.83,
+        "adjHigh": 231.09,
+        "adjLow": 227.63,
+        "adjClose": 228.97,
+        "volume": 28204100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-11",
+        "adjOpen": 226.41,
+        "adjHigh": 231.2,
+        "adjLow": 226.26,
+        "adjClose": 230.26,
+        "volume": 35385800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-10",
+        "adjOpen": 226.09,
+        "adjHigh": 229.06,
+        "adjLow": 224.2,
+        "adjClose": 225.04,
+        "volume": 31199900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-09",
+        "adjOpen": 227.21,
+        "adjHigh": 230.08,
+        "adjLow": 225.67,
+        "adjClose": 226.09,
+        "volume": 46819400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-06",
+        "adjOpen": 220.75,
+        "adjHigh": 227.15,
+        "adjLow": 220.6,
+        "adjClose": 227.03,
+        "volume": 44178100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-05",
+        "adjOpen": 218.03,
+        "adjHigh": 222.15,
+        "adjLow": 217.3,
+        "adjClose": 220.55,
+        "volume": 41140220
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-04",
+        "adjOpen": 215.96,
+        "adjHigh": 220,
+        "adjLow": 215.75,
+        "adjClose": 218.16,
+        "volume": 48745716
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-03",
+        "adjOpen": 210.31,
+        "adjHigh": 214.02,
+        "adjLow": 209.65,
+        "adjClose": 213.44,
+        "volume": 32214828
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-12-02",
+        "adjOpen": 209.96,
+        "adjHigh": 212.99,
+        "adjLow": 209.51,
+        "adjClose": 210.71,
+        "volume": 39523200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-29",
+        "adjOpen": 205.83,
+        "adjHigh": 208.2,
+        "adjLow": 204.59,
+        "adjClose": 207.89,
+        "volume": 24892447
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-27",
+        "adjOpen": 206.98,
+        "adjHigh": 207.64,
+        "adjLow": 205.05,
+        "adjClose": 205.74,
+        "volume": 28061638
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-26",
+        "adjOpen": 201.9,
+        "adjHigh": 208,
+        "adjLow": 201.79,
+        "adjClose": 207.86,
+        "volume": 41673737
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-25",
+        "adjOpen": 199.28,
+        "adjHigh": 201.95,
+        "adjLow": 199,
+        "adjClose": 201.45,
+        "volume": 40685700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-22",
+        "adjOpen": 198.25,
+        "adjHigh": 199.26,
+        "adjLow": 196.75,
+        "adjClose": 197.12,
+        "volume": 31530844
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-21",
+        "adjOpen": 203.49,
+        "adjHigh": 203.49,
+        "adjLow": 195.75,
+        "adjClose": 198.38,
+        "volume": 58800042
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-20",
+        "adjOpen": 202.98,
+        "adjHigh": 203.13,
+        "adjLow": 199.45,
+        "adjClose": 202.88,
+        "volume": 32769000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-19",
+        "adjOpen": 199.33,
+        "adjHigh": 205.3,
+        "adjLow": 198.78,
+        "adjClose": 204.61,
+        "volume": 31197900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-18",
+        "adjOpen": 204.15,
+        "adjHigh": 204.67,
+        "adjLow": 200.95,
+        "adjClose": 201.7,
+        "volume": 36512500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-15",
+        "adjOpen": 206.76,
+        "adjHigh": 207.34,
+        "adjLow": 199.61,
+        "adjClose": 202.61,
+        "volume": 86591144
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-14",
+        "adjOpen": 214.16,
+        "adjHigh": 215.9,
+        "adjLow": 210.88,
+        "adjClose": 211.48,
+        "volume": 42620309
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-13",
+        "adjOpen": 209.4,
+        "adjHigh": 215.09,
+        "adjLow": 209.14,
+        "adjClose": 214.1,
+        "volume": 46212943
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-12",
+        "adjOpen": 208.37,
+        "adjHigh": 209.54,
+        "adjLow": 206.01,
+        "adjClose": 208.91,
+        "volume": 38942918
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-11",
+        "adjOpen": 208.5,
+        "adjHigh": 209.65,
+        "adjLow": 205.59,
+        "adjClose": 206.84,
+        "volume": 35456012
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-08",
+        "adjOpen": 209.72,
+        "adjHigh": 209.96,
+        "adjLow": 207.44,
+        "adjClose": 208.18,
+        "volume": 36075846
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-07",
+        "adjOpen": 207.44,
+        "adjHigh": 212.25,
+        "adjLow": 207.19,
+        "adjClose": 210.05,
+        "volume": 52878400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-06",
+        "adjOpen": 200.01,
+        "adjHigh": 207.55,
+        "adjLow": 199.14,
+        "adjClose": 207.09,
+        "volume": 72292200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-05",
+        "adjOpen": 196.04,
+        "adjHigh": 199.82,
+        "adjLow": 195.99,
+        "adjClose": 199.5,
+        "volume": 30564800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-04",
+        "adjOpen": 196.45,
+        "adjHigh": 197.33,
+        "adjLow": 194.31,
+        "adjClose": 195.78,
+        "volume": 38492100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-11-01",
+        "adjOpen": 199,
+        "adjHigh": 200.5,
+        "adjLow": 197.02,
+        "adjClose": 197.93,
+        "volume": 99687847
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-31",
+        "adjOpen": 190.51,
+        "adjHigh": 190.6,
+        "adjLow": 185.23,
+        "adjClose": 186.4,
+        "volume": 75146800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-30",
+        "adjOpen": 194.7,
+        "adjHigh": 195.61,
+        "adjLow": 192.42,
+        "adjClose": 192.73,
+        "volume": 37707600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-29",
+        "adjOpen": 188.58,
+        "adjHigh": 191.46,
+        "adjLow": 187.82,
+        "adjClose": 190.83,
+        "volume": 35690200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-28",
+        "adjOpen": 189.57,
+        "adjHigh": 190.21,
+        "adjLow": 188.21,
+        "adjClose": 188.39,
+        "volume": 27930836
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-25",
+        "adjOpen": 187.85,
+        "adjHigh": 190.45,
+        "adjLow": 187.53,
+        "adjClose": 187.83,
+        "volume": 29362100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-24",
+        "adjOpen": 185.25,
+        "adjHigh": 187.11,
+        "adjLow": 183.86,
+        "adjClose": 186.38,
+        "volume": 21647400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-23",
+        "adjOpen": 188.85,
+        "adjHigh": 189.16,
+        "adjLow": 183.69,
+        "adjClose": 184.71,
+        "volume": 31937100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-22",
+        "adjOpen": 188.35,
+        "adjHigh": 191.52,
+        "adjLow": 186.98,
+        "adjClose": 189.7,
+        "volume": 29650600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-21",
+        "adjOpen": 188.05,
+        "adjHigh": 189.46,
+        "adjLow": 186.4,
+        "adjClose": 189.07,
+        "volume": 24639400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-18",
+        "adjOpen": 187.15,
+        "adjHigh": 190.74,
+        "adjLow": 186.28,
+        "adjClose": 188.99,
+        "volume": 37417700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-17",
+        "adjOpen": 188.22,
+        "adjHigh": 188.94,
+        "adjLow": 186,
+        "adjClose": 187.53,
+        "volume": 25039414
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-16",
+        "adjOpen": 187.05,
+        "adjHigh": 187.78,
+        "adjLow": 185.61,
+        "adjClose": 186.89,
+        "volume": 23456812
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-15",
+        "adjOpen": 187.63,
+        "adjHigh": 188.41,
+        "adjLow": 184.58,
+        "adjClose": 187.69,
+        "volume": 32178925
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-14",
+        "adjOpen": 189.78,
+        "adjHigh": 189.83,
+        "adjLow": 187.36,
+        "adjClose": 187.54,
+        "volume": 22614407
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-11",
+        "adjOpen": 186.63,
+        "adjHigh": 189.93,
+        "adjLow": 186.3,
+        "adjClose": 188.82,
+        "volume": 25751600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-10",
+        "adjOpen": 187.13,
+        "adjHigh": 188.13,
+        "adjLow": 185.83,
+        "adjClose": 186.65,
+        "volume": 27785043
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-09",
+        "adjOpen": 182.82,
+        "adjHigh": 185.85,
+        "adjLow": 182.05,
+        "adjClose": 185.17,
+        "volume": 26343117
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-08",
+        "adjOpen": 181.92,
+        "adjHigh": 183.09,
+        "adjLow": 180.92,
+        "adjClose": 182.72,
+        "volume": 26372100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-07",
+        "adjOpen": 182.95,
+        "adjHigh": 183.6,
+        "adjLow": 180.25,
+        "adjClose": 180.8,
+        "volume": 42364201
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-04",
+        "adjOpen": 185.75,
+        "adjHigh": 187.6,
+        "adjLow": 183.6,
+        "adjClose": 186.51,
+        "volume": 41079011
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-03",
+        "adjOpen": 183.05,
+        "adjHigh": 183.44,
+        "adjLow": 180.88,
+        "adjClose": 181.96,
+        "volume": 30204302
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-02",
+        "adjOpen": 184.44,
+        "adjHigh": 186.6,
+        "adjLow": 184.04,
+        "adjClose": 184.76,
+        "volume": 23704100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-10-01",
+        "adjOpen": 184.9,
+        "adjHigh": 186.19,
+        "adjLow": 183.45,
+        "adjClose": 185.13,
+        "volume": 36044906
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-30",
+        "adjOpen": 187.14,
+        "adjHigh": 188.49,
+        "adjLow": 184.65,
+        "adjClose": 186.33,
+        "volume": 41680400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-27",
+        "adjOpen": 190.68,
+        "adjHigh": 190.9,
+        "adjLow": 187.34,
+        "adjClose": 187.97,
+        "volume": 36002316
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-26",
+        "adjOpen": 194.31,
+        "adjHigh": 194.53,
+        "adjLow": 189.54,
+        "adjClose": 191.16,
+        "volume": 36334900
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-25",
+        "adjOpen": 193.75,
+        "adjHigh": 193.95,
+        "adjLow": 192.16,
+        "adjClose": 192.53,
+        "volume": 26391144
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-24",
+        "adjOpen": 194.27,
+        "adjHigh": 195.37,
+        "adjLow": 190.13,
+        "adjClose": 193.96,
+        "volume": 43478926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-23",
+        "adjOpen": 191.64,
+        "adjHigh": 194.45,
+        "adjLow": 190.57,
+        "adjClose": 193.88,
+        "volume": 36993111
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-20",
+        "adjOpen": 190.23,
+        "adjHigh": 191.84,
+        "adjLow": 187.41,
+        "adjClose": 191.6,
+        "volume": 100378600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-19",
+        "adjOpen": 190.04,
+        "adjHigh": 190.99,
+        "adjLow": 188.47,
+        "adjClose": 189.87,
+        "volume": 39543200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-18",
+        "adjOpen": 186.45,
+        "adjHigh": 188.8,
+        "adjLow": 185.06,
+        "adjClose": 186.43,
+        "volume": 34448130
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-17",
+        "adjOpen": 186.85,
+        "adjHigh": 189.45,
+        "adjLow": 186.14,
+        "adjClose": 186.88,
+        "volume": 26091700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-16",
+        "adjOpen": 185.29,
+        "adjHigh": 185.81,
+        "adjLow": 183.36,
+        "adjClose": 184.89,
+        "volume": 26065500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-13",
+        "adjOpen": 187,
+        "adjHigh": 188.5,
+        "adjLow": 185.91,
+        "adjClose": 186.49,
+        "volume": 26495400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-12",
+        "adjOpen": 184.8,
+        "adjHigh": 187.41,
+        "adjLow": 183.54,
+        "adjClose": 187,
+        "volume": 33622500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-11",
+        "adjOpen": 180.1,
+        "adjHigh": 184.99,
+        "adjLow": 175.73,
+        "adjClose": 184.52,
+        "volume": 42564700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-10",
+        "adjOpen": 177.49,
+        "adjHigh": 180.5,
+        "adjLow": 176.79,
+        "adjClose": 179.55,
+        "volume": 36233800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-09",
+        "adjOpen": 174.53,
+        "adjHigh": 175.85,
+        "adjLow": 173.51,
+        "adjClose": 175.4,
+        "volume": 29037400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-06",
+        "adjOpen": 177.24,
+        "adjHigh": 178.38,
+        "adjLow": 171.16,
+        "adjClose": 171.39,
+        "volume": 41466537
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-05",
+        "adjOpen": 175,
+        "adjHigh": 179.88,
+        "adjLow": 175,
+        "adjClose": 177.89,
+        "volume": 40170526
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-04",
+        "adjOpen": 174.48,
+        "adjHigh": 175.98,
+        "adjLow": 172.54,
+        "adjClose": 173.33,
+        "volume": 30309225
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-09-03",
+        "adjOpen": 177.55,
+        "adjHigh": 178.26,
+        "adjLow": 175.26,
+        "adjClose": 176.25,
+        "volume": 37817511
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-30",
+        "adjOpen": 172.78,
+        "adjHigh": 178.9,
+        "adjLow": 172.6,
+        "adjClose": 178.5,
+        "volume": 43429400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-29",
+        "adjOpen": 173.22,
+        "adjHigh": 174.29,
+        "adjLow": 170.81,
+        "adjClose": 172.12,
+        "volume": 26407815
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-28",
+        "adjOpen": 173.69,
+        "adjHigh": 173.69,
+        "adjLow": 168.92,
+        "adjClose": 170.8,
+        "volume": 29045025
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-27",
+        "adjOpen": 174.15,
+        "adjHigh": 174.89,
+        "adjLow": 172.25,
+        "adjClose": 173.12,
+        "volume": 29842000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-26",
+        "adjOpen": 176.7,
+        "adjHigh": 177.47,
+        "adjLow": 174.3,
+        "adjClose": 175.5,
+        "volume": 22366236
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-23",
+        "adjOpen": 177.34,
+        "adjHigh": 178.97,
+        "adjLow": 175.24,
+        "adjClose": 177.04,
+        "volume": 29150100
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-22",
+        "adjOpen": 181.38,
+        "adjHigh": 181.47,
+        "adjLow": 175.68,
+        "adjClose": 176.13,
+        "volume": 32047500
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-21",
+        "adjOpen": 179.92,
+        "adjHigh": 182.39,
+        "adjLow": 178.89,
+        "adjClose": 180.11,
+        "volume": 35599120
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-20",
+        "adjOpen": 177.92,
+        "adjHigh": 179.01,
+        "adjLow": 177.43,
+        "adjClose": 178.88,
+        "volume": 26255204
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-19",
+        "adjOpen": 177.64,
+        "adjHigh": 178.3,
+        "adjLow": 176.16,
+        "adjClose": 178.22,
+        "volume": 31129807
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-16",
+        "adjOpen": 177.04,
+        "adjHigh": 178.34,
+        "adjLow": 176.26,
+        "adjClose": 177.06,
+        "volume": 31489200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-15",
+        "adjOpen": 174.86,
+        "adjHigh": 177.91,
+        "adjLow": 173.99,
+        "adjClose": 177.59,
+        "volume": 51698513
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-14",
+        "adjOpen": 172.11,
+        "adjHigh": 172.28,
+        "adjLow": 168.86,
+        "adjClose": 170.1,
+        "volume": 28843804
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-13",
+        "adjOpen": 167.81,
+        "adjHigh": 171.04,
+        "adjLow": 167.1,
+        "adjClose": 170.23,
+        "volume": 39237915
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-12",
+        "adjOpen": 168.14,
+        "adjHigh": 168.55,
+        "adjLow": 166.11,
+        "adjClose": 166.8,
+        "volume": 30072800
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-09",
+        "adjOpen": 166.4,
+        "adjHigh": 168.55,
+        "adjLow": 165.85,
+        "adjClose": 166.94,
+        "volume": 36401049
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-08",
+        "adjOpen": 165.17,
+        "adjHigh": 166.69,
+        "adjLow": 162.55,
+        "adjClose": 165.8,
+        "volume": 44616206
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-07",
+        "adjOpen": 166.55,
+        "adjHigh": 167.58,
+        "adjLow": 161.43,
+        "adjClose": 162.77,
+        "volume": 48408240
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-06",
+        "adjOpen": 161.71,
+        "adjHigh": 165.08,
+        "adjLow": 158.54,
+        "adjClose": 161.93,
+        "volume": 59950830
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-05",
+        "adjOpen": 154.21,
+        "adjHigh": 162.96,
+        "adjLow": 151.61,
+        "adjClose": 161.02,
+        "volume": 83149437
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-02",
+        "adjOpen": 166.75,
+        "adjHigh": 168.77,
+        "adjLow": 160.55,
+        "adjClose": 167.9,
+        "volume": 141448400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-08-01",
+        "adjOpen": 189.29,
+        "adjHigh": 190.6,
+        "adjLow": 181.87,
+        "adjClose": 184.07,
+        "volume": 70435635
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-31",
+        "adjOpen": 185.05,
+        "adjHigh": 187.94,
+        "adjLow": 184.46,
+        "adjClose": 186.98,
+        "volume": 41667326
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-30",
+        "adjOpen": 184.72,
+        "adjHigh": 185.86,
+        "adjLow": 179.38,
+        "adjClose": 181.71,
+        "volume": 39508600
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-29",
+        "adjOpen": 183.84,
+        "adjHigh": 184.75,
+        "adjLow": 182.38,
+        "adjClose": 183.2,
+        "volume": 33270123
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-26",
+        "adjOpen": 180.39,
+        "adjHigh": 183.19,
+        "adjLow": 180.24,
+        "adjClose": 182.5,
+        "volume": 29506000
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-25",
+        "adjOpen": 182.91,
+        "adjHigh": 183.9,
+        "adjLow": 176.8,
+        "adjClose": 179.85,
+        "volume": 44464200
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-24",
+        "adjOpen": 183.2,
+        "adjHigh": 185.45,
+        "adjLow": 180.41,
+        "adjClose": 180.83,
+        "volume": 41532400
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-23",
+        "adjOpen": 184.1,
+        "adjHigh": 189.39,
+        "adjLow": 183.56,
+        "adjClose": 186.41,
+        "volume": 47537700
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-22",
+        "adjOpen": 185,
+        "adjHigh": 185.06,
+        "adjLow": 182.48,
+        "adjClose": 182.55,
+        "volume": 39931923
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-19",
+        "adjOpen": 181.14,
+        "adjHigh": 184.93,
+        "adjLow": 180.11,
+        "adjClose": 183.13,
+        "volume": 43081829
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-18",
+        "adjOpen": 189.59,
+        "adjHigh": 189.68,
+        "adjLow": 181.45,
+        "adjClose": 183.75,
+        "volume": 51043626
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-17",
+        "adjOpen": 191.35,
+        "adjHigh": 191.58,
+        "adjLow": 185.99,
+        "adjClose": 187.93,
+        "volume": 48076139
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-16",
+        "adjOpen": 195.59,
+        "adjHigh": 196.62,
+        "adjLow": 192.24,
+        "adjClose": 193.02,
+        "volume": 33994714
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-15",
+        "adjOpen": 194.56,
+        "adjHigh": 196.19,
+        "adjLow": 190.83,
+        "adjClose": 192.72,
+        "volume": 40683227
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-12",
+        "adjOpen": 194.8,
+        "adjHigh": 196.47,
+        "adjLow": 193.83,
+        "adjClose": 194.49,
+        "volume": 30598525
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-11",
+        "adjOpen": 200.09,
+        "adjHigh": 200.27,
+        "adjLow": 192.86,
+        "adjClose": 195.05,
+        "volume": 44565041
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-10",
+        "adjOpen": 200,
+        "adjHigh": 200.11,
+        "adjLow": 197.69,
+        "adjClose": 199.79,
+        "volume": 32883753
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-09",
+        "adjOpen": 199.4,
+        "adjHigh": 200.57,
+        "adjLow": 199.05,
+        "adjClose": 199.34,
+        "volume": 32756736
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-08",
+        "adjOpen": 200.04,
+        "adjHigh": 201.2,
+        "adjLow": 197.96,
+        "adjClose": 199.29,
+        "volume": 34767261
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-05",
+        "adjOpen": 198.65,
+        "adjHigh": 200.55,
+        "adjLow": 198.17,
+        "adjClose": 200,
+        "volume": 39858885
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-03",
+        "adjOpen": 199.94,
+        "adjHigh": 200.03,
+        "adjLow": 196.76,
+        "adjClose": 197.59,
+        "volume": 31597926
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-02",
+        "adjOpen": 197.28,
+        "adjHigh": 200.43,
+        "adjLow": 195.93,
+        "adjClose": 200,
+        "volume": 45600013
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-07-01",
+        "adjOpen": 193.49,
+        "adjHigh": 198.3,
+        "adjLow": 192.82,
+        "adjClose": 197.2,
+        "volume": 41192011
+      },
+      {
+        "symbol": "AMZN",
+        "date": "2024-06-28",
+        "adjOpen": 197.73,
+        "adjHigh": 198.85,
+        "adjLow": 192.5,
+        "adjClose": 193.25,
+        "volume": 76930192
+      }
+    ],
+    "dividends": [],
+    "profile": [
+      {
+        "symbol": "AMZN",
+        "price": 232.69,
+        "marketCap": 2503069599000,
+        "beta": 1.444,
+        "lastDividend": 0,
+        "range": "196-278.56",
+        "change": 5.68,
+        "changePercentage": 2.50209,
+        "volume": 241155673,
+        "averageVolume": 46794554,
+        "companyName": "Amazon.com, Inc.",
+        "currency": "USD",
+        "cik": "0001018724",
+        "isin": "US0231351067",
+        "cusip": "023135106",
+        "exchangeFullName": "NASDAQ Global Select",
+        "exchange": "NASDAQ",
+        "industry": "Specialty Retail",
+        "website": "http://www.aboutamazon.com",
+        "description": "Amazon.com, Inc. operates a vast global retail enterprise, distributing consumer goods and subscription services through both its extensive online platforms and a network of physical stores across North America and internationally. Its operations are structured into three primary segments: North America, International, and Amazon Web Services (AWS). The company's product offerings encompass both merchandise and content procured for direct resale, alongside items sold by third-party merchants on its platform. Furthermore, the company develops and markets its own range of electronic devices, such as Kindle e-readers, Fire tablets and TVs, Ring, Blink, eero, and Echo products. It also invests in the development and production of original media content. Amazon provides various programs designed to enable independent sellers to offer their products, and empowers authors, musicians, filmmakers, Twitch streamers, and app developers to publish and commercialize their content. Beyond this, it delivers a comprehensive suite of cloud computing solutions, including compute, storage, database, analytics, and machine learning services through AWS. The company also offers fulfillment services, advertising solutions, and digital content subscriptions. A key offering is Amazon Prime, its exclusive membership program. Amazon caters to a wide array of clientele, including individual consumers, third-party sellers, software developers, enterprise clients, content creators, and advertisers. Incorporated in 1994, Amazon.com, Inc. maintains its headquarters in Seattle, Washington.",
+        "ceo": "Andrew R. Jassy",
+        "sector": "Consumer Cyclical",
+        "country": "US",
+        "fullTimeEmployees": "1560000",
+        "phone": "206 266 1000",
+        "address": "410 Terry Avenue North",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98109-5210",
+        "image": "https://images.financialmodelingprep.com/symbol/AMZN.png",
+        "ipoDate": "1997-05-15",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "AMZN",
+        "date": "2026-06-26 09:14:55",
+        "freeFloat": 90.91407975197777,
+        "floatShares": 9779718473,
+        "outstandingShares": 10757100000,
+        "source": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000014/amzn-20260331.htm"
+      }
+    ]
+  },
+  "errors": {},
+  "warnings": {
+    "balance_sheet_limit": "8-quarter request unavailable under this subscription; fetched limit=5 for field inspection"
+  },
+  "latest_balance_sheet_critical_field_presence": {
+    "date": true,
+    "reportedDate": false,
+    "totalAssets": true,
+    "totalLiabilities": true,
+    "currentLiabilities": false,
+    "shortTermDebt": true,
+    "longTermDebt": true,
+    "totalDebt": true,
+    "cashAndCashEquivalents": true,
+    "totalStockholdersEquity": true,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": "adjClose",
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

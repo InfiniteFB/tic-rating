@@ -1,0 +1,123 @@
+{
+  "ticker": "ORCL",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "ORCL",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "ORCL",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "ORCL",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "ORCL"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "ORCL"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [],
+    "prices": [],
+    "dividends": [],
+    "profile": [
+      {
+        "symbol": "ORCL",
+        "price": 148.68,
+        "marketCap": 428268279600,
+        "beta": 1.655,
+        "lastDividend": 2,
+        "range": "134.57-345.72",
+        "change": -3.78,
+        "changePercentage": -2.47934,
+        "volume": 16964,
+        "averageVolume": 29585368,
+        "companyName": "Oracle Corporation",
+        "currency": "USD",
+        "cik": "0001341439",
+        "isin": "US68389X1054",
+        "cusip": "68389X105",
+        "exchangeFullName": "New York Stock Exchange",
+        "exchange": "NYSE",
+        "industry": "Software - Infrastructure",
+        "website": "https://www.oracle.com",
+        "description": "Oracle Corporation, a global technology giant, provides a comprehensive suite of enterprise information technology solutions worldwide. A core part of its portfolio comprises cloud-based software-as-a-service (SaaS) applications, including the Oracle Fusion Cloud suite covering enterprise resource planning (ERP), enterprise performance management (EPM), supply chain and manufacturing management (SCM), and human capital management (HCM). This also extends to specialized offerings like Oracle Advertising, the NetSuite application suite, and Oracle Fusion solutions for Sales, Service, and Marketing. Beyond these, Oracle develops cloud solutions tailored for various specific industries, alongside traditional application licenses and comprehensive license support services. Furthermore, the company's robust cloud and licensing business is underpinned by its infrastructure technologies. These include the flagship Oracle Database, the widely adopted Java programming language, and various middleware components such as development tools. Its advanced cloud infrastructure provides compute, storage, and networking capabilities, complemented by innovative services like the Oracle Autonomous Database, MySQL HeatWave, Internet-of-Things (IoT) platforms, digital assistants, and blockchain technology. Oracle also offers a range of hardware products and associated software. This encompasses Oracle engineered systems, enterprise servers, storage solutions, and specialized hardware for particular industries. Additionally, it provides virtualization software, operating systems, management software, and related hardware support. Complementing its product lines, Oracle delivers expert consulting and dedicated customer services. The company employs a direct sales model, reaching businesses across diverse sectors, government bodies, and educational institutions globally, while also leveraging an extensive network of indirect channels. Established in 1977, Oracle Corporation maintains its corporate headquarters in Austin, Texas.",
+        "ceo": "Michael D. Sicilia",
+        "sector": "Technology",
+        "country": "US",
+        "fullTimeEmployees": "159000",
+        "phone": "737 867 1000",
+        "address": "2300 Oracle Way",
+        "city": "Austin",
+        "state": "TX",
+        "zip": "78741",
+        "image": "https://images.financialmodelingprep.com/symbol/ORCL.png",
+        "ipoDate": "1986-03-12",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "ORCL",
+        "date": "2026-06-26 11:37:15",
+        "freeFloat": 59.48302065287957,
+        "floatShares": 1713390565,
+        "outstandingShares": 2880470000,
+        "source": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/orcl-20260531.htm"
+      }
+    ]
+  },
+  "errors": {
+    "balance_sheet": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "prices": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "dividends": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "warnings": {},
+  "latest_balance_sheet_critical_field_presence": {
+    "date": false,
+    "reportedDate": false,
+    "totalAssets": false,
+    "totalLiabilities": false,
+    "currentLiabilities": false,
+    "shortTermDebt": false,
+    "longTermDebt": false,
+    "totalDebt": false,
+    "cashAndCashEquivalents": false,
+    "totalStockholdersEquity": false,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": null,
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

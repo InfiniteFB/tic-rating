@@ -1,0 +1,6809 @@
+{
+  "ticker": "T",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "T",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "T",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "T",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "T"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "T"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [
+      {
+        "date": "2026-03-31",
+        "symbol": "T",
+        "reportedCurrency": "USD",
+        "cik": "0000732717",
+        "filingDate": "2026-04-27",
+        "acceptedDate": "2026-04-27 16:17:53",
+        "fiscalYear": "2026",
+        "period": "Q1",
+        "cashAndCashEquivalents": 11964000000,
+        "shortTermInvestments": 0,
+        "cashAndShortTermInvestments": 11964000000,
+        "netReceivables": 8335000000,
+        "accountsReceivables": 8335000000,
+        "otherReceivables": 0,
+        "inventory": 2451000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 23532000000,
+        "totalCurrentAssets": 46282000000,
+        "propertyPlantEquipmentNet": 155880000000,
+        "goodwill": 63838000000,
+        "intangibleAssets": 6135000000,
+        "goodwillAndIntangibleAssets": 69973000000,
+        "longTermInvestments": 1108000000,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 147945000000,
+        "totalNonCurrentAssets": 374906000000,
+        "otherAssets": 0,
+        "totalAssets": 421188000000,
+        "totalPayables": 37304000000,
+        "accountPayables": 37304000000,
+        "otherPayables": 0,
+        "accruedExpenses": 0,
+        "shortTermDebt": 6818000000,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 4330000000,
+        "otherCurrentLiabilities": 1969000000,
+        "totalCurrentLiabilities": 50421000000,
+        "longTermDebt": 138400000000,
+        "capitalLeaseObligationsNonCurrent": 18907000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 59113000000,
+        "otherNonCurrentLiabilities": 26725000000,
+        "totalNonCurrentLiabilities": 243145000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 18907000000,
+        "totalLiabilities": 293566000000,
+        "treasuryStock": -20273000000,
+        "preferredStock": 0,
+        "commonStock": 7621000000,
+        "retainedEarnings": 17620000000,
+        "additionalPaidInCapital": 106084000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -1392000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 109660000000,
+        "totalEquity": 127622000000,
+        "minorityInterest": 17962000000,
+        "totalLiabilitiesAndTotalEquity": 421188000000,
+        "totalInvestments": 1108000000,
+        "totalDebt": 164125000000,
+        "netDebt": 152161000000
+      },
+      {
+        "date": "2025-12-31",
+        "symbol": "T",
+        "reportedCurrency": "USD",
+        "cik": "0000732717",
+        "filingDate": "2026-02-09",
+        "acceptedDate": "2026-02-09 17:22:16",
+        "fiscalYear": "2025",
+        "period": "Q4",
+        "cashAndCashEquivalents": 18234000000,
+        "shortTermInvestments": 0,
+        "cashAndShortTermInvestments": 18234000000,
+        "netReceivables": 8843000000,
+        "accountsReceivables": 8843000000,
+        "otherReceivables": 0,
+        "inventory": 2420000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 19235000000,
+        "totalCurrentAssets": 48732000000,
+        "propertyPlantEquipmentNet": 154201000000,
+        "goodwill": 63425000000,
+        "intangibleAssets": 5254000000,
+        "goodwillAndIntangibleAssets": 68679000000,
+        "longTermInvestments": 1106000000,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 147480000000,
+        "totalNonCurrentAssets": 371466000000,
+        "otherAssets": 0,
+        "totalAssets": 420198000000,
+        "totalPayables": 38514000000,
+        "accountPayables": 38514000000,
+        "otherPayables": 0,
+        "accruedExpenses": 0,
+        "shortTermDebt": 9011000000,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 4266000000,
+        "otherCurrentLiabilities": 1989000000,
+        "totalCurrentLiabilities": 53780000000,
+        "longTermDebt": 146032000000,
+        "capitalLeaseObligationsNonCurrent": 18943000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 58312000000,
+        "otherNonCurrentLiabilities": 14639000000,
+        "totalNonCurrentLiabilities": 237926000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 18943000000,
+        "totalLiabilities": 291706000000,
+        "treasuryStock": -18529000000,
+        "preferredStock": 0,
+        "commonStock": 7621000000,
+        "retainedEarnings": 15768000000,
+        "additionalPaidInCapital": 106533000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -860000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 110533000000,
+        "totalEquity": 128492000000,
+        "minorityInterest": 17959000000,
+        "totalLiabilitiesAndTotalEquity": 420198000000,
+        "totalInvestments": 1106000000,
+        "totalDebt": 173986000000,
+        "netDebt": 155752000000
+      },
+      {
+        "date": "2025-09-30",
+        "symbol": "T",
+        "reportedCurrency": "USD",
+        "cik": "0000732717",
+        "filingDate": "2025-10-31",
+        "acceptedDate": "2025-10-31 16:12:29",
+        "fiscalYear": "2025",
+        "period": "Q3",
+        "cashAndCashEquivalents": 20272000000,
+        "shortTermInvestments": 0,
+        "cashAndShortTermInvestments": 20272000000,
+        "netReceivables": 8936000000,
+        "accountsReceivables": 8936000000,
+        "otherReceivables": 0,
+        "inventory": 2886000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 22485000000,
+        "totalCurrentAssets": 54579000000,
+        "propertyPlantEquipmentNet": 152576000000,
+        "goodwill": 63425000000,
+        "intangibleAssets": 5254000000,
+        "goodwillAndIntangibleAssets": 68679000000,
+        "longTermInvestments": 1056000000,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 146323000000,
+        "totalNonCurrentAssets": 368634000000,
+        "otherAssets": 0,
+        "totalAssets": 423213000000,
+        "totalPayables": 38601000000,
+        "accountPayables": 36592000000,
+        "otherPayables": 2009000000,
+        "accruedExpenses": 0,
+        "shortTermDebt": 11378000000,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 3897000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 53876000000,
+        "longTermDebt": 128090000000,
+        "capitalLeaseObligationsNonCurrent": 19025000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 59304000000,
+        "otherNonCurrentLiabilities": 34179000000,
+        "totalNonCurrentLiabilities": 240598000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 19025000000,
+        "totalLiabilities": 294474000000,
+        "treasuryStock": -16700000000,
+        "preferredStock": 0,
+        "commonStock": 7621000000,
+        "retainedEarnings": 13974000000,
+        "additionalPaidInCapital": 106461000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -648000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 110708000000,
+        "totalEquity": 128739000000,
+        "minorityInterest": 18031000000,
+        "totalLiabilitiesAndTotalEquity": 423213000000,
+        "totalInvestments": 1056000000,
+        "totalDebt": 158493000000,
+        "netDebt": 138221000000
+      },
+      {
+        "date": "2025-06-30",
+        "symbol": "T",
+        "reportedCurrency": "USD",
+        "cik": "0000732717",
+        "filingDate": "2025-07-24",
+        "acceptedDate": "2025-07-24 16:41:26",
+        "fiscalYear": "2025",
+        "period": "Q2",
+        "cashAndCashEquivalents": 10499000000,
+        "shortTermInvestments": 0,
+        "cashAndShortTermInvestments": 10499000000,
+        "netReceivables": 8844000000,
+        "accountsReceivables": 8844000000,
+        "otherReceivables": 0,
+        "inventory": 2357000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 17606000000,
+        "totalCurrentAssets": 39306000000,
+        "propertyPlantEquipmentNet": 150588000000,
+        "goodwill": 63432000000,
+        "intangibleAssets": 132798000000,
+        "goodwillAndIntangibleAssets": 196230000000,
+        "longTermInvestments": 1011000000,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 18356000000,
+        "totalNonCurrentAssets": 366185000000,
+        "otherAssets": 0,
+        "totalAssets": 405491000000,
+        "totalPayables": 35312000000,
+        "accountPayables": 33289000000,
+        "otherPayables": 2023000000,
+        "accruedExpenses": 0,
+        "shortTermDebt": 9254000000,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 3999000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 48565000000,
+        "longTermDebt": 123057000000,
+        "capitalLeaseObligationsNonCurrent": 17762000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 59786000000,
+        "otherNonCurrentLiabilities": 32944000000,
+        "totalNonCurrentLiabilities": 233549000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 17762000000,
+        "totalLiabilities": 282114000000,
+        "treasuryStock": -15210000000,
+        "preferredStock": 0,
+        "commonStock": 7621000000,
+        "retainedEarnings": 6680000000,
+        "additionalPaidInCapital": 106381000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -200000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 105272000000,
+        "totalEquity": 123377000000,
+        "minorityInterest": 18105000000,
+        "totalLiabilitiesAndTotalEquity": 405491000000,
+        "totalInvestments": 1011000000,
+        "totalDebt": 150073000000,
+        "netDebt": 139574000000
+      },
+      {
+        "date": "2025-03-31",
+        "symbol": "T",
+        "reportedCurrency": "USD",
+        "cik": "0000732717",
+        "filingDate": "2025-04-29",
+        "acceptedDate": "2025-04-29 17:04:50",
+        "fiscalYear": "2025",
+        "period": "Q1",
+        "cashAndCashEquivalents": 6885000000,
+        "shortTermInvestments": 0,
+        "cashAndShortTermInvestments": 6885000000,
+        "netReceivables": 9228000000,
+        "accountsReceivables": 9228000000,
+        "otherReceivables": 0,
+        "inventory": 2593000000,
+        "prepaids": 0,
+        "otherCurrentAssets": 15074000000,
+        "totalCurrentAssets": 33780000000,
+        "propertyPlantEquipmentNet": 149459000000,
+        "goodwill": 63432000000,
+        "intangibleAssets": 132599000000,
+        "goodwillAndIntangibleAssets": 196031000000,
+        "longTermInvestments": 942000000,
+        "taxAssets": 0,
+        "otherNonCurrentAssets": 17255000000,
+        "totalNonCurrentAssets": 363687000000,
+        "otherAssets": 0,
+        "totalAssets": 397467000000,
+        "totalPayables": 35146000000,
+        "accountPayables": 33113000000,
+        "otherPayables": 2033000000,
+        "accruedExpenses": 0,
+        "shortTermDebt": 8902000000,
+        "capitalLeaseObligationsCurrent": 0,
+        "taxPayables": 0,
+        "deferredRevenue": 3951000000,
+        "otherCurrentLiabilities": 0,
+        "totalCurrentLiabilities": 47999000000,
+        "longTermDebt": 117259000000,
+        "capitalLeaseObligationsNonCurrent": 17433000000,
+        "deferredRevenueNonCurrent": 0,
+        "deferredTaxLiabilitiesNonCurrent": 59144000000,
+        "otherNonCurrentLiabilities": 33793000000,
+        "totalNonCurrentLiabilities": 227629000000,
+        "otherLiabilities": 0,
+        "capitalLeaseObligations": 17433000000,
+        "totalLiabilities": 275628000000,
+        "treasuryStock": -14252000000,
+        "preferredStock": 0,
+        "commonStock": 7621000000,
+        "retainedEarnings": 4215000000,
+        "additionalPaidInCapital": 106302000000,
+        "accumulatedOtherComprehensiveIncomeLoss": -142000000,
+        "otherTotalStockholdersEquity": 0,
+        "totalStockholdersEquity": 103744000000,
+        "totalEquity": 121839000000,
+        "minorityInterest": 18095000000,
+        "totalLiabilitiesAndTotalEquity": 397467000000,
+        "totalInvestments": 942000000,
+        "totalDebt": 143594000000,
+        "netDebt": 136709000000
+      }
+    ],
+    "prices": [
+      {
+        "symbol": "T",
+        "date": "2026-06-26",
+        "adjOpen": 22.47,
+        "adjHigh": 22.72,
+        "adjLow": 22.32,
+        "adjClose": 22.72,
+        "volume": 84354036
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-25",
+        "adjOpen": 22.25,
+        "adjHigh": 22.63,
+        "adjLow": 22.23,
+        "adjClose": 22.42,
+        "volume": 43268405
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-24",
+        "adjOpen": 22.84,
+        "adjHigh": 22.94,
+        "adjLow": 22.31,
+        "adjClose": 22.37,
+        "volume": 57297300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-23",
+        "adjOpen": 22.31,
+        "adjHigh": 22.98,
+        "adjLow": 22.19,
+        "adjClose": 22.81,
+        "volume": 73551936
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-22",
+        "adjOpen": 22.03,
+        "adjHigh": 22.47,
+        "adjLow": 22.01,
+        "adjClose": 22.1,
+        "volume": 68522334
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-18",
+        "adjOpen": 22.46,
+        "adjHigh": 22.52,
+        "adjLow": 21.99,
+        "adjClose": 22.01,
+        "volume": 94242931
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-17",
+        "adjOpen": 22.83,
+        "adjHigh": 22.88,
+        "adjLow": 22.25,
+        "adjClose": 22.44,
+        "volume": 56538300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-16",
+        "adjOpen": 23.32,
+        "adjHigh": 23.42,
+        "adjLow": 22.84,
+        "adjClose": 23.16,
+        "volume": 47609303
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-15",
+        "adjOpen": 23.35,
+        "adjHigh": 23.51,
+        "adjLow": 23.17,
+        "adjClose": 23.29,
+        "volume": 48293300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-12",
+        "adjOpen": 23.1,
+        "adjHigh": 23.61,
+        "adjLow": 23.07,
+        "adjClose": 23.58,
+        "volume": 38879400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-11",
+        "adjOpen": 23.16,
+        "adjHigh": 23.37,
+        "adjLow": 22.99,
+        "adjClose": 23,
+        "volume": 38147600
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-10",
+        "adjOpen": 22.88,
+        "adjHigh": 23.26,
+        "adjLow": 22.75,
+        "adjClose": 23.21,
+        "volume": 50622444
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-09",
+        "adjOpen": 22.51,
+        "adjHigh": 22.96,
+        "adjLow": 22.32,
+        "adjClose": 22.71,
+        "volume": 52561000
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-08",
+        "adjOpen": 22.66,
+        "adjHigh": 22.83,
+        "adjLow": 22.41,
+        "adjClose": 22.5,
+        "volume": 41973546
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-05",
+        "adjOpen": 22.9,
+        "adjHigh": 23.04,
+        "adjLow": 22.59,
+        "adjClose": 22.75,
+        "volume": 60825936
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-04",
+        "adjOpen": 23.88,
+        "adjHigh": 24.01,
+        "adjLow": 22.33,
+        "adjClose": 22.77,
+        "volume": 82536320
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-03",
+        "adjOpen": 24.19,
+        "adjHigh": 24.2,
+        "adjLow": 23.45,
+        "adjClose": 23.55,
+        "volume": 51911800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-02",
+        "adjOpen": 24.64,
+        "adjHigh": 24.71,
+        "adjLow": 24.25,
+        "adjClose": 24.64,
+        "volume": 42080311
+      },
+      {
+        "symbol": "T",
+        "date": "2026-06-01",
+        "adjOpen": 24.75,
+        "adjHigh": 24.9,
+        "adjLow": 24.49,
+        "adjClose": 24.55,
+        "volume": 29675700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-29",
+        "adjOpen": 24.86,
+        "adjHigh": 24.87,
+        "adjLow": 24.56,
+        "adjClose": 24.8,
+        "volume": 88295109
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-28",
+        "adjOpen": 24.96,
+        "adjHigh": 25.14,
+        "adjLow": 24.73,
+        "adjClose": 24.88,
+        "volume": 25343800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-27",
+        "adjOpen": 24.93,
+        "adjHigh": 25.35,
+        "adjLow": 24.88,
+        "adjClose": 24.89,
+        "volume": 35908455
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-26",
+        "adjOpen": 25.14,
+        "adjHigh": 25.34,
+        "adjLow": 24.86,
+        "adjClose": 25.02,
+        "volume": 32461200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-22",
+        "adjOpen": 25.34,
+        "adjHigh": 25.43,
+        "adjLow": 25.19,
+        "adjClose": 25.26,
+        "volume": 25280871
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-21",
+        "adjOpen": 24.86,
+        "adjHigh": 25.39,
+        "adjLow": 24.81,
+        "adjClose": 25.34,
+        "volume": 35792600
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-20",
+        "adjOpen": 24.94,
+        "adjHigh": 25.28,
+        "adjLow": 24.79,
+        "adjClose": 24.93,
+        "volume": 40363800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-19",
+        "adjOpen": 24.59,
+        "adjHigh": 24.99,
+        "adjLow": 24.42,
+        "adjClose": 24.98,
+        "volume": 39383430
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-18",
+        "adjOpen": 24.09,
+        "adjHigh": 24.58,
+        "adjLow": 23.85,
+        "adjClose": 24.43,
+        "volume": 38981000
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-15",
+        "adjOpen": 24.86,
+        "adjHigh": 24.93,
+        "adjLow": 24.03,
+        "adjClose": 24.03,
+        "volume": 44236211
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-14",
+        "adjOpen": 24.84,
+        "adjHigh": 24.98,
+        "adjLow": 24.65,
+        "adjClose": 24.65,
+        "volume": 32683633
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-13",
+        "adjOpen": 25.23,
+        "adjHigh": 25.55,
+        "adjLow": 24.72,
+        "adjClose": 24.74,
+        "volume": 34609700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-12",
+        "adjOpen": 25.02,
+        "adjHigh": 25.44,
+        "adjLow": 24.86,
+        "adjClose": 25.23,
+        "volume": 33454624
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-11",
+        "adjOpen": 25.23,
+        "adjHigh": 25.34,
+        "adjLow": 24.66,
+        "adjClose": 24.87,
+        "volume": 37447605
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-08",
+        "adjOpen": 25.23,
+        "adjHigh": 25.4,
+        "adjLow": 25.12,
+        "adjClose": 25.16,
+        "volume": 36012900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-07",
+        "adjOpen": 25.39,
+        "adjHigh": 25.49,
+        "adjLow": 25.12,
+        "adjClose": 25.26,
+        "volume": 42986644
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-06",
+        "adjOpen": 25.79,
+        "adjHigh": 26.01,
+        "adjLow": 25.48,
+        "adjClose": 25.57,
+        "volume": 34338911
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-05",
+        "adjOpen": 26.05,
+        "adjHigh": 26.13,
+        "adjLow": 25.85,
+        "adjClose": 25.9,
+        "volume": 24482400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-04",
+        "adjOpen": 25.93,
+        "adjHigh": 26.14,
+        "adjLow": 25.82,
+        "adjClose": 26.1,
+        "volume": 23439526
+      },
+      {
+        "symbol": "T",
+        "date": "2026-05-01",
+        "adjOpen": 26.31,
+        "adjHigh": 26.46,
+        "adjLow": 26.07,
+        "adjClose": 26.12,
+        "volume": 31493700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-30",
+        "adjOpen": 25.82,
+        "adjHigh": 26.47,
+        "adjLow": 25.78,
+        "adjClose": 26.13,
+        "volume": 44640620
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-29",
+        "adjOpen": 25.97,
+        "adjHigh": 26.16,
+        "adjLow": 25.64,
+        "adjClose": 25.75,
+        "volume": 22790624
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-28",
+        "adjOpen": 25.94,
+        "adjHigh": 26.31,
+        "adjLow": 25.88,
+        "adjClose": 26.06,
+        "volume": 30377623
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-27",
+        "adjOpen": 26.33,
+        "adjHigh": 26.44,
+        "adjLow": 25.46,
+        "adjClose": 25.52,
+        "volume": 32633700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-24",
+        "adjOpen": 26.43,
+        "adjHigh": 26.58,
+        "adjLow": 26.03,
+        "adjClose": 26.2,
+        "volume": 30600900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-23",
+        "adjOpen": 26.12,
+        "adjHigh": 26.76,
+        "adjLow": 26.02,
+        "adjClose": 26.61,
+        "volume": 47337931
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-22",
+        "adjOpen": 25.15,
+        "adjHigh": 26.05,
+        "adjLow": 24.96,
+        "adjClose": 25.98,
+        "volume": 59711921
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-21",
+        "adjOpen": 26.2,
+        "adjHigh": 26.44,
+        "adjLow": 25.88,
+        "adjClose": 25.88,
+        "volume": 44489400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-20",
+        "adjOpen": 26.52,
+        "adjHigh": 26.68,
+        "adjLow": 26.17,
+        "adjClose": 26.18,
+        "volume": 30509448
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-17",
+        "adjOpen": 26.15,
+        "adjHigh": 26.61,
+        "adjLow": 26.04,
+        "adjClose": 26.51,
+        "volume": 35023815
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-16",
+        "adjOpen": 25.52,
+        "adjHigh": 26.43,
+        "adjLow": 25.46,
+        "adjClose": 26.4,
+        "volume": 34901900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-15",
+        "adjOpen": 25.68,
+        "adjHigh": 25.78,
+        "adjLow": 25.42,
+        "adjClose": 25.46,
+        "volume": 33847639
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-14",
+        "adjOpen": 25.2,
+        "adjHigh": 25.71,
+        "adjLow": 24.94,
+        "adjClose": 25.62,
+        "volume": 42173911
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-13",
+        "adjOpen": 26.37,
+        "adjHigh": 26.39,
+        "adjLow": 25.4,
+        "adjClose": 25.61,
+        "volume": 46751800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-10",
+        "adjOpen": 26.52,
+        "adjHigh": 26.7,
+        "adjLow": 26.29,
+        "adjClose": 26.46,
+        "volume": 31990438
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-09",
+        "adjOpen": 26.95,
+        "adjHigh": 27.12,
+        "adjLow": 26.48,
+        "adjClose": 26.56,
+        "volume": 41439826
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-08",
+        "adjOpen": 26.95,
+        "adjHigh": 27.22,
+        "adjLow": 26.63,
+        "adjClose": 27.07,
+        "volume": 47841600
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-07",
+        "adjOpen": 28,
+        "adjHigh": 28.2,
+        "adjLow": 27.63,
+        "adjClose": 27.75,
+        "volume": 27653000
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-06",
+        "adjOpen": 27.98,
+        "adjHigh": 28.23,
+        "adjLow": 27.86,
+        "adjClose": 28.03,
+        "volume": 29396200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-02",
+        "adjOpen": 28.1,
+        "adjHigh": 28.34,
+        "adjLow": 27.7,
+        "adjClose": 28.04,
+        "volume": 34996200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-01",
+        "adjOpen": 28.65,
+        "adjHigh": 28.67,
+        "adjLow": 27.77,
+        "adjClose": 28.02,
+        "volume": 43112549
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-31",
+        "adjOpen": 28.63,
+        "adjHigh": 28.69,
+        "adjLow": 28.23,
+        "adjClose": 28.69,
+        "volume": 48632309
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-30",
+        "adjOpen": 28.91,
+        "adjHigh": 29.06,
+        "adjLow": 28.42,
+        "adjClose": 28.48,
+        "volume": 35293900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-27",
+        "adjOpen": 28.7,
+        "adjHigh": 29.07,
+        "adjLow": 28.52,
+        "adjClose": 28.8,
+        "volume": 38162808
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-26",
+        "adjOpen": 28.77,
+        "adjHigh": 28.91,
+        "adjLow": 28.52,
+        "adjClose": 28.62,
+        "volume": 29904528
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-25",
+        "adjOpen": 28.68,
+        "adjHigh": 28.84,
+        "adjLow": 28.41,
+        "adjClose": 28.51,
+        "volume": 36571100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-24",
+        "adjOpen": 28.5,
+        "adjHigh": 29.13,
+        "adjLow": 28.36,
+        "adjClose": 28.57,
+        "volume": 41047227
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-23",
+        "adjOpen": 27.99,
+        "adjHigh": 28.61,
+        "adjLow": 27.58,
+        "adjClose": 28.46,
+        "volume": 46656343
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-20",
+        "adjOpen": 27.55,
+        "adjHigh": 28.34,
+        "adjLow": 27.55,
+        "adjClose": 28.02,
+        "volume": 128734200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-19",
+        "adjOpen": 27.29,
+        "adjHigh": 27.66,
+        "adjLow": 26.94,
+        "adjClose": 27.45,
+        "volume": 58624200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-18",
+        "adjOpen": 27.43,
+        "adjHigh": 27.51,
+        "adjLow": 27.11,
+        "adjClose": 27.13,
+        "volume": 34898700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-17",
+        "adjOpen": 27.6,
+        "adjHigh": 27.73,
+        "adjLow": 27.37,
+        "adjClose": 27.56,
+        "volume": 33904300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-16",
+        "adjOpen": 27.44,
+        "adjHigh": 27.53,
+        "adjLow": 27.18,
+        "adjClose": 27.44,
+        "volume": 31792800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-13",
+        "adjOpen": 27.21,
+        "adjHigh": 27.56,
+        "adjLow": 27.15,
+        "adjClose": 27.43,
+        "volume": 28076849
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-12",
+        "adjOpen": 26.77,
+        "adjHigh": 27.11,
+        "adjLow": 26.46,
+        "adjClose": 27.11,
+        "volume": 32636117
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-11",
+        "adjOpen": 27.38,
+        "adjHigh": 27.44,
+        "adjLow": 26.59,
+        "adjClose": 26.88,
+        "volume": 46925600
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-10",
+        "adjOpen": 27.36,
+        "adjHigh": 27.65,
+        "adjLow": 27.16,
+        "adjClose": 27.42,
+        "volume": 37596500
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-09",
+        "adjOpen": 27.83,
+        "adjHigh": 28.06,
+        "adjLow": 27.1,
+        "adjClose": 27.24,
+        "volume": 52145000
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-06",
+        "adjOpen": 28.63,
+        "adjHigh": 28.65,
+        "adjLow": 28.03,
+        "adjClose": 28.34,
+        "volume": 37909900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-05",
+        "adjOpen": 28.64,
+        "adjHigh": 28.76,
+        "adjLow": 28.42,
+        "adjClose": 28.67,
+        "volume": 46498100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-04",
+        "adjOpen": 28.18,
+        "adjHigh": 28.77,
+        "adjLow": 27.93,
+        "adjClose": 28.68,
+        "volume": 42409310
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-03",
+        "adjOpen": 27.5,
+        "adjHigh": 28.45,
+        "adjLow": 27.47,
+        "adjClose": 28.37,
+        "volume": 45891200
+      },
+      {
+        "symbol": "T",
+        "date": "2026-03-02",
+        "adjOpen": 27.62,
+        "adjHigh": 27.96,
+        "adjLow": 27.58,
+        "adjClose": 27.72,
+        "volume": 39270908
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-27",
+        "adjOpen": 27.32,
+        "adjHigh": 27.72,
+        "adjLow": 27.23,
+        "adjClose": 27.72,
+        "volume": 54509332
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-26",
+        "adjOpen": 27.68,
+        "adjHigh": 27.75,
+        "adjLow": 27.12,
+        "adjClose": 27.17,
+        "volume": 33856844
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-25",
+        "adjOpen": 27.74,
+        "adjHigh": 28,
+        "adjLow": 27.41,
+        "adjClose": 27.58,
+        "volume": 45550700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-24",
+        "adjOpen": 28.22,
+        "adjHigh": 28.5,
+        "adjLow": 27.89,
+        "adjClose": 28.05,
+        "volume": 34541700
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-23",
+        "adjOpen": 27.75,
+        "adjHigh": 28.53,
+        "adjLow": 27.74,
+        "adjClose": 28.22,
+        "volume": 41169300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-20",
+        "adjOpen": 27.66,
+        "adjHigh": 27.77,
+        "adjLow": 27.25,
+        "adjClose": 27.69,
+        "volume": 25383646
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-19",
+        "adjOpen": 27.73,
+        "adjHigh": 28.1,
+        "adjLow": 27.44,
+        "adjClose": 27.59,
+        "volume": 31221900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-18",
+        "adjOpen": 28.33,
+        "adjHigh": 28.42,
+        "adjLow": 27.53,
+        "adjClose": 27.59,
+        "volume": 33179300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-17",
+        "adjOpen": 28.46,
+        "adjHigh": 28.76,
+        "adjLow": 28.33,
+        "adjClose": 28.38,
+        "volume": 29868901
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-13",
+        "adjOpen": 28.38,
+        "adjHigh": 28.54,
+        "adjLow": 28.11,
+        "adjClose": 28.39,
+        "volume": 42687511
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-12",
+        "adjOpen": 28.18,
+        "adjHigh": 28.99,
+        "adjLow": 28.16,
+        "adjClose": 28.5,
+        "volume": 70553100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-11",
+        "adjOpen": 26.99,
+        "adjHigh": 28.3,
+        "adjLow": 26.85,
+        "adjClose": 28.17,
+        "volume": 64213329
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-10",
+        "adjOpen": 26.79,
+        "adjHigh": 27.3,
+        "adjLow": 26.79,
+        "adjClose": 27.12,
+        "volume": 34925947
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-09",
+        "adjOpen": 26.82,
+        "adjHigh": 26.92,
+        "adjLow": 26.55,
+        "adjClose": 26.83,
+        "volume": 33057800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-06",
+        "adjOpen": 26.98,
+        "adjHigh": 27.1,
+        "adjLow": 26.65,
+        "adjClose": 26.85,
+        "volume": 37410400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-05",
+        "adjOpen": 27.12,
+        "adjHigh": 27.24,
+        "adjLow": 26.68,
+        "adjClose": 27.03,
+        "volume": 44672420
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-04",
+        "adjOpen": 26.81,
+        "adjHigh": 27.22,
+        "adjLow": 26.61,
+        "adjClose": 26.94,
+        "volume": 52448303
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-03",
+        "adjOpen": 25.84,
+        "adjHigh": 26.71,
+        "adjLow": 25.84,
+        "adjClose": 26.55,
+        "volume": 61110400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-02-02",
+        "adjOpen": 26.02,
+        "adjHigh": 26.37,
+        "adjLow": 25.92,
+        "adjClose": 26.03,
+        "volume": 66564000
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-30",
+        "adjOpen": 25.24,
+        "adjHigh": 26.02,
+        "adjLow": 24.89,
+        "adjClose": 25.94,
+        "volume": 78227500
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-29",
+        "adjOpen": 24.2,
+        "adjHigh": 24.87,
+        "adjLow": 24.18,
+        "adjClose": 24.87,
+        "volume": 73255300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-28",
+        "adjOpen": 23.18,
+        "adjHigh": 24.08,
+        "adjLow": 23.12,
+        "adjClose": 23.82,
+        "volume": 84121900
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-27",
+        "adjOpen": 23.25,
+        "adjHigh": 23.25,
+        "adjLow": 22.71,
+        "adjClose": 22.76,
+        "volume": 72164400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-26",
+        "adjOpen": 23.46,
+        "adjHigh": 23.56,
+        "adjLow": 23.12,
+        "adjClose": 23.21,
+        "volume": 44376020
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-23",
+        "adjOpen": 23.25,
+        "adjHigh": 23.4,
+        "adjLow": 23.05,
+        "adjClose": 23.34,
+        "volume": 36056800
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-22",
+        "adjOpen": 23.32,
+        "adjHigh": 23.58,
+        "adjLow": 23.25,
+        "adjClose": 23.33,
+        "volume": 30388300
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-21",
+        "adjOpen": 23.22,
+        "adjHigh": 23.54,
+        "adjLow": 23.22,
+        "adjClose": 23.25,
+        "volume": 40672133
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-20",
+        "adjOpen": 23.13,
+        "adjHigh": 23.36,
+        "adjLow": 23.04,
+        "adjClose": 23.21,
+        "volume": 51781100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-16",
+        "adjOpen": 23.41,
+        "adjHigh": 23.41,
+        "adjLow": 23.14,
+        "adjClose": 23.24,
+        "volume": 46504807
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-15",
+        "adjOpen": 23.36,
+        "adjHigh": 23.55,
+        "adjLow": 23.25,
+        "adjClose": 23.48,
+        "volume": 35919500
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-14",
+        "adjOpen": 23.08,
+        "adjHigh": 23.47,
+        "adjLow": 23.08,
+        "adjClose": 23.36,
+        "volume": 51414807
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-13",
+        "adjOpen": 23.45,
+        "adjHigh": 23.51,
+        "adjLow": 22.95,
+        "adjClose": 23.06,
+        "volume": 40890600
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-12",
+        "adjOpen": 23.51,
+        "adjHigh": 23.65,
+        "adjLow": 23.37,
+        "adjClose": 23.49,
+        "volume": 40700100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-09",
+        "adjOpen": 23.63,
+        "adjHigh": 23.79,
+        "adjLow": 23.46,
+        "adjClose": 23.47,
+        "volume": 30811009
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-08",
+        "adjOpen": 23.47,
+        "adjHigh": 23.8,
+        "adjLow": 23.46,
+        "adjClose": 23.65,
+        "volume": 43770400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-07",
+        "adjOpen": 23.91,
+        "adjHigh": 24.02,
+        "adjLow": 23.38,
+        "adjClose": 23.45,
+        "volume": 46998400
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-06",
+        "adjOpen": 23.99,
+        "adjHigh": 24,
+        "adjLow": 23.35,
+        "adjClose": 23.81,
+        "volume": 59966249
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-05",
+        "adjOpen": 23.88,
+        "adjHigh": 24.21,
+        "adjLow": 23.84,
+        "adjClose": 24.17,
+        "volume": 48958100
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-02",
+        "adjOpen": 24.26,
+        "adjHigh": 24.27,
+        "adjLow": 23.97,
+        "adjClose": 24.03,
+        "volume": 28718402
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-31",
+        "adjOpen": 24.25,
+        "adjHigh": 24.43,
+        "adjLow": 24.24,
+        "adjClose": 24.3,
+        "volume": 22911042
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-30",
+        "adjOpen": 24.23,
+        "adjHigh": 24.32,
+        "adjLow": 24.19,
+        "adjClose": 24.27,
+        "volume": 21047900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-29",
+        "adjOpen": 24.14,
+        "adjHigh": 24.4,
+        "adjLow": 24.14,
+        "adjClose": 24.24,
+        "volume": 30322137
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-26",
+        "adjOpen": 24.08,
+        "adjHigh": 24.24,
+        "adjLow": 24.06,
+        "adjClose": 24.12,
+        "volume": 16070100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-24",
+        "adjOpen": 23.85,
+        "adjHigh": 24.18,
+        "adjLow": 23.85,
+        "adjClose": 24.13,
+        "volume": 13904100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-23",
+        "adjOpen": 23.75,
+        "adjHigh": 24,
+        "adjLow": 23.73,
+        "adjClose": 23.93,
+        "volume": 20869100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-22",
+        "adjOpen": 23.62,
+        "adjHigh": 23.92,
+        "adjLow": 23.56,
+        "adjClose": 23.77,
+        "volume": 29049300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-19",
+        "adjOpen": 23.69,
+        "adjHigh": 23.76,
+        "adjLow": 23.5,
+        "adjClose": 23.63,
+        "volume": 89822300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-18",
+        "adjOpen": 23.78,
+        "adjHigh": 24.01,
+        "adjLow": 23.7,
+        "adjClose": 23.73,
+        "volume": 31038800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-17",
+        "adjOpen": 23.59,
+        "adjHigh": 23.92,
+        "adjLow": 23.56,
+        "adjClose": 23.83,
+        "volume": 39455100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-16",
+        "adjOpen": 23.83,
+        "adjHigh": 23.86,
+        "adjLow": 23.49,
+        "adjClose": 23.55,
+        "volume": 35702000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-15",
+        "adjOpen": 23.96,
+        "adjHigh": 24.09,
+        "adjLow": 23.69,
+        "adjClose": 23.78,
+        "volume": 37162500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-12",
+        "adjOpen": 23.86,
+        "adjHigh": 24.28,
+        "adjLow": 23.75,
+        "adjClose": 24.05,
+        "volume": 34207700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-11",
+        "adjOpen": 23.93,
+        "adjHigh": 24.17,
+        "adjLow": 23.74,
+        "adjClose": 23.77,
+        "volume": 38931826
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-10",
+        "adjOpen": 24.03,
+        "adjHigh": 24.07,
+        "adjLow": 23.75,
+        "adjClose": 23.86,
+        "volume": 48955410
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-09",
+        "adjOpen": 24.3,
+        "adjHigh": 24.45,
+        "adjLow": 23.83,
+        "adjClose": 23.98,
+        "volume": 41499600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-08",
+        "adjOpen": 24.79,
+        "adjHigh": 24.79,
+        "adjLow": 24.15,
+        "adjClose": 24.3,
+        "volume": 41475008
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-05",
+        "adjOpen": 24.81,
+        "adjHigh": 25.08,
+        "adjLow": 24.7,
+        "adjClose": 24.73,
+        "volume": 28075600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-04",
+        "adjOpen": 24.82,
+        "adjHigh": 25.01,
+        "adjLow": 24.68,
+        "adjClose": 24.84,
+        "volume": 33035200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-03",
+        "adjOpen": 25,
+        "adjHigh": 25.26,
+        "adjLow": 24.76,
+        "adjClose": 24.77,
+        "volume": 29138405
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-02",
+        "adjOpen": 25.27,
+        "adjHigh": 25.31,
+        "adjLow": 24.9,
+        "adjClose": 24.97,
+        "volume": 30839722
+      },
+      {
+        "symbol": "T",
+        "date": "2025-12-01",
+        "adjOpen": 25.39,
+        "adjHigh": 25.41,
+        "adjLow": 25,
+        "adjClose": 25.23,
+        "volume": 34681949
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-28",
+        "adjOpen": 25.26,
+        "adjHigh": 25.46,
+        "adjLow": 25.21,
+        "adjClose": 25.46,
+        "volume": 16345800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-26",
+        "adjOpen": 25.27,
+        "adjHigh": 25.5,
+        "adjLow": 25.24,
+        "adjClose": 25.26,
+        "volume": 27713016
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-25",
+        "adjOpen": 25.2,
+        "adjHigh": 25.64,
+        "adjLow": 25.19,
+        "adjClose": 25.3,
+        "volume": 44336242
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-24",
+        "adjOpen": 25.42,
+        "adjHigh": 25.45,
+        "adjLow": 24.87,
+        "adjClose": 25.06,
+        "volume": 66605913
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-21",
+        "adjOpen": 24.97,
+        "adjHigh": 25.61,
+        "adjLow": 24.95,
+        "adjClose": 25.37,
+        "volume": 59017120
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-20",
+        "adjOpen": 24.71,
+        "adjHigh": 25.08,
+        "adjLow": 24.58,
+        "adjClose": 24.97,
+        "volume": 44631819
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-19",
+        "adjOpen": 25.04,
+        "adjHigh": 25.11,
+        "adjLow": 24.54,
+        "adjClose": 24.72,
+        "volume": 34296926
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-18",
+        "adjOpen": 24.98,
+        "adjHigh": 25.21,
+        "adjLow": 24.79,
+        "adjClose": 25.04,
+        "volume": 41527600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-17",
+        "adjOpen": 25.08,
+        "adjHigh": 25.15,
+        "adjLow": 24.88,
+        "adjClose": 24.92,
+        "volume": 34519900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-14",
+        "adjOpen": 25.31,
+        "adjHigh": 25.37,
+        "adjLow": 24.89,
+        "adjClose": 25.04,
+        "volume": 37390200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-13",
+        "adjOpen": 25.09,
+        "adjHigh": 25.4,
+        "adjLow": 25,
+        "adjClose": 25.19,
+        "volume": 49785600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-12",
+        "adjOpen": 24.88,
+        "adjHigh": 25.17,
+        "adjLow": 24.86,
+        "adjClose": 25.09,
+        "volume": 44097000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-11",
+        "adjOpen": 24.39,
+        "adjHigh": 24.75,
+        "adjLow": 24.34,
+        "adjClose": 24.63,
+        "volume": 40962707
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-10",
+        "adjOpen": 24.2,
+        "adjHigh": 24.4,
+        "adjLow": 24.07,
+        "adjClose": 24.29,
+        "volume": 52677600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-07",
+        "adjOpen": 24.27,
+        "adjHigh": 24.55,
+        "adjLow": 24.1,
+        "adjClose": 24.29,
+        "volume": 62440000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-06",
+        "adjOpen": 23.76,
+        "adjHigh": 24.44,
+        "adjLow": 23.76,
+        "adjClose": 24.2,
+        "volume": 71665300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-05",
+        "adjOpen": 23.93,
+        "adjHigh": 24.2,
+        "adjLow": 23.9,
+        "adjClose": 24.03,
+        "volume": 61112227
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-04",
+        "adjOpen": 23.94,
+        "adjHigh": 24.03,
+        "adjLow": 23.76,
+        "adjClose": 23.91,
+        "volume": 75032700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-11-03",
+        "adjOpen": 24.11,
+        "adjHigh": 24.11,
+        "adjLow": 23.56,
+        "adjClose": 24,
+        "volume": 89327700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-31",
+        "adjOpen": 24.09,
+        "adjHigh": 24.44,
+        "adjLow": 23.98,
+        "adjClose": 24.21,
+        "volume": 89936800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-30",
+        "adjOpen": 24.44,
+        "adjHigh": 24.63,
+        "adjLow": 24.08,
+        "adjClose": 24.14,
+        "volume": 82167820
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-29",
+        "adjOpen": 25.55,
+        "adjHigh": 25.64,
+        "adjLow": 24.44,
+        "adjClose": 24.59,
+        "volume": 102715038
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-28",
+        "adjOpen": 24.86,
+        "adjHigh": 25.22,
+        "adjLow": 24.76,
+        "adjClose": 25.14,
+        "volume": 77662500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-27",
+        "adjOpen": 24.54,
+        "adjHigh": 25.02,
+        "adjLow": 24.43,
+        "adjClose": 24.98,
+        "volume": 86220431
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-24",
+        "adjOpen": 24.1,
+        "adjHigh": 24.64,
+        "adjLow": 24.03,
+        "adjClose": 24.59,
+        "volume": 80553704
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-23",
+        "adjOpen": 25.13,
+        "adjHigh": 25.2,
+        "adjLow": 23.96,
+        "adjClose": 24.09,
+        "volume": 107294100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-22",
+        "adjOpen": 24.38,
+        "adjHigh": 25.27,
+        "adjLow": 23.8,
+        "adjClose": 25,
+        "volume": 95468000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-21",
+        "adjOpen": 25.59,
+        "adjHigh": 25.67,
+        "adjLow": 25.34,
+        "adjClose": 25.49,
+        "volume": 100445700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-20",
+        "adjOpen": 25.76,
+        "adjHigh": 25.86,
+        "adjLow": 25.27,
+        "adjClose": 25.53,
+        "volume": 66161100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-17",
+        "adjOpen": 25.82,
+        "adjHigh": 25.91,
+        "adjLow": 25.63,
+        "adjClose": 25.77,
+        "volume": 61491831
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-16",
+        "adjOpen": 25.53,
+        "adjHigh": 25.82,
+        "adjLow": 25.48,
+        "adjClose": 25.63,
+        "volume": 49513137
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-15",
+        "adjOpen": 25.48,
+        "adjHigh": 25.62,
+        "adjLow": 25.37,
+        "adjClose": 25.5,
+        "volume": 34674000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-14",
+        "adjOpen": 25.02,
+        "adjHigh": 25.58,
+        "adjLow": 25.02,
+        "adjClose": 25.56,
+        "volume": 43644900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-13",
+        "adjOpen": 25.13,
+        "adjHigh": 25.29,
+        "adjLow": 24.81,
+        "adjClose": 25.04,
+        "volume": 36313723
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-10",
+        "adjOpen": 25.28,
+        "adjHigh": 25.67,
+        "adjLow": 25.15,
+        "adjClose": 25.31,
+        "volume": 37980100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-09",
+        "adjOpen": 25.41,
+        "adjHigh": 25.63,
+        "adjLow": 25.25,
+        "adjClose": 25.26,
+        "volume": 33129232
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-08",
+        "adjOpen": 25.39,
+        "adjHigh": 25.51,
+        "adjLow": 25.19,
+        "adjClose": 25.41,
+        "volume": 36913235
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-07",
+        "adjOpen": 25.09,
+        "adjHigh": 25.46,
+        "adjLow": 25.02,
+        "adjClose": 25.32,
+        "volume": 43249600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-06",
+        "adjOpen": 25.69,
+        "adjHigh": 25.86,
+        "adjLow": 25.01,
+        "adjClose": 25.04,
+        "volume": 63474346
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-03",
+        "adjOpen": 26.15,
+        "adjHigh": 26.34,
+        "adjLow": 26.12,
+        "adjClose": 26.19,
+        "volume": 34891703
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-02",
+        "adjOpen": 26.52,
+        "adjHigh": 26.55,
+        "adjLow": 26.01,
+        "adjClose": 26.14,
+        "volume": 39597200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-01",
+        "adjOpen": 27.14,
+        "adjHigh": 27.25,
+        "adjLow": 26.63,
+        "adjClose": 26.66,
+        "volume": 38415117
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-30",
+        "adjOpen": 27.23,
+        "adjHigh": 27.44,
+        "adjLow": 27.15,
+        "adjClose": 27.33,
+        "volume": 34049547
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-29",
+        "adjOpen": 27.34,
+        "adjHigh": 27.43,
+        "adjLow": 26.99,
+        "adjClose": 27.17,
+        "volume": 28739600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-26",
+        "adjOpen": 27.47,
+        "adjHigh": 27.65,
+        "adjLow": 27.34,
+        "adjClose": 27.4,
+        "volume": 25455102
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-25",
+        "adjOpen": 27.58,
+        "adjHigh": 27.83,
+        "adjLow": 27.38,
+        "adjClose": 27.39,
+        "volume": 25658505
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-24",
+        "adjOpen": 27.77,
+        "adjHigh": 27.83,
+        "adjLow": 27.26,
+        "adjClose": 27.41,
+        "volume": 28858700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-23",
+        "adjOpen": 27.99,
+        "adjHigh": 28.07,
+        "adjLow": 27.64,
+        "adjClose": 27.86,
+        "volume": 28805800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-22",
+        "adjOpen": 28.01,
+        "adjHigh": 28.14,
+        "adjLow": 27.82,
+        "adjClose": 27.99,
+        "volume": 25835321
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-19",
+        "adjOpen": 28.32,
+        "adjHigh": 28.37,
+        "adjLow": 28,
+        "adjClose": 28.08,
+        "volume": 62155700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-18",
+        "adjOpen": 28.41,
+        "adjHigh": 28.52,
+        "adjLow": 28.2,
+        "adjClose": 28.26,
+        "volume": 30142900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-17",
+        "adjOpen": 28.39,
+        "adjHigh": 28.63,
+        "adjLow": 28.31,
+        "adjClose": 28.59,
+        "volume": 25967200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-16",
+        "adjOpen": 28.67,
+        "adjHigh": 28.7,
+        "adjLow": 28.27,
+        "adjClose": 28.39,
+        "volume": 28118200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-15",
+        "adjOpen": 28.66,
+        "adjHigh": 28.83,
+        "adjLow": 28.55,
+        "adjClose": 28.67,
+        "volume": 31486400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-12",
+        "adjOpen": 28.47,
+        "adjHigh": 28.65,
+        "adjLow": 28.35,
+        "adjClose": 28.62,
+        "volume": 22794041
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-11",
+        "adjOpen": 28.35,
+        "adjHigh": 28.55,
+        "adjLow": 28.18,
+        "adjClose": 28.54,
+        "volume": 23581000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-10",
+        "adjOpen": 28.31,
+        "adjHigh": 28.49,
+        "adjLow": 27.97,
+        "adjClose": 28.26,
+        "volume": 25689401
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-09",
+        "adjOpen": 27.97,
+        "adjHigh": 28.62,
+        "adjLow": 27.9,
+        "adjClose": 28.47,
+        "volume": 35105500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-08",
+        "adjOpen": 27.58,
+        "adjHigh": 28.2,
+        "adjLow": 27.37,
+        "adjClose": 27.97,
+        "volume": 40649300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-05",
+        "adjOpen": 28.63,
+        "adjHigh": 28.83,
+        "adjLow": 28.48,
+        "adjClose": 28.64,
+        "volume": 25105947
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-04",
+        "adjOpen": 28.24,
+        "adjHigh": 28.75,
+        "adjLow": 28.1,
+        "adjClose": 28.63,
+        "volume": 31845438
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-03",
+        "adjOpen": 28.08,
+        "adjHigh": 28.15,
+        "adjLow": 27.54,
+        "adjClose": 28.11,
+        "volume": 27245400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-09-02",
+        "adjOpen": 28.35,
+        "adjHigh": 28.45,
+        "adjLow": 28.06,
+        "adjClose": 28.14,
+        "volume": 31571100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-29",
+        "adjOpen": 28.09,
+        "adjHigh": 28.39,
+        "adjLow": 28.02,
+        "adjClose": 28.35,
+        "volume": 26562400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-28",
+        "adjOpen": 28.09,
+        "adjHigh": 28.09,
+        "adjLow": 27.83,
+        "adjClose": 28.01,
+        "volume": 24658100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-27",
+        "adjOpen": 27.58,
+        "adjHigh": 28.14,
+        "adjLow": 27.58,
+        "adjClose": 28.12,
+        "volume": 28026226
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-26",
+        "adjOpen": 27.9,
+        "adjHigh": 28.03,
+        "adjLow": 27.3,
+        "adjClose": 27.64,
+        "volume": 49407917
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-25",
+        "adjOpen": 27.85,
+        "adjHigh": 28.05,
+        "adjLow": 27.8,
+        "adjClose": 27.82,
+        "volume": 19405025
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-22",
+        "adjOpen": 28.52,
+        "adjHigh": 28.69,
+        "adjLow": 27.75,
+        "adjClose": 27.84,
+        "volume": 34012000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-21",
+        "adjOpen": 28.31,
+        "adjHigh": 28.61,
+        "adjLow": 28.27,
+        "adjClose": 28.49,
+        "volume": 32991030
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-20",
+        "adjOpen": 28.17,
+        "adjHigh": 28.44,
+        "adjLow": 28.09,
+        "adjClose": 28.34,
+        "volume": 34843000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-19",
+        "adjOpen": 27.94,
+        "adjHigh": 28.22,
+        "adjLow": 27.88,
+        "adjClose": 28.05,
+        "volume": 18890600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-18",
+        "adjOpen": 28.05,
+        "adjHigh": 28.21,
+        "adjLow": 27.94,
+        "adjClose": 27.99,
+        "volume": 20420634
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-15",
+        "adjOpen": 27.81,
+        "adjHigh": 28.14,
+        "adjLow": 27.73,
+        "adjClose": 27.94,
+        "volume": 37020400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-14",
+        "adjOpen": 27.66,
+        "adjHigh": 27.84,
+        "adjLow": 27.49,
+        "adjClose": 27.82,
+        "volume": 24530249
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-13",
+        "adjOpen": 27.59,
+        "adjHigh": 27.67,
+        "adjLow": 27.45,
+        "adjClose": 27.49,
+        "volume": 26382734
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-12",
+        "adjOpen": 27.23,
+        "adjHigh": 27.77,
+        "adjLow": 27.23,
+        "adjClose": 27.56,
+        "volume": 30756695
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-11",
+        "adjOpen": 27.27,
+        "adjHigh": 27.37,
+        "adjLow": 27.17,
+        "adjClose": 27.23,
+        "volume": 20602416
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-08",
+        "adjOpen": 27.17,
+        "adjHigh": 27.34,
+        "adjLow": 27.13,
+        "adjClose": 27.18,
+        "volume": 23598200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-07",
+        "adjOpen": 26.57,
+        "adjHigh": 27.21,
+        "adjLow": 26.41,
+        "adjClose": 27.16,
+        "volume": 35331424
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-06",
+        "adjOpen": 27.05,
+        "adjHigh": 27.16,
+        "adjLow": 26.57,
+        "adjClose": 26.61,
+        "volume": 39247208
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-05",
+        "adjOpen": 26.83,
+        "adjHigh": 27.07,
+        "adjLow": 26.78,
+        "adjClose": 26.88,
+        "volume": 25317437
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-04",
+        "adjOpen": 26.9,
+        "adjHigh": 27.02,
+        "adjLow": 26.68,
+        "adjClose": 26.79,
+        "volume": 29972400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-08-01",
+        "adjOpen": 26.75,
+        "adjHigh": 27.03,
+        "adjLow": 26.46,
+        "adjClose": 26.86,
+        "volume": 38817012
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-31",
+        "adjOpen": 26.47,
+        "adjHigh": 26.83,
+        "adjLow": 26.43,
+        "adjClose": 26.53,
+        "volume": 34120000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-30",
+        "adjOpen": 26.47,
+        "adjHigh": 26.82,
+        "adjLow": 26.37,
+        "adjClose": 26.62,
+        "volume": 30096121
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-29",
+        "adjOpen": 26.79,
+        "adjHigh": 27.03,
+        "adjLow": 26.44,
+        "adjClose": 26.53,
+        "volume": 34202400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-28",
+        "adjOpen": 27.03,
+        "adjHigh": 27.03,
+        "adjLow": 26.65,
+        "adjClose": 26.71,
+        "volume": 29164422
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-25",
+        "adjOpen": 27.01,
+        "adjHigh": 27.44,
+        "adjLow": 26.86,
+        "adjClose": 27.1,
+        "volume": 33987800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-24",
+        "adjOpen": 26.87,
+        "adjHigh": 27.26,
+        "adjLow": 26.8,
+        "adjClose": 27.02,
+        "volume": 47332700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-23",
+        "adjOpen": 25.46,
+        "adjHigh": 26.86,
+        "adjLow": 25.02,
+        "adjClose": 26.86,
+        "volume": 65616334
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-22",
+        "adjOpen": 26.57,
+        "adjHigh": 26.87,
+        "adjLow": 26.35,
+        "adjClose": 26.54,
+        "volume": 35255800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-21",
+        "adjOpen": 26.58,
+        "adjHigh": 26.83,
+        "adjLow": 26.37,
+        "adjClose": 26.5,
+        "volume": 36229541
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-18",
+        "adjOpen": 26.1,
+        "adjHigh": 26.17,
+        "adjLow": 25.93,
+        "adjClose": 26.07,
+        "volume": 27427900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-17",
+        "adjOpen": 25.94,
+        "adjHigh": 26.18,
+        "adjLow": 25.91,
+        "adjClose": 26.12,
+        "volume": 24546400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-16",
+        "adjOpen": 26.15,
+        "adjHigh": 26.23,
+        "adjLow": 26.01,
+        "adjClose": 26.08,
+        "volume": 21934400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-15",
+        "adjOpen": 26.06,
+        "adjHigh": 26.25,
+        "adjLow": 25.93,
+        "adjClose": 26.15,
+        "volume": 32266225
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-14",
+        "adjOpen": 26.15,
+        "adjHigh": 26.63,
+        "adjLow": 26.15,
+        "adjClose": 26.29,
+        "volume": 30747000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-11",
+        "adjOpen": 26.66,
+        "adjHigh": 26.66,
+        "adjLow": 25.76,
+        "adjClose": 26.1,
+        "volume": 42713336
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-10",
+        "adjOpen": 26.87,
+        "adjHigh": 26.92,
+        "adjLow": 26.59,
+        "adjClose": 26.73,
+        "volume": 25058997
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-09",
+        "adjOpen": 27.15,
+        "adjHigh": 27.2,
+        "adjLow": 26.8,
+        "adjClose": 26.93,
+        "volume": 34453800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-08",
+        "adjOpen": 27.06,
+        "adjHigh": 27.27,
+        "adjLow": 26.91,
+        "adjClose": 27.11,
+        "volume": 24955428
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-07",
+        "adjOpen": 27.24,
+        "adjHigh": 27.29,
+        "adjLow": 27.05,
+        "adjClose": 27.23,
+        "volume": 22448700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-03",
+        "adjOpen": 27.11,
+        "adjHigh": 27.23,
+        "adjLow": 26.96,
+        "adjClose": 27.18,
+        "volume": 21085200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-02",
+        "adjOpen": 27.61,
+        "adjHigh": 27.82,
+        "adjLow": 27.11,
+        "adjClose": 27.13,
+        "volume": 47012300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-01",
+        "adjOpen": 27.79,
+        "adjHigh": 27.98,
+        "adjLow": 27.51,
+        "adjClose": 27.68,
+        "volume": 25976400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-30",
+        "adjOpen": 26.94,
+        "adjHigh": 27.81,
+        "adjLow": 26.93,
+        "adjClose": 27.73,
+        "volume": 42590802
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-27",
+        "adjOpen": 26.83,
+        "adjHigh": 27.01,
+        "adjLow": 26.74,
+        "adjClose": 26.91,
+        "volume": 37337226
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-26",
+        "adjOpen": 26.81,
+        "adjHigh": 26.93,
+        "adjLow": 26.64,
+        "adjClose": 26.83,
+        "volume": 25118500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-25",
+        "adjOpen": 26.97,
+        "adjHigh": 27.17,
+        "adjLow": 26.72,
+        "adjClose": 26.76,
+        "volume": 26189420
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-24",
+        "adjOpen": 26.99,
+        "adjHigh": 27.17,
+        "adjLow": 26.86,
+        "adjClose": 27.1,
+        "volume": 26007027
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-23",
+        "adjOpen": 26.65,
+        "adjHigh": 27.13,
+        "adjLow": 26.65,
+        "adjClose": 27.03,
+        "volume": 32957212
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-20",
+        "adjOpen": 26.52,
+        "adjHigh": 26.94,
+        "adjLow": 26.47,
+        "adjClose": 26.61,
+        "volume": 51495228
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-18",
+        "adjOpen": 26.61,
+        "adjHigh": 26.67,
+        "adjLow": 26.44,
+        "adjClose": 26.51,
+        "volume": 27985500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-17",
+        "adjOpen": 26.69,
+        "adjHigh": 26.81,
+        "adjLow": 26.44,
+        "adjClose": 26.5,
+        "volume": 35258619
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-16",
+        "adjOpen": 26.98,
+        "adjHigh": 27.21,
+        "adjLow": 26.63,
+        "adjClose": 26.81,
+        "volume": 32761406
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-13",
+        "adjOpen": 27.06,
+        "adjHigh": 27.16,
+        "adjLow": 26.94,
+        "adjClose": 27.02,
+        "volume": 22428227
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-12",
+        "adjOpen": 27.28,
+        "adjHigh": 27.28,
+        "adjLow": 26.95,
+        "adjClose": 27.09,
+        "volume": 23311737
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-11",
+        "adjOpen": 27.29,
+        "adjHigh": 27.42,
+        "adjLow": 27.07,
+        "adjClose": 27.16,
+        "volume": 32164500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-10",
+        "adjOpen": 26.75,
+        "adjHigh": 27.42,
+        "adjLow": 26.69,
+        "adjClose": 27.24,
+        "volume": 39959100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-09",
+        "adjOpen": 26.67,
+        "adjHigh": 26.91,
+        "adjLow": 26.67,
+        "adjClose": 26.7,
+        "volume": 23353600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-06",
+        "adjOpen": 26.61,
+        "adjHigh": 26.93,
+        "adjLow": 26.61,
+        "adjClose": 26.91,
+        "volume": 22403100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-05",
+        "adjOpen": 26.28,
+        "adjHigh": 26.69,
+        "adjLow": 26.19,
+        "adjClose": 26.6,
+        "volume": 29189994
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-04",
+        "adjOpen": 26.8,
+        "adjHigh": 26.8,
+        "adjLow": 26.09,
+        "adjClose": 26.22,
+        "volume": 33913507
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-03",
+        "adjOpen": 26.73,
+        "adjHigh": 26.96,
+        "adjLow": 26.5,
+        "adjClose": 26.8,
+        "volume": 26085931
+      },
+      {
+        "symbol": "T",
+        "date": "2025-06-02",
+        "adjOpen": 26.5,
+        "adjHigh": 26.8,
+        "adjLow": 26.45,
+        "adjClose": 26.77,
+        "volume": 26935200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-30",
+        "adjOpen": 26.25,
+        "adjHigh": 26.64,
+        "adjLow": 26.21,
+        "adjClose": 26.64,
+        "volume": 47964949
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-29",
+        "adjOpen": 26.34,
+        "adjHigh": 26.36,
+        "adjLow": 26.13,
+        "adjClose": 26.24,
+        "volume": 27192328
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-28",
+        "adjOpen": 26.24,
+        "adjHigh": 26.46,
+        "adjLow": 26.17,
+        "adjClose": 26.35,
+        "volume": 32270200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-27",
+        "adjOpen": 26.22,
+        "adjHigh": 26.48,
+        "adjLow": 26.18,
+        "adjClose": 26.25,
+        "volume": 33329202
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-23",
+        "adjOpen": 26.34,
+        "adjHigh": 26.39,
+        "adjLow": 26.03,
+        "adjClose": 26.28,
+        "volume": 31766316
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-22",
+        "adjOpen": 26.44,
+        "adjHigh": 26.56,
+        "adjLow": 26.08,
+        "adjClose": 26.1,
+        "volume": 25901603
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-21",
+        "adjOpen": 26.53,
+        "adjHigh": 26.62,
+        "adjLow": 26.27,
+        "adjClose": 26.33,
+        "volume": 29684200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-20",
+        "adjOpen": 26.88,
+        "adjHigh": 27.08,
+        "adjLow": 26.59,
+        "adjClose": 26.62,
+        "volume": 24966613
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-19",
+        "adjOpen": 26.6,
+        "adjHigh": 26.87,
+        "adjLow": 26.55,
+        "adjClose": 26.85,
+        "volume": 30996600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-16",
+        "adjOpen": 26.23,
+        "adjHigh": 26.62,
+        "adjLow": 25.99,
+        "adjClose": 26.57,
+        "volume": 31106000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-15",
+        "adjOpen": 25.49,
+        "adjHigh": 26.26,
+        "adjLow": 25.49,
+        "adjClose": 26.19,
+        "volume": 35278700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-14",
+        "adjOpen": 25.33,
+        "adjHigh": 25.48,
+        "adjLow": 25.21,
+        "adjClose": 25.34,
+        "volume": 31519500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-13",
+        "adjOpen": 25.93,
+        "adjHigh": 26,
+        "adjLow": 25.22,
+        "adjClose": 25.35,
+        "volume": 58767134
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-12",
+        "adjOpen": 25.97,
+        "adjHigh": 26.17,
+        "adjLow": 25.56,
+        "adjClose": 25.89,
+        "volume": 57106100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-09",
+        "adjOpen": 26.41,
+        "adjHigh": 26.85,
+        "adjLow": 26.28,
+        "adjClose": 26.68,
+        "volume": 29206946
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-08",
+        "adjOpen": 26.84,
+        "adjHigh": 26.88,
+        "adjLow": 26.31,
+        "adjClose": 26.33,
+        "volume": 30141500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-07",
+        "adjOpen": 26.87,
+        "adjHigh": 27.22,
+        "adjLow": 26.79,
+        "adjClose": 26.93,
+        "volume": 28358125
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-06",
+        "adjOpen": 26.4,
+        "adjHigh": 27.07,
+        "adjLow": 26.36,
+        "adjClose": 26.99,
+        "volume": 32491700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-05",
+        "adjOpen": 26.41,
+        "adjHigh": 26.53,
+        "adjLow": 26.02,
+        "adjClose": 26.36,
+        "volume": 21335346
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-02",
+        "adjOpen": 26.45,
+        "adjHigh": 26.62,
+        "adjLow": 26.22,
+        "adjClose": 26.46,
+        "volume": 22928400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-05-01",
+        "adjOpen": 26.36,
+        "adjHigh": 26.62,
+        "adjLow": 26.14,
+        "adjClose": 26.49,
+        "volume": 37367601
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-30",
+        "adjOpen": 26.45,
+        "adjHigh": 26.73,
+        "adjLow": 26.19,
+        "adjClose": 26.55,
+        "volume": 38877132
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-29",
+        "adjOpen": 25.97,
+        "adjHigh": 26.29,
+        "adjLow": 25.92,
+        "adjClose": 26.16,
+        "volume": 25015800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-28",
+        "adjOpen": 25.78,
+        "adjHigh": 26.13,
+        "adjLow": 25.68,
+        "adjClose": 26.12,
+        "volume": 24156015
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-25",
+        "adjOpen": 26.31,
+        "adjHigh": 26.37,
+        "adjLow": 25.52,
+        "adjClose": 25.69,
+        "volume": 37050300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-24",
+        "adjOpen": 26.04,
+        "adjHigh": 26.67,
+        "adjLow": 26.01,
+        "adjClose": 26.38,
+        "volume": 43640821
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-23",
+        "adjOpen": 25.44,
+        "adjHigh": 26.18,
+        "adjLow": 25.03,
+        "adjClose": 26.06,
+        "volume": 43351001
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-22",
+        "adjOpen": 24.92,
+        "adjHigh": 26.22,
+        "adjLow": 24.9,
+        "adjClose": 25.84,
+        "volume": 50906800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-21",
+        "adjOpen": 26.03,
+        "adjHigh": 26.14,
+        "adjLow": 25.07,
+        "adjClose": 25.23,
+        "volume": 46226000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-17",
+        "adjOpen": 26.05,
+        "adjHigh": 26.35,
+        "adjLow": 25.89,
+        "adjClose": 26.02,
+        "volume": 24870252
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-16",
+        "adjOpen": 26.58,
+        "adjHigh": 26.62,
+        "adjLow": 25.81,
+        "adjClose": 25.89,
+        "volume": 27835900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-15",
+        "adjOpen": 26.35,
+        "adjHigh": 26.47,
+        "adjLow": 26.12,
+        "adjClose": 26.35,
+        "volume": 25721334
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-14",
+        "adjOpen": 25.52,
+        "adjHigh": 26.21,
+        "adjLow": 25.48,
+        "adjClose": 26.07,
+        "volume": 27042809
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-11",
+        "adjOpen": 25.47,
+        "adjHigh": 25.78,
+        "adjLow": 25.26,
+        "adjClose": 25.67,
+        "volume": 32057600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-10",
+        "adjOpen": 25.15,
+        "adjHigh": 25.64,
+        "adjLow": 24.82,
+        "adjClose": 25.29,
+        "volume": 51467900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-09",
+        "adjOpen": 24.74,
+        "adjHigh": 25.47,
+        "adjLow": 23.9,
+        "adjClose": 25.1,
+        "volume": 77738749
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-08",
+        "adjOpen": 25.62,
+        "adjHigh": 25.78,
+        "adjLow": 24.68,
+        "adjClose": 25.02,
+        "volume": 55717140
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-07",
+        "adjOpen": 23.88,
+        "adjHigh": 25.82,
+        "adjLow": 23.8,
+        "adjClose": 25.44,
+        "volume": 74875400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-04",
+        "adjOpen": 26.55,
+        "adjHigh": 26.96,
+        "adjLow": 25.16,
+        "adjClose": 25.26,
+        "volume": 61361000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-03",
+        "adjOpen": 27.06,
+        "adjHigh": 27.53,
+        "adjLow": 26.98,
+        "adjClose": 27.12,
+        "volume": 48912300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-02",
+        "adjOpen": 26.94,
+        "adjHigh": 27.11,
+        "adjLow": 26.56,
+        "adjClose": 26.68,
+        "volume": 41574800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-01",
+        "adjOpen": 26.93,
+        "adjHigh": 27.13,
+        "adjLow": 26.76,
+        "adjClose": 27.01,
+        "volume": 43986400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-31",
+        "adjOpen": 26.8,
+        "adjHigh": 27.09,
+        "adjLow": 26.75,
+        "adjClose": 26.82,
+        "volume": 50156533
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-28",
+        "adjOpen": 26.88,
+        "adjHigh": 27.03,
+        "adjLow": 26.61,
+        "adjClose": 26.72,
+        "volume": 35085300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-27",
+        "adjOpen": 26.33,
+        "adjHigh": 26.95,
+        "adjLow": 26.21,
+        "adjClose": 26.74,
+        "volume": 43000103
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-26",
+        "adjOpen": 25.99,
+        "adjHigh": 26.4,
+        "adjLow": 25.94,
+        "adjClose": 26.22,
+        "volume": 42607090
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-25",
+        "adjOpen": 25.58,
+        "adjHigh": 26.14,
+        "adjLow": 25.58,
+        "adjClose": 25.9,
+        "volume": 42339700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-24",
+        "adjOpen": 25.47,
+        "adjHigh": 25.81,
+        "adjLow": 25.45,
+        "adjClose": 25.56,
+        "volume": 26863300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-21",
+        "adjOpen": 25.42,
+        "adjHigh": 25.8,
+        "adjLow": 25.26,
+        "adjClose": 25.62,
+        "volume": 91268600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-20",
+        "adjOpen": 25.5,
+        "adjHigh": 25.53,
+        "adjLow": 25.3,
+        "adjClose": 25.4,
+        "volume": 27272300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-19",
+        "adjOpen": 25.27,
+        "adjHigh": 25.54,
+        "adjLow": 25.08,
+        "adjClose": 25.45,
+        "volume": 30145700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-18",
+        "adjOpen": 25.41,
+        "adjHigh": 25.58,
+        "adjLow": 25.18,
+        "adjClose": 25.23,
+        "volume": 30365600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-17",
+        "adjOpen": 25.19,
+        "adjHigh": 25.53,
+        "adjLow": 24.89,
+        "adjClose": 25.44,
+        "volume": 45570000
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-14",
+        "adjOpen": 24.46,
+        "adjHigh": 25.27,
+        "adjLow": 24.41,
+        "adjClose": 25.2,
+        "volume": 37591300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-13",
+        "adjOpen": 24.46,
+        "adjHigh": 25.09,
+        "adjLow": 24.43,
+        "adjClose": 24.74,
+        "volume": 37698500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-12",
+        "adjOpen": 24.3,
+        "adjHigh": 24.52,
+        "adjLow": 23.6,
+        "adjClose": 24.39,
+        "volume": 62383222
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-11",
+        "adjOpen": 25.1,
+        "adjHigh": 25.44,
+        "adjLow": 24.26,
+        "adjClose": 24.66,
+        "volume": 74574312
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-10",
+        "adjOpen": 25.71,
+        "adjHigh": 26.04,
+        "adjLow": 25.3,
+        "adjClose": 25.87,
+        "volume": 57820809
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-07",
+        "adjOpen": 25.29,
+        "adjHigh": 25.81,
+        "adjLow": 25.23,
+        "adjClose": 25.72,
+        "volume": 35341922
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-06",
+        "adjOpen": 24.87,
+        "adjHigh": 25.41,
+        "adjLow": 24.71,
+        "adjClose": 25.35,
+        "volume": 32211600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-05",
+        "adjOpen": 24.72,
+        "adjHigh": 25.02,
+        "adjLow": 24.49,
+        "adjClose": 24.82,
+        "volume": 42010125
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-04",
+        "adjOpen": 26.36,
+        "adjHigh": 26.52,
+        "adjLow": 24.77,
+        "adjClose": 24.86,
+        "volume": 89479700
+      },
+      {
+        "symbol": "T",
+        "date": "2025-03-03",
+        "adjOpen": 25.86,
+        "adjHigh": 26.42,
+        "adjLow": 25.79,
+        "adjClose": 26.29,
+        "volume": 45078608
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-28",
+        "adjOpen": 25.6,
+        "adjHigh": 26.07,
+        "adjLow": 25.6,
+        "adjClose": 25.99,
+        "volume": 62510800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-27",
+        "adjOpen": 25.26,
+        "adjHigh": 25.58,
+        "adjLow": 25.2,
+        "adjClose": 25.51,
+        "volume": 32943311
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-26",
+        "adjOpen": 25.18,
+        "adjHigh": 25.44,
+        "adjLow": 25.06,
+        "adjClose": 25.19,
+        "volume": 39296511
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-25",
+        "adjOpen": 25.48,
+        "adjHigh": 25.75,
+        "adjLow": 24.9,
+        "adjClose": 25.27,
+        "volume": 52497244
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-24",
+        "adjOpen": 25.25,
+        "adjHigh": 25.73,
+        "adjLow": 25.23,
+        "adjClose": 25.36,
+        "volume": 54549600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-21",
+        "adjOpen": 24.73,
+        "adjHigh": 25.33,
+        "adjLow": 24.62,
+        "adjClose": 25.24,
+        "volume": 58421500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-20",
+        "adjOpen": 24.85,
+        "adjHigh": 24.92,
+        "adjLow": 24.6,
+        "adjClose": 24.8,
+        "volume": 32753934
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-19",
+        "adjOpen": 24.86,
+        "adjHigh": 24.98,
+        "adjLow": 24.72,
+        "adjClose": 24.88,
+        "volume": 30551542
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-18",
+        "adjOpen": 24.38,
+        "adjHigh": 24.82,
+        "adjLow": 24.38,
+        "adjClose": 24.72,
+        "volume": 52442500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-14",
+        "adjOpen": 24.34,
+        "adjHigh": 24.59,
+        "adjLow": 24.27,
+        "adjClose": 24.53,
+        "volume": 31687800
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-13",
+        "adjOpen": 24.15,
+        "adjHigh": 24.4,
+        "adjLow": 24.04,
+        "adjClose": 24.3,
+        "volume": 35115139
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-12",
+        "adjOpen": 23.85,
+        "adjHigh": 24.07,
+        "adjLow": 23.77,
+        "adjClose": 24.05,
+        "volume": 38970312
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-11",
+        "adjOpen": 23.61,
+        "adjHigh": 23.88,
+        "adjLow": 23.52,
+        "adjClose": 23.85,
+        "volume": 35150300
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-10",
+        "adjOpen": 23.33,
+        "adjHigh": 23.65,
+        "adjLow": 23.32,
+        "adjClose": 23.57,
+        "volume": 31913400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-07",
+        "adjOpen": 23.18,
+        "adjHigh": 23.45,
+        "adjLow": 23,
+        "adjClose": 23.27,
+        "volume": 26290100
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-06",
+        "adjOpen": 23.23,
+        "adjHigh": 23.28,
+        "adjLow": 23.04,
+        "adjClose": 23.18,
+        "volume": 24522500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-05",
+        "adjOpen": 23.19,
+        "adjHigh": 23.3,
+        "adjLow": 23.02,
+        "adjClose": 23.2,
+        "volume": 29511716
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-04",
+        "adjOpen": 22.95,
+        "adjHigh": 23.16,
+        "adjLow": 22.82,
+        "adjClose": 22.99,
+        "volume": 30540243
+      },
+      {
+        "symbol": "T",
+        "date": "2025-02-03",
+        "adjOpen": 22.46,
+        "adjHigh": 23.16,
+        "adjLow": 22.44,
+        "adjClose": 22.99,
+        "volume": 59555827
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-31",
+        "adjOpen": 22.77,
+        "adjHigh": 22.89,
+        "adjLow": 22.43,
+        "adjClose": 22.5,
+        "volume": 40347633
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-30",
+        "adjOpen": 22.92,
+        "adjHigh": 22.98,
+        "adjLow": 22.55,
+        "adjClose": 22.78,
+        "volume": 45653010
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-29",
+        "adjOpen": 23.44,
+        "adjHigh": 23.69,
+        "adjLow": 22.95,
+        "adjClose": 22.98,
+        "volume": 34420436
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-28",
+        "adjOpen": 22.82,
+        "adjHigh": 23.31,
+        "adjLow": 22.68,
+        "adjClose": 23.14,
+        "volume": 55731400
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-27",
+        "adjOpen": 22.28,
+        "adjHigh": 23.11,
+        "adjLow": 22.14,
+        "adjClose": 22.89,
+        "volume": 92445200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-24",
+        "adjOpen": 21.38,
+        "adjHigh": 21.61,
+        "adjLow": 21.37,
+        "adjClose": 21.54,
+        "volume": 44409200
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-23",
+        "adjOpen": 21.18,
+        "adjHigh": 21.48,
+        "adjLow": 21.07,
+        "adjClose": 21.36,
+        "volume": 32125222
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-22",
+        "adjOpen": 21.22,
+        "adjHigh": 21.31,
+        "adjLow": 20.88,
+        "adjClose": 21.16,
+        "volume": 31676416
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-21",
+        "adjOpen": 21.06,
+        "adjHigh": 21.38,
+        "adjLow": 21.06,
+        "adjClose": 21.33,
+        "volume": 36777600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-17",
+        "adjOpen": 20.95,
+        "adjHigh": 21.22,
+        "adjLow": 20.85,
+        "adjClose": 21.14,
+        "volume": 33638001
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-16",
+        "adjOpen": 20.86,
+        "adjHigh": 20.98,
+        "adjLow": 20.71,
+        "adjClose": 20.88,
+        "volume": 25639600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-15",
+        "adjOpen": 20.85,
+        "adjHigh": 20.95,
+        "adjLow": 20.75,
+        "adjClose": 20.78,
+        "volume": 50559900
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-14",
+        "adjOpen": 20.4,
+        "adjHigh": 20.69,
+        "adjLow": 20.27,
+        "adjClose": 20.67,
+        "volume": 25627303
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-13",
+        "adjOpen": 20.51,
+        "adjHigh": 20.55,
+        "adjLow": 20.29,
+        "adjClose": 20.44,
+        "volume": 37865600
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-10",
+        "adjOpen": 20.75,
+        "adjHigh": 20.9,
+        "adjLow": 20.38,
+        "adjClose": 20.57,
+        "volume": 41572438
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-08",
+        "adjOpen": 20.72,
+        "adjHigh": 20.84,
+        "adjLow": 20.28,
+        "adjClose": 20.77,
+        "volume": 35517848
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-07",
+        "adjOpen": 21.11,
+        "adjHigh": 21.21,
+        "adjLow": 20.75,
+        "adjClose": 20.79,
+        "volume": 37143500
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-06",
+        "adjOpen": 21.31,
+        "adjHigh": 21.32,
+        "adjLow": 21.09,
+        "adjClose": 21.16,
+        "volume": 34416015
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-03",
+        "adjOpen": 21.45,
+        "adjHigh": 21.5,
+        "adjLow": 21.21,
+        "adjClose": 21.23,
+        "volume": 26879830
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-02",
+        "adjOpen": 21.38,
+        "adjHigh": 21.7,
+        "adjLow": 21.35,
+        "adjClose": 21.38,
+        "volume": 27108202
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-31",
+        "adjOpen": 21.18,
+        "adjHigh": 21.39,
+        "adjLow": 21.16,
+        "adjClose": 21.32,
+        "volume": 22342840
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-30",
+        "adjOpen": 21.33,
+        "adjHigh": 21.33,
+        "adjLow": 21.01,
+        "adjClose": 21.17,
+        "volume": 25420000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-27",
+        "adjOpen": 21.43,
+        "adjHigh": 21.61,
+        "adjLow": 21.37,
+        "adjClose": 21.41,
+        "volume": 18547501
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-26",
+        "adjOpen": 21.47,
+        "adjHigh": 21.68,
+        "adjLow": 21.43,
+        "adjClose": 21.5,
+        "volume": 16445916
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-24",
+        "adjOpen": 21.39,
+        "adjHigh": 21.53,
+        "adjLow": 21.31,
+        "adjClose": 21.49,
+        "volume": 9605933
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-23",
+        "adjOpen": 21.23,
+        "adjHigh": 21.42,
+        "adjLow": 21.16,
+        "adjClose": 21.39,
+        "volume": 24655636
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-20",
+        "adjOpen": 21.15,
+        "adjHigh": 21.3,
+        "adjLow": 21.08,
+        "adjClose": 21.3,
+        "volume": 93984000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-19",
+        "adjOpen": 21.08,
+        "adjHigh": 21.24,
+        "adjLow": 20.99,
+        "adjClose": 21.14,
+        "volume": 43160800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-18",
+        "adjOpen": 21.35,
+        "adjHigh": 21.53,
+        "adjLow": 21.03,
+        "adjClose": 21.05,
+        "volume": 38897400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-17",
+        "adjOpen": 21.35,
+        "adjHigh": 21.52,
+        "adjLow": 21.23,
+        "adjClose": 21.38,
+        "volume": 39844716
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-16",
+        "adjOpen": 22.2,
+        "adjHigh": 22.3,
+        "adjLow": 21.17,
+        "adjClose": 21.39,
+        "volume": 48018100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-13",
+        "adjOpen": 21.89,
+        "adjHigh": 22.17,
+        "adjLow": 21.78,
+        "adjClose": 22.13,
+        "volume": 33693907
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-12",
+        "adjOpen": 22.09,
+        "adjHigh": 22.24,
+        "adjLow": 21.88,
+        "adjClose": 21.88,
+        "volume": 22015000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-11",
+        "adjOpen": 21.94,
+        "adjHigh": 22.05,
+        "adjLow": 21.67,
+        "adjClose": 21.99,
+        "volume": 38518100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-10",
+        "adjOpen": 21.93,
+        "adjHigh": 22.16,
+        "adjLow": 21.65,
+        "adjClose": 22.02,
+        "volume": 32851500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-09",
+        "adjOpen": 22.38,
+        "adjHigh": 22.46,
+        "adjLow": 21.85,
+        "adjClose": 21.88,
+        "volume": 38385903
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-06",
+        "adjOpen": 22.31,
+        "adjHigh": 22.38,
+        "adjLow": 22.06,
+        "adjClose": 22.36,
+        "volume": 34218800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-05",
+        "adjOpen": 22.11,
+        "adjHigh": 22.38,
+        "adjLow": 22.09,
+        "adjClose": 22.32,
+        "volume": 40155616
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-04",
+        "adjOpen": 22.16,
+        "adjHigh": 22.31,
+        "adjLow": 21.88,
+        "adjClose": 22.03,
+        "volume": 41534200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-03",
+        "adjOpen": 21.92,
+        "adjHigh": 22.5,
+        "adjLow": 21.89,
+        "adjClose": 22.23,
+        "volume": 63128700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-12-02",
+        "adjOpen": 21.68,
+        "adjHigh": 21.69,
+        "adjLow": 21.2,
+        "adjClose": 21.26,
+        "volume": 44160600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-29",
+        "adjOpen": 21.79,
+        "adjHigh": 21.83,
+        "adjLow": 21.55,
+        "adjClose": 21.69,
+        "volume": 19673928
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-27",
+        "adjOpen": 21.72,
+        "adjHigh": 21.89,
+        "adjLow": 21.55,
+        "adjClose": 21.79,
+        "volume": 33206300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-26",
+        "adjOpen": 21.48,
+        "adjHigh": 21.64,
+        "adjLow": 21.41,
+        "adjClose": 21.62,
+        "volume": 30080346
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-25",
+        "adjOpen": 21.68,
+        "adjHigh": 21.84,
+        "adjLow": 21.49,
+        "adjClose": 21.63,
+        "volume": 64729800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-22",
+        "adjOpen": 21.59,
+        "adjHigh": 21.81,
+        "adjLow": 21.49,
+        "adjClose": 21.71,
+        "volume": 35732900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-21",
+        "adjOpen": 21.35,
+        "adjHigh": 21.68,
+        "adjLow": 21.29,
+        "adjClose": 21.52,
+        "volume": 23080900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-20",
+        "adjOpen": 21.35,
+        "adjHigh": 21.45,
+        "adjLow": 21.3,
+        "adjClose": 21.38,
+        "volume": 20423100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-19",
+        "adjOpen": 21.43,
+        "adjHigh": 21.47,
+        "adjLow": 21.24,
+        "adjClose": 21.29,
+        "volume": 24727700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-18",
+        "adjOpen": 21.34,
+        "adjHigh": 21.73,
+        "adjLow": 21.33,
+        "adjClose": 21.53,
+        "volume": 35675532
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-15",
+        "adjOpen": 20.83,
+        "adjHigh": 21.31,
+        "adjLow": 20.79,
+        "adjClose": 21.24,
+        "volume": 40207300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-14",
+        "adjOpen": 20.89,
+        "adjHigh": 21.04,
+        "adjLow": 20.81,
+        "adjClose": 20.84,
+        "volume": 20825101
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-13",
+        "adjOpen": 20.76,
+        "adjHigh": 20.96,
+        "adjLow": 20.66,
+        "adjClose": 20.88,
+        "volume": 29345600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-12",
+        "adjOpen": 20.8,
+        "adjHigh": 20.87,
+        "adjLow": 20.4,
+        "adjClose": 20.74,
+        "volume": 39579538
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-11",
+        "adjOpen": 20.86,
+        "adjHigh": 21.05,
+        "adjLow": 20.83,
+        "adjClose": 20.89,
+        "volume": 23465000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-08",
+        "adjOpen": 20.65,
+        "adjHigh": 21,
+        "adjLow": 20.65,
+        "adjClose": 20.92,
+        "volume": 29901600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-07",
+        "adjOpen": 20.97,
+        "adjHigh": 20.97,
+        "adjLow": 20.57,
+        "adjClose": 20.64,
+        "volume": 31471825
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-06",
+        "adjOpen": 20.7,
+        "adjHigh": 20.97,
+        "adjLow": 20.57,
+        "adjClose": 20.9,
+        "volume": 32259200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-05",
+        "adjOpen": 20.51,
+        "adjHigh": 20.76,
+        "adjLow": 20.44,
+        "adjClose": 20.65,
+        "volume": 26461800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-04",
+        "adjOpen": 20.74,
+        "adjHigh": 20.84,
+        "adjLow": 20.41,
+        "adjClose": 20.53,
+        "volume": 24318500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-11-01",
+        "adjOpen": 21.09,
+        "adjHigh": 21.28,
+        "adjLow": 20.66,
+        "adjClose": 20.71,
+        "volume": 37170000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-31",
+        "adjOpen": 20.66,
+        "adjHigh": 21.17,
+        "adjLow": 20.63,
+        "adjClose": 21.11,
+        "volume": 59566746
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-30",
+        "adjOpen": 20.72,
+        "adjHigh": 20.84,
+        "adjLow": 20.51,
+        "adjClose": 20.62,
+        "volume": 36264938
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-29",
+        "adjOpen": 20.59,
+        "adjHigh": 20.94,
+        "adjLow": 20.53,
+        "adjClose": 20.77,
+        "volume": 32711100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-28",
+        "adjOpen": 20.52,
+        "adjHigh": 20.74,
+        "adjLow": 20.43,
+        "adjClose": 20.7,
+        "volume": 27923800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-25",
+        "adjOpen": 20.88,
+        "adjHigh": 20.98,
+        "adjLow": 20.42,
+        "adjClose": 20.44,
+        "volume": 26050400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-24",
+        "adjOpen": 20.98,
+        "adjHigh": 21.05,
+        "adjLow": 20.66,
+        "adjClose": 20.79,
+        "volume": 38783140
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-23",
+        "adjOpen": 19.89,
+        "adjHigh": 21.14,
+        "adjLow": 19.71,
+        "adjClose": 21.06,
+        "volume": 71932604
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-22",
+        "adjOpen": 19.9,
+        "adjHigh": 20.24,
+        "adjLow": 19.71,
+        "adjClose": 20.13,
+        "volume": 47781946
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-21",
+        "adjOpen": 20.49,
+        "adjHigh": 20.57,
+        "adjLow": 20.27,
+        "adjClose": 20.28,
+        "volume": 29366229
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-18",
+        "adjOpen": 20.35,
+        "adjHigh": 20.66,
+        "adjLow": 20.25,
+        "adjClose": 20.46,
+        "volume": 27277400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-17",
+        "adjOpen": 20.19,
+        "adjHigh": 20.39,
+        "adjLow": 20.16,
+        "adjClose": 20.35,
+        "volume": 25471200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-16",
+        "adjOpen": 20.15,
+        "adjHigh": 20.38,
+        "adjLow": 20.11,
+        "adjClose": 20.33,
+        "volume": 23926948
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-15",
+        "adjOpen": 20.03,
+        "adjHigh": 20.23,
+        "adjLow": 19.88,
+        "adjClose": 20.14,
+        "volume": 35942600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-14",
+        "adjOpen": 20,
+        "adjHigh": 20.05,
+        "adjLow": 19.91,
+        "adjClose": 19.91,
+        "volume": 33512226
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-11",
+        "adjOpen": 19.94,
+        "adjHigh": 20.08,
+        "adjLow": 19.87,
+        "adjClose": 20.01,
+        "volume": 25249822
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-10",
+        "adjOpen": 20.23,
+        "adjHigh": 20.3,
+        "adjLow": 19.86,
+        "adjClose": 19.87,
+        "volume": 28738527
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-09",
+        "adjOpen": 20.22,
+        "adjHigh": 20.34,
+        "adjLow": 20.15,
+        "adjClose": 20.28,
+        "volume": 25365400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-08",
+        "adjOpen": 20.28,
+        "adjHigh": 20.33,
+        "adjLow": 20.09,
+        "adjClose": 20.22,
+        "volume": 22716402
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-07",
+        "adjOpen": 20.26,
+        "adjHigh": 20.26,
+        "adjLow": 20.04,
+        "adjClose": 20.14,
+        "volume": 23116341
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-04",
+        "adjOpen": 20.07,
+        "adjHigh": 20.32,
+        "adjLow": 19.86,
+        "adjClose": 20.26,
+        "volume": 24545359
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-03",
+        "adjOpen": 20.46,
+        "adjHigh": 20.56,
+        "adjLow": 20.32,
+        "adjClose": 20.39,
+        "volume": 28894730
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-02",
+        "adjOpen": 20.39,
+        "adjHigh": 20.57,
+        "adjLow": 20.34,
+        "adjClose": 20.52,
+        "volume": 29820100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-01",
+        "adjOpen": 20.28,
+        "adjHigh": 20.48,
+        "adjLow": 20.19,
+        "adjClose": 20.46,
+        "volume": 32705539
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-30",
+        "adjOpen": 20.34,
+        "adjHigh": 20.4,
+        "adjLow": 20.03,
+        "adjClose": 20.34,
+        "volume": 26272691
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-27",
+        "adjOpen": 20.08,
+        "adjHigh": 20.29,
+        "adjLow": 20.05,
+        "adjClose": 20.25,
+        "volume": 23577700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-26",
+        "adjOpen": 19.87,
+        "adjHigh": 20.12,
+        "adjLow": 19.82,
+        "adjClose": 20.02,
+        "volume": 25497511
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-25",
+        "adjOpen": 20,
+        "adjHigh": 20.11,
+        "adjLow": 19.9,
+        "adjClose": 19.94,
+        "volume": 28334844
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-24",
+        "adjOpen": 19.78,
+        "adjHigh": 20.03,
+        "adjLow": 19.71,
+        "adjClose": 19.97,
+        "volume": 25905500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-23",
+        "adjOpen": 19.92,
+        "adjHigh": 19.97,
+        "adjLow": 19.75,
+        "adjClose": 19.87,
+        "volume": 25550300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-20",
+        "adjOpen": 19.7,
+        "adjHigh": 19.99,
+        "adjLow": 19.63,
+        "adjClose": 19.92,
+        "volume": 94156523
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-19",
+        "adjOpen": 20.02,
+        "adjHigh": 20.06,
+        "adjLow": 19.58,
+        "adjClose": 19.75,
+        "volume": 40942200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-18",
+        "adjOpen": 20.2,
+        "adjHigh": 20.35,
+        "adjLow": 20.02,
+        "adjClose": 20.1,
+        "volume": 27825600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-17",
+        "adjOpen": 20.41,
+        "adjHigh": 20.44,
+        "adjLow": 20.08,
+        "adjClose": 20.14,
+        "volume": 29304421
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-16",
+        "adjOpen": 20.19,
+        "adjHigh": 20.65,
+        "adjLow": 20.15,
+        "adjClose": 20.59,
+        "volume": 53733400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-13",
+        "adjOpen": 19.95,
+        "adjHigh": 20.04,
+        "adjLow": 19.83,
+        "adjClose": 20.01,
+        "volume": 31451300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-12",
+        "adjOpen": 19.73,
+        "adjHigh": 20.02,
+        "adjLow": 19.58,
+        "adjClose": 19.97,
+        "volume": 34568200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-11",
+        "adjOpen": 20,
+        "adjHigh": 20,
+        "adjLow": 19.65,
+        "adjClose": 19.84,
+        "volume": 37328500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-10",
+        "adjOpen": 19.84,
+        "adjHigh": 20.22,
+        "adjLow": 19.73,
+        "adjClose": 20.08,
+        "volume": 60944519
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-09",
+        "adjOpen": 19.38,
+        "adjHigh": 19.97,
+        "adjLow": 19.35,
+        "adjClose": 19.88,
+        "volume": 58958400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-06",
+        "adjOpen": 19.09,
+        "adjHigh": 19.42,
+        "adjLow": 19.09,
+        "adjClose": 19.39,
+        "volume": 53079539
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-05",
+        "adjOpen": 19.16,
+        "adjHigh": 19.27,
+        "adjLow": 18.98,
+        "adjClose": 19.1,
+        "volume": 44199100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-04",
+        "adjOpen": 18.95,
+        "adjHigh": 19.3,
+        "adjLow": 18.72,
+        "adjClose": 19.02,
+        "volume": 57532400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-09-03",
+        "adjOpen": 18.43,
+        "adjHigh": 18.91,
+        "adjLow": 18.42,
+        "adjClose": 18.89,
+        "volume": 50352600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-30",
+        "adjOpen": 18.27,
+        "adjHigh": 18.41,
+        "adjLow": 18.22,
+        "adjClose": 18.4,
+        "volume": 29362700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-29",
+        "adjOpen": 18.31,
+        "adjHigh": 18.35,
+        "adjLow": 18.14,
+        "adjClose": 18.27,
+        "volume": 20775600
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-28",
+        "adjOpen": 18.2,
+        "adjHigh": 18.41,
+        "adjLow": 18.19,
+        "adjClose": 18.33,
+        "volume": 20435528
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-27",
+        "adjOpen": 18.25,
+        "adjHigh": 18.31,
+        "adjLow": 18.12,
+        "adjClose": 18.17,
+        "volume": 20321900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-26",
+        "adjOpen": 18.27,
+        "adjHigh": 18.44,
+        "adjLow": 18.21,
+        "adjClose": 18.27,
+        "volume": 22599700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-23",
+        "adjOpen": 18.07,
+        "adjHigh": 18.28,
+        "adjLow": 18.05,
+        "adjClose": 18.25,
+        "volume": 21519300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-22",
+        "adjOpen": 18.09,
+        "adjHigh": 18.1,
+        "adjLow": 17.94,
+        "adjClose": 18.04,
+        "volume": 17596700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-21",
+        "adjOpen": 18.05,
+        "adjHigh": 18.12,
+        "adjLow": 17.96,
+        "adjClose": 18.07,
+        "volume": 20055500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-20",
+        "adjOpen": 17.99,
+        "adjHigh": 18.1,
+        "adjLow": 17.93,
+        "adjClose": 18.02,
+        "volume": 20260900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-19",
+        "adjOpen": 17.89,
+        "adjHigh": 18.04,
+        "adjLow": 17.88,
+        "adjClose": 18.02,
+        "volume": 20506740
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-16",
+        "adjOpen": 17.68,
+        "adjHigh": 17.9,
+        "adjLow": 17.64,
+        "adjClose": 17.88,
+        "volume": 24724429
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-15",
+        "adjOpen": 18.08,
+        "adjHigh": 18.1,
+        "adjLow": 17.54,
+        "adjClose": 17.65,
+        "volume": 42608100
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-14",
+        "adjOpen": 18.01,
+        "adjHigh": 18.18,
+        "adjLow": 17.96,
+        "adjClose": 18.15,
+        "volume": 19158619
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-13",
+        "adjOpen": 17.96,
+        "adjHigh": 18.09,
+        "adjLow": 17.9,
+        "adjClose": 18.05,
+        "volume": 21508021
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-12",
+        "adjOpen": 18.07,
+        "adjHigh": 18.09,
+        "adjLow": 17.85,
+        "adjClose": 17.97,
+        "volume": 22979921
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-09",
+        "adjOpen": 17.93,
+        "adjHigh": 18.12,
+        "adjLow": 17.82,
+        "adjClose": 18.02,
+        "volume": 22819613
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-08",
+        "adjOpen": 17.81,
+        "adjHigh": 18.01,
+        "adjLow": 17.76,
+        "adjClose": 17.94,
+        "volume": 25588147
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-07",
+        "adjOpen": 17.75,
+        "adjHigh": 18.05,
+        "adjLow": 17.66,
+        "adjClose": 17.8,
+        "volume": 30036720
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-06",
+        "adjOpen": 17.47,
+        "adjHigh": 17.85,
+        "adjLow": 17.44,
+        "adjClose": 17.75,
+        "volume": 33776000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-05",
+        "adjOpen": 17.39,
+        "adjHigh": 17.68,
+        "adjLow": 17.24,
+        "adjClose": 17.49,
+        "volume": 50898443
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-02",
+        "adjOpen": 18.16,
+        "adjHigh": 18.48,
+        "adjLow": 17.74,
+        "adjClose": 17.91,
+        "volume": 45240116
+      },
+      {
+        "symbol": "T",
+        "date": "2024-08-01",
+        "adjOpen": 17.86,
+        "adjHigh": 18.16,
+        "adjLow": 17.7,
+        "adjClose": 18.01,
+        "volume": 44379300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-31",
+        "adjOpen": 17.48,
+        "adjHigh": 17.86,
+        "adjLow": 17.46,
+        "adjClose": 17.8,
+        "volume": 39522008
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-30",
+        "adjOpen": 17.52,
+        "adjHigh": 17.6,
+        "adjLow": 17.42,
+        "adjClose": 17.55,
+        "volume": 27855000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-29",
+        "adjOpen": 17.57,
+        "adjHigh": 17.59,
+        "adjLow": 17.41,
+        "adjClose": 17.48,
+        "volume": 30788300
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-26",
+        "adjOpen": 17.72,
+        "adjHigh": 17.85,
+        "adjLow": 17.47,
+        "adjClose": 17.58,
+        "volume": 30844200
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-25",
+        "adjOpen": 17.71,
+        "adjHigh": 18.26,
+        "adjLow": 17.67,
+        "adjClose": 17.75,
+        "volume": 54049737
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-24",
+        "adjOpen": 17.5,
+        "adjHigh": 17.78,
+        "adjLow": 17.35,
+        "adjClose": 17.72,
+        "volume": 64465000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-23",
+        "adjOpen": 17.17,
+        "adjHigh": 17.21,
+        "adjLow": 16.78,
+        "adjClose": 16.84,
+        "volume": 70161843
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-22",
+        "adjOpen": 17.29,
+        "adjHigh": 17.35,
+        "adjLow": 16.93,
+        "adjClose": 17.15,
+        "volume": 44083637
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-19",
+        "adjOpen": 17.68,
+        "adjHigh": 17.79,
+        "adjLow": 17.55,
+        "adjClose": 17.68,
+        "volume": 29910308
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-18",
+        "adjOpen": 17.66,
+        "adjHigh": 17.88,
+        "adjLow": 17.56,
+        "adjClose": 17.71,
+        "volume": 34793900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-17",
+        "adjOpen": 17.48,
+        "adjHigh": 17.75,
+        "adjLow": 17.43,
+        "adjClose": 17.72,
+        "volume": 40611500
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-16",
+        "adjOpen": 17.2,
+        "adjHigh": 17.44,
+        "adjLow": 17.17,
+        "adjClose": 17.43,
+        "volume": 23923649
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-15",
+        "adjOpen": 17.43,
+        "adjHigh": 17.45,
+        "adjLow": 17.13,
+        "adjClose": 17.18,
+        "volume": 33910900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-12",
+        "adjOpen": 17.31,
+        "adjHigh": 17.43,
+        "adjLow": 17.19,
+        "adjClose": 17.39,
+        "volume": 37919400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-11",
+        "adjOpen": 17.29,
+        "adjHigh": 17.45,
+        "adjLow": 17.22,
+        "adjClose": 17.44,
+        "volume": 23633151
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-10",
+        "adjOpen": 17.17,
+        "adjHigh": 17.34,
+        "adjLow": 17.07,
+        "adjClose": 17.33,
+        "volume": 33408233
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-09",
+        "adjOpen": 17.15,
+        "adjHigh": 17.29,
+        "adjLow": 17.04,
+        "adjClose": 17.13,
+        "volume": 27840906
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-08",
+        "adjOpen": 17.17,
+        "adjHigh": 17.22,
+        "adjLow": 17.03,
+        "adjClose": 17.14,
+        "volume": 23277400
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-05",
+        "adjOpen": 17.04,
+        "adjHigh": 17.13,
+        "adjLow": 16.99,
+        "adjClose": 17.1,
+        "volume": 30727800
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-03",
+        "adjOpen": 17.2,
+        "adjHigh": 17.24,
+        "adjLow": 17,
+        "adjClose": 17.02,
+        "volume": 19463000
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-02",
+        "adjOpen": 17.3,
+        "adjHigh": 17.31,
+        "adjLow": 17.02,
+        "adjClose": 17.15,
+        "volume": 31606900
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-01",
+        "adjOpen": 17.53,
+        "adjHigh": 17.6,
+        "adjLow": 17.15,
+        "adjClose": 17.29,
+        "volume": 36095700
+      },
+      {
+        "symbol": "T",
+        "date": "2024-06-28",
+        "adjOpen": 17.13,
+        "adjHigh": 17.43,
+        "adjLow": 17.11,
+        "adjClose": 17.41,
+        "volume": 52825200
+      }
+    ],
+    "dividends": [
+      {
+        "symbol": "T",
+        "date": "2026-07-10",
+        "recordDate": "2026-07-10",
+        "paymentDate": "2026-08-03",
+        "declarationDate": "2026-06-24",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.885563380281691,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2026-04-10",
+        "recordDate": "2026-04-10",
+        "paymentDate": "2026-05-01",
+        "declarationDate": "2026-03-27",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.195011337868481,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2026-01-12",
+        "recordDate": "2026-01-12",
+        "paymentDate": "2026-02-02",
+        "declarationDate": "2025-12-15",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.675652906486943,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2025-10-10",
+        "recordDate": "2025-10-10",
+        "paymentDate": "2025-11-03",
+        "declarationDate": "2025-09-25",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.290684190181677,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2025-07-10",
+        "recordDate": "2025-07-10",
+        "paymentDate": "2025-08-01",
+        "declarationDate": "2025-06-25",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.0188269370021725,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2025-04-10",
+        "recordDate": "2025-04-10",
+        "paymentDate": "2025-05-01",
+        "declarationDate": "2025-03-21",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 4.20613868889731,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2025-01-10",
+        "recordDate": "2025-01-10",
+        "paymentDate": "2025-02-03",
+        "declarationDate": "2024-12-12",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 5.117565698478561,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2024-10-10",
+        "recordDate": "2024-10-10",
+        "paymentDate": "2024-11-01",
+        "declarationDate": "2024-09-27",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 5.230914231856739,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2024-07-10",
+        "recordDate": "2024-07-10",
+        "paymentDate": "2024-08-01",
+        "declarationDate": "2024-06-26",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 5.923159018143011,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2024-04-09",
+        "recordDate": "2024-04-10",
+        "paymentDate": "2024-05-01",
+        "declarationDate": "2024-03-29",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 6.568047337278108,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2024-01-09",
+        "recordDate": "2024-01-10",
+        "paymentDate": "2024-02-01",
+        "declarationDate": "2023-12-13",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 6.548672566371683,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2023-10-06",
+        "recordDate": "2023-10-10",
+        "paymentDate": "2023-11-01",
+        "declarationDate": "2023-09-29",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 7.681660899653981,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2023-07-07",
+        "recordDate": "2023-07-10",
+        "paymentDate": "2023-08-01",
+        "declarationDate": "2023-06-29",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 7.110826393337605,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2023-04-06",
+        "recordDate": "2023-04-10",
+        "paymentDate": "2023-05-01",
+        "declarationDate": "2023-03-31",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 5.648854961832062,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2023-01-09",
+        "recordDate": "2023-01-10",
+        "paymentDate": "2023-02-01",
+        "declarationDate": "2022-12-15",
+        "adjDividend": 0.2775,
+        "dividend": 0.2775,
+        "yield": 5.82983193277311,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2022-10-06",
+        "recordDate": "2022-10-10",
+        "paymentDate": "2022-11-01",
+        "declarationDate": "2022-09-30",
+        "adjDividend": 0.2775,
+        "dividend": 0.278,
+        "yield": 8.828328981723239,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2022-07-08",
+        "recordDate": "2022-07-11",
+        "paymentDate": "2022-08-01",
+        "declarationDate": "2022-06-28",
+        "adjDividend": 0.2775,
+        "dividend": 0.278,
+        "yield": 7.668269230769232,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2022-04-13",
+        "recordDate": "2022-04-14",
+        "paymentDate": "2022-05-02",
+        "declarationDate": "2022-03-25",
+        "adjDividend": 0.2775,
+        "dividend": 0.278,
+        "yield": 9.461894953656024,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2022-01-07",
+        "recordDate": "2022-01-10",
+        "paymentDate": "2022-02-01",
+        "declarationDate": "2021-12-16",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 10.483870967741936,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2021-10-07",
+        "recordDate": "2021-10-11",
+        "paymentDate": "2021-11-01",
+        "declarationDate": "2021-09-23",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 10.17114914425428,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2021-07-08",
+        "recordDate": "2021-07-09",
+        "paymentDate": "2021-08-02",
+        "declarationDate": "2021-06-25",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.779031499764928,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2021-04-08",
+        "recordDate": "2021-04-09",
+        "paymentDate": "2021-05-03",
+        "declarationDate": "2021-03-26",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.187279151943462,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2021-01-08",
+        "recordDate": "2021-01-11",
+        "paymentDate": "2021-02-01",
+        "declarationDate": "2020-12-11",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.497716894977168,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2020-10-08",
+        "recordDate": "2020-10-12",
+        "paymentDate": "2020-11-02",
+        "declarationDate": "2020-09-25",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.634089856415006,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2020-07-09",
+        "recordDate": "2020-07-10",
+        "paymentDate": "2020-08-03",
+        "declarationDate": "2020-06-26",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.282511210762333,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2020-04-08",
+        "recordDate": "2020-04-09",
+        "paymentDate": "2020-05-01",
+        "declarationDate": "2020-03-27",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 9.131205673758865,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2020-01-09",
+        "recordDate": "2020-01-10",
+        "paymentDate": "2020-02-03",
+        "declarationDate": "2019-12-13",
+        "adjDividend": 0.52,
+        "dividend": 0.52,
+        "yield": 6.998975759644929,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2019-10-09",
+        "recordDate": "2019-10-10",
+        "paymentDate": "2019-11-01",
+        "declarationDate": "2019-09-26",
+        "adjDividend": 0.51,
+        "dividend": 0.51,
+        "yield": 7.296137339055794,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2019-07-09",
+        "recordDate": "2019-07-10",
+        "paymentDate": "2019-08-01",
+        "declarationDate": "2019-06-28",
+        "adjDividend": 0.51,
+        "dividend": 0.51,
+        "yield": 8.017377567140601,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2019-04-09",
+        "recordDate": "2019-04-10",
+        "paymentDate": "2019-05-01",
+        "declarationDate": "2019-03-29",
+        "adjDividend": 0.51,
+        "dividend": 0.51,
+        "yield": 8.430717863105174,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2019-01-09",
+        "recordDate": "2019-01-10",
+        "paymentDate": "2019-02-01",
+        "declarationDate": "2018-12-13",
+        "adjDividend": 0.51,
+        "dividend": 0.51,
+        "yield": 8.846830985915492,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2018-10-09",
+        "recordDate": "2018-10-10",
+        "paymentDate": "2018-11-01",
+        "declarationDate": "2018-09-28",
+        "adjDividend": 0.5,
+        "dividend": 0.5,
+        "yield": 7.911392405063291,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2018-07-09",
+        "recordDate": "2018-07-10",
+        "paymentDate": "2018-08-01",
+        "declarationDate": "2018-06-29",
+        "adjDividend": 0.5,
+        "dividend": 0.5,
+        "yield": 8.199423156159868,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2018-04-09",
+        "recordDate": "2018-04-10",
+        "paymentDate": "2018-05-01",
+        "declarationDate": "2018-03-30",
+        "adjDividend": 0.5,
+        "dividend": 0.5,
+        "yield": 7.457627118644068,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2018-01-09",
+        "recordDate": "2018-01-10",
+        "paymentDate": "2018-02-01",
+        "declarationDate": "2017-12-15",
+        "adjDividend": 0.5,
+        "dividend": 0.5,
+        "yield": 6.961130742049469,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2017-10-06",
+        "recordDate": "2017-10-10",
+        "paymentDate": "2017-11-01",
+        "declarationDate": "2017-09-29",
+        "adjDividend": 0.49,
+        "dividend": 0.49,
+        "yield": 6.728458633710951,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2017-07-06",
+        "recordDate": "2017-07-10",
+        "paymentDate": "2017-08-01",
+        "declarationDate": "2017-06-30",
+        "adjDividend": 0.49,
+        "dividend": 0.49,
+        "yield": 6.949394155381326,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2017-04-06",
+        "recordDate": "2017-04-10",
+        "paymentDate": "2017-05-01",
+        "declarationDate": "2017-03-31",
+        "adjDividend": 0.49,
+        "dividend": 0.49,
+        "yield": 6.3315926892950385,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2017-01-06",
+        "recordDate": "2017-01-10",
+        "paymentDate": "2017-02-01",
+        "declarationDate": "2016-10-22",
+        "adjDividend": 0.49,
+        "dividend": 0.49,
+        "yield": 6.187880731003526,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2016-10-05",
+        "recordDate": "2016-10-10",
+        "paymentDate": "2016-11-01",
+        "declarationDate": "2016-09-30",
+        "adjDividend": 0.48,
+        "dividend": 0.48,
+        "yield": 6.495263870094722,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2016-07-06",
+        "recordDate": "2016-07-08",
+        "paymentDate": "2016-08-01",
+        "declarationDate": "2016-06-24",
+        "adjDividend": 0.48,
+        "dividend": 0.48,
+        "yield": 5.8715032277897325,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2016-04-06",
+        "recordDate": "2016-04-08",
+        "paymentDate": "2016-05-02",
+        "declarationDate": "2016-03-25",
+        "adjDividend": 0.48,
+        "dividend": 0.48,
+        "yield": 6.5157750342935525,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2016-01-06",
+        "recordDate": "2016-01-08",
+        "paymentDate": "2016-02-01",
+        "declarationDate": "2015-12-18",
+        "adjDividend": 0.48,
+        "dividend": 0.48,
+        "yield": 7.351225204200699,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2015-10-07",
+        "recordDate": "2015-10-09",
+        "paymentDate": "2015-11-02",
+        "declarationDate": "2015-09-25",
+        "adjDividend": 0.47,
+        "dividend": 0.47,
+        "yield": 7.519999999999999,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2015-07-08",
+        "recordDate": "2015-07-10",
+        "paymentDate": "2015-08-03",
+        "declarationDate": "2015-06-26",
+        "adjDividend": 0.47,
+        "dividend": 0.47,
+        "yield": 7.121096725057121,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2015-04-08",
+        "recordDate": "2015-04-10",
+        "paymentDate": "2015-05-01",
+        "declarationDate": "2015-03-27",
+        "adjDividend": 0.47,
+        "dividend": 0.47,
+        "yield": 7.548701298701298,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2015-01-07",
+        "recordDate": "2015-01-09",
+        "paymentDate": "2015-02-02",
+        "declarationDate": "2014-12-19",
+        "adjDividend": 0.47,
+        "dividend": 0.47,
+        "yield": 7.388178913738019,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2014-10-08",
+        "recordDate": "2014-10-10",
+        "paymentDate": "2014-11-03",
+        "declarationDate": "2014-09-26",
+        "adjDividend": 0.46,
+        "dividend": 0.46,
+        "yield": 6.935544666415379,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2014-07-08",
+        "recordDate": "2014-07-10",
+        "paymentDate": "2014-08-01",
+        "declarationDate": "2014-06-27",
+        "adjDividend": 0.46,
+        "dividend": 0.46,
+        "yield": 6.818181818181819,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2014-04-08",
+        "recordDate": "2014-04-10",
+        "paymentDate": "2014-05-01",
+        "declarationDate": "2014-03-28",
+        "adjDividend": 0.46,
+        "dividend": 0.46,
+        "yield": 6.836964688204357,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2014-01-08",
+        "recordDate": "2014-01-10",
+        "paymentDate": "2014-02-03",
+        "declarationDate": "2013-12-13",
+        "adjDividend": 0.46,
+        "dividend": 0.46,
+        "yield": 7.004643962848298,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2013-10-08",
+        "recordDate": "2013-10-10",
+        "paymentDate": "2013-11-01",
+        "declarationDate": "2013-09-27",
+        "adjDividend": 0.45,
+        "dividend": 0.45,
+        "yield": 7.202881152460986,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2013-07-08",
+        "recordDate": "2013-07-10",
+        "paymentDate": "2013-08-01",
+        "declarationDate": "2013-06-28",
+        "adjDividend": 0.45,
+        "dividend": 0.45,
+        "yield": 6.666666666666667,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2013-04-08",
+        "recordDate": "2013-04-10",
+        "paymentDate": "2013-05-01",
+        "declarationDate": "2013-03-29",
+        "adjDividend": 0.45,
+        "dividend": 0.45,
+        "yield": 6.269813314547376,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2013-01-08",
+        "recordDate": "2013-01-10",
+        "paymentDate": "2013-02-01",
+        "declarationDate": "2012-11-07",
+        "adjDividend": 0.45,
+        "dividend": 0.45,
+        "yield": 6.826070188970306,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2012-10-05",
+        "recordDate": "2012-10-10",
+        "paymentDate": "2012-11-01",
+        "declarationDate": "2012-09-28",
+        "adjDividend": 0.44,
+        "dividend": 0.44,
+        "yield": 6.15815255423373,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2012-07-06",
+        "recordDate": "2012-07-10",
+        "paymentDate": "2012-08-01",
+        "declarationDate": "2012-06-29",
+        "adjDividend": 0.44,
+        "dividend": 0.44,
+        "yield": 6.5420560747663545,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2012-04-05",
+        "recordDate": "2012-04-10",
+        "paymentDate": "2012-05-01",
+        "declarationDate": "2012-04-02",
+        "adjDividend": 0.44,
+        "dividend": 0.44,
+        "yield": 7.451820128479657,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2012-01-06",
+        "recordDate": "2012-01-10",
+        "paymentDate": "2012-02-01",
+        "declarationDate": "2011-12-19",
+        "adjDividend": 0.44,
+        "dividend": 0.44,
+        "yield": 7.7232142857142865,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2011-10-05",
+        "recordDate": "2011-10-10",
+        "paymentDate": "2011-11-01",
+        "declarationDate": "2011-10-03",
+        "adjDividend": 0.43,
+        "dividend": 0.43,
+        "yield": 8.048666354702853,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2011-07-06",
+        "recordDate": "2011-07-08",
+        "paymentDate": "2011-08-01",
+        "declarationDate": "2011-06-27",
+        "adjDividend": 0.43,
+        "dividend": 0.43,
+        "yield": 7.254985150615188,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2011-04-06",
+        "recordDate": "2011-04-08",
+        "paymentDate": "2011-05-02",
+        "declarationDate": "2011-03-28",
+        "adjDividend": 0.43,
+        "dividend": 0.43,
+        "yield": 7.391304347826087,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2011-01-06",
+        "recordDate": "2011-01-10",
+        "paymentDate": "2011-02-01",
+        "declarationDate": "2010-12-20",
+        "adjDividend": 0.43,
+        "dividend": 0.43,
+        "yield": 7.681818181818182,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2010-10-06",
+        "recordDate": "2010-10-08",
+        "paymentDate": "2010-11-01",
+        "declarationDate": "2010-09-27",
+        "adjDividend": 0.42,
+        "dividend": 0.42,
+        "yield": 7.777777777777777,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2010-07-07",
+        "recordDate": "2010-07-09",
+        "paymentDate": "2010-08-02",
+        "declarationDate": "2010-06-28",
+        "adjDividend": 0.42,
+        "dividend": 0.42,
+        "yield": 9.095860566448803,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2010-04-07",
+        "recordDate": "2010-04-09",
+        "paymentDate": "2010-05-03",
+        "declarationDate": "2010-03-29",
+        "adjDividend": 0.42,
+        "dividend": 0.42,
+        "yield": 8.574380165289256,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2010-01-06",
+        "recordDate": "2010-01-08",
+        "paymentDate": "2010-02-01",
+        "declarationDate": "2009-12-21",
+        "adjDividend": 0.42,
+        "dividend": 0.42,
+        "yield": 7.91746641074856,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2009-10-07",
+        "recordDate": "2009-10-09",
+        "paymentDate": "2009-11-02",
+        "declarationDate": "2009-09-28",
+        "adjDividend": 0.41,
+        "dividend": 0.41,
+        "yield": 8.299595141700404,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2009-07-08",
+        "recordDate": "2009-07-10",
+        "paymentDate": "2009-08-03",
+        "declarationDate": "2009-06-29",
+        "adjDividend": 0.41,
+        "dividend": 0.41,
+        "yield": 9.172763083849183,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2009-04-07",
+        "recordDate": "2009-04-09",
+        "paymentDate": "2009-05-01",
+        "declarationDate": "2009-03-27",
+        "adjDividend": 0.41,
+        "dividend": 0.41,
+        "yield": 8.406850025947069,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2009-01-07",
+        "recordDate": "2009-01-09",
+        "paymentDate": "2009-02-02",
+        "declarationDate": "2008-12-12",
+        "adjDividend": 0.41,
+        "dividend": 0.41,
+        "yield": 7.838364167478091,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2008-10-08",
+        "recordDate": "2008-10-10",
+        "paymentDate": "2008-11-03",
+        "declarationDate": "2008-09-26",
+        "adjDividend": 0.4,
+        "dividend": 0.4,
+        "yield": 8.56989823245849,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2008-07-08",
+        "recordDate": "2008-07-10",
+        "paymentDate": "2008-08-01",
+        "declarationDate": "2008-06-27",
+        "adjDividend": 0.4,
+        "dividend": 0.4,
+        "yield": 6.250000000000002,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2008-04-08",
+        "recordDate": "2008-04-10",
+        "paymentDate": "2008-05-01",
+        "declarationDate": "2008-03-28",
+        "adjDividend": 0.4,
+        "dividend": 0.4,
+        "yield": 5.155343120518949,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2008-01-08",
+        "recordDate": "2008-01-10",
+        "paymentDate": "2008-02-01",
+        "declarationDate": "2007-12-11",
+        "adjDividend": 0.4,
+        "dividend": 0.4,
+        "yield": 4.956021650879567,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2007-10-05",
+        "recordDate": "2007-10-10",
+        "paymentDate": "2007-11-01",
+        "declarationDate": "2007-09-27",
+        "adjDividend": 0.355,
+        "dividend": 0.355,
+        "yield": 4.464005029864823,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2007-07-06",
+        "recordDate": "2007-07-10",
+        "paymentDate": "2007-08-01",
+        "declarationDate": "2007-06-29",
+        "adjDividend": 0.355,
+        "dividend": 0.355,
+        "yield": 4.553600521342457,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2007-04-05",
+        "recordDate": "2007-04-10",
+        "paymentDate": "2007-05-01",
+        "declarationDate": "2007-03-30",
+        "adjDividend": 0.355,
+        "dividend": 0.355,
+        "yield": 4.639001349527665,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2007-01-08",
+        "recordDate": "2007-01-10",
+        "paymentDate": "2007-02-01",
+        "declarationDate": "2006-12-15",
+        "adjDividend": 0.355,
+        "dividend": 0.355,
+        "yield": 5.299764890282132,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2006-10-05",
+        "recordDate": "2006-10-10",
+        "paymentDate": "2006-11-01",
+        "declarationDate": "2006-09-29",
+        "adjDividend": 0.3325,
+        "dividend": 0.3325,
+        "yield": 5.518672199170124,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2006-07-06",
+        "recordDate": "2006-07-10",
+        "paymentDate": "2006-08-01",
+        "declarationDate": "2006-06-30",
+        "adjDividend": 0.3325,
+        "dividend": 0.3325,
+        "yield": 6.321839080459771,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2006-04-06",
+        "recordDate": "2006-04-10",
+        "paymentDate": "2006-05-01",
+        "declarationDate": "2006-03-31",
+        "adjDividend": 0.3325,
+        "dividend": 0.3325,
+        "yield": 6.563126252505009,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2006-01-06",
+        "recordDate": "2006-01-10",
+        "paymentDate": "2006-02-01",
+        "declarationDate": "2005-12-09",
+        "adjDividend": 0.3325,
+        "dividend": 0.3325,
+        "yield": 6.9075451647183845,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2005-10-05",
+        "recordDate": "2005-10-10",
+        "paymentDate": "2005-11-01",
+        "declarationDate": "2005-09-30",
+        "adjDividend": 0.3225,
+        "dividend": 0.3225,
+        "yield": 7.329545454545454,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2005-07-06",
+        "recordDate": "2005-07-08",
+        "paymentDate": "2005-08-01",
+        "declarationDate": "2005-06-24",
+        "adjDividend": 0.3225,
+        "dividend": 0.3225,
+        "yield": 7.182940516273851,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2005-04-06",
+        "recordDate": "2005-04-08",
+        "paymentDate": "2005-05-02",
+        "declarationDate": "2005-03-11",
+        "adjDividend": 0.3225,
+        "dividend": 0.3225,
+        "yield": 7.036011080332409,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2005-01-06",
+        "recordDate": "2005-01-10",
+        "paymentDate": "2005-02-01",
+        "declarationDate": "2004-12-10",
+        "adjDividend": 0.3225,
+        "dividend": 0.3225,
+        "yield": 6.638566912539515,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2004-10-06",
+        "recordDate": "2004-10-08",
+        "paymentDate": "2004-11-01",
+        "declarationDate": "2004-09-24",
+        "adjDividend": 0.3125,
+        "dividend": 0.3125,
+        "yield": 6.100536847242558,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2004-07-07",
+        "recordDate": "2004-07-10",
+        "paymentDate": "2004-08-02",
+        "declarationDate": "2004-06-25",
+        "adjDividend": 0.3125,
+        "dividend": 0.3125,
+        "yield": 7.336111111111111,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2004-04-06",
+        "recordDate": "2004-04-10",
+        "paymentDate": "2004-05-03",
+        "declarationDate": "2004-03-26",
+        "adjDividend": 0.3125,
+        "dividend": 0.3125,
+        "yield": 7.355896351136964,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2004-01-07",
+        "recordDate": "2004-01-10",
+        "paymentDate": "2004-02-02",
+        "declarationDate": "2003-12-12",
+        "adjDividend": 0.3125,
+        "dividend": 0.3125,
+        "yield": 6.902200488997555,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2003-10-08",
+        "recordDate": "2003-10-10",
+        "paymentDate": "2003-11-03",
+        "declarationDate": "2003-09-26",
+        "adjDividend": 0.383,
+        "dividend": 0.3825,
+        "yield": 8.182904961147639,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2003-07-08",
+        "recordDate": "2003-07-10",
+        "paymentDate": "2003-08-01",
+        "declarationDate": "2003-06-27",
+        "adjDividend": 0.383,
+        "dividend": 0.3825,
+        "yield": 6.372399797057331,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2003-04-08",
+        "recordDate": "2003-04-10",
+        "paymentDate": "2003-05-01",
+        "declarationDate": "2003-03-28",
+        "adjDividend": 0.333,
+        "dividend": 0.2825,
+        "yield": 7.051202961135101,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2003-01-08",
+        "recordDate": "2003-01-10",
+        "paymentDate": "2003-02-03",
+        "declarationDate": "2002-12-13",
+        "adjDividend": 0.27,
+        "dividend": 0.27,
+        "yield": 4.972375690607735,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2002-10-08",
+        "recordDate": "2002-10-10",
+        "paymentDate": "2002-11-01",
+        "declarationDate": "2002-09-27",
+        "adjDividend": 0.27,
+        "dividend": 0.27,
+        "yield": 6.8968305304010356,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2002-07-08",
+        "recordDate": "2002-07-10",
+        "paymentDate": "2002-08-01",
+        "declarationDate": "2002-06-28",
+        "adjDividend": 0.27,
+        "dividend": 0.27,
+        "yield": 4.4111483654652135,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2002-04-08",
+        "recordDate": "2002-04-10",
+        "paymentDate": "2002-05-01",
+        "declarationDate": "2002-03-22",
+        "adjDividend": 0.27,
+        "dividend": 0.27,
+        "yield": 3.7676822633297053,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2002-01-08",
+        "recordDate": "2002-01-10",
+        "paymentDate": "2002-02-01",
+        "declarationDate": "2001-12-14",
+        "adjDividend": 0.25625,
+        "dividend": 0.25625,
+        "yield": 3.4178059353117707,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2001-10-05",
+        "recordDate": "2001-10-10",
+        "paymentDate": "2001-11-01",
+        "declarationDate": "2001-09-28",
+        "adjDividend": 0.25625,
+        "dividend": 0.25625,
+        "yield": 3.016681428993209,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2001-07-06",
+        "recordDate": "2001-07-10",
+        "paymentDate": "2001-08-01",
+        "declarationDate": "2001-06-29",
+        "adjDividend": 0.25625,
+        "dividend": 0.25625,
+        "yield": 3.3769460086121224,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2001-04-06",
+        "recordDate": "2001-04-10",
+        "paymentDate": "2001-05-01",
+        "declarationDate": "2001-03-30",
+        "adjDividend": 0.25625,
+        "dividend": 0.25625,
+        "yield": 3.1119951040391673,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2001-01-08",
+        "recordDate": "2001-01-10",
+        "paymentDate": "2001-02-01",
+        "declarationDate": "2000-12-15",
+        "adjDividend": 0.253,
+        "dividend": 0.25375,
+        "yield": 2.6817340734866506,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2000-10-05",
+        "recordDate": "2000-10-10",
+        "paymentDate": "2000-11-01",
+        "declarationDate": "2000-10-02",
+        "adjDividend": 0.254,
+        "dividend": 0.25375,
+        "yield": 2.4863962404155324,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2000-07-06",
+        "recordDate": "2000-07-10",
+        "paymentDate": "2000-08-01",
+        "declarationDate": "2000-06-30",
+        "adjDividend": 0.25375,
+        "dividend": 0.25375,
+        "yield": 3.03076454462382,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2000-04-06",
+        "recordDate": "2000-04-10",
+        "paymentDate": "2000-05-01",
+        "declarationDate": "2000-03-31",
+        "adjDividend": 0.25375,
+        "dividend": 0.25375,
+        "yield": 2.7600953449242853,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "2000-01-06",
+        "recordDate": "2000-01-10",
+        "paymentDate": "2000-02-01",
+        "declarationDate": "1999-12-17",
+        "adjDividend": 0.24375,
+        "dividend": 0.24375,
+        "yield": 2.9451847365233186,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1999-09-07",
+        "recordDate": "1999-09-09",
+        "paymentDate": "1999-11-01",
+        "declarationDate": "1999-08-31",
+        "adjDividend": 0.24375,
+        "dividend": 0.24375,
+        "yield": 2.6416002199615067,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1999-07-07",
+        "recordDate": "1999-07-10",
+        "paymentDate": "1999-08-02",
+        "declarationDate": "1999-06-25",
+        "adjDividend": 0.243,
+        "dividend": 0.24375,
+        "yield": 2.2131529850746268,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1999-04-07",
+        "recordDate": "1999-04-10",
+        "paymentDate": "1999-05-03",
+        "declarationDate": "1999-03-26",
+        "adjDividend": 0.242,
+        "dividend": 0.24375,
+        "yield": 2.381315054582381,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1999-01-06",
+        "recordDate": "1999-01-10",
+        "paymentDate": "1999-02-01",
+        "declarationDate": "1998-12-21",
+        "adjDividend": 0.232,
+        "dividend": 0.23375,
+        "yield": 2.276741903827282,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1998-10-07",
+        "recordDate": "1998-10-10",
+        "paymentDate": "1998-11-02",
+        "declarationDate": "1998-09-25",
+        "adjDividend": 0.232,
+        "dividend": 0.23375,
+        "yield": 2.5421503593145385,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1998-07-08",
+        "recordDate": "1998-07-10",
+        "paymentDate": "1998-08-03",
+        "declarationDate": "1998-06-26",
+        "adjDividend": 0.232,
+        "dividend": 0.23375,
+        "yield": 3.0576987588057705,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1998-04-07",
+        "recordDate": "1998-04-10",
+        "paymentDate": "1998-05-01",
+        "declarationDate": "1998-01-30",
+        "adjDividend": 0.232,
+        "dividend": 0.23375,
+        "yield": 2.7826555760936533,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1998-01-07",
+        "recordDate": "1998-01-10",
+        "paymentDate": "1998-02-02",
+        "declarationDate": "1997-12-19",
+        "adjDividend": 0.22375,
+        "dividend": 0.4475,
+        "yield": 3.250998910279695,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1997-10-08",
+        "recordDate": "1997-10-10",
+        "paymentDate": "1997-11-03",
+        "declarationDate": "1997-09-26",
+        "adjDividend": 0.22375,
+        "dividend": 0.4475,
+        "yield": 3.7128194386258904,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1997-07-08",
+        "recordDate": "1997-07-10",
+        "paymentDate": "1997-08-01",
+        "declarationDate": "1997-06-27",
+        "adjDividend": 0.22375,
+        "dividend": 0.4475,
+        "yield": 3.7612516073724818,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1997-03-25",
+        "recordDate": "1997-03-28",
+        "paymentDate": "1997-05-01",
+        "declarationDate": "1997-03-18",
+        "adjDividend": 0.22375,
+        "dividend": 0.4475,
+        "yield": 4.215186802523046,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1997-01-08",
+        "recordDate": "1997-01-10",
+        "paymentDate": "1997-02-03",
+        "declarationDate": "1996-12-20",
+        "adjDividend": 0.215,
+        "dividend": 0.43,
+        "yield": 4.467532467532467,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1996-10-08",
+        "recordDate": "1996-10-10",
+        "paymentDate": "1996-11-01",
+        "declarationDate": "1996-09-27",
+        "adjDividend": 0.215,
+        "dividend": 0.43,
+        "yield": 4.626358695652175,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1996-07-08",
+        "recordDate": "1996-07-10",
+        "paymentDate": "1996-08-01",
+        "declarationDate": "1996-06-28",
+        "adjDividend": 0.215,
+        "dividend": 0.43,
+        "yield": 4.675360710321865,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1996-04-08",
+        "recordDate": "1996-04-10",
+        "paymentDate": "1996-05-01",
+        "declarationDate": "1996-03-29",
+        "adjDividend": 0.215,
+        "dividend": 0.43,
+        "yield": 4.626803551609323,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1996-01-08",
+        "recordDate": "1996-01-10",
+        "paymentDate": "1996-02-01",
+        "declarationDate": "1995-12-15",
+        "adjDividend": 0.20625,
+        "dividend": 0.4125,
+        "yield": 3.7688442211055273,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1995-10-05",
+        "recordDate": "1995-10-10",
+        "paymentDate": "1995-11-01",
+        "declarationDate": "1995-09-29",
+        "adjDividend": 0.20625,
+        "dividend": 0.4125,
+        "yield": 3.9778265107212474,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1995-07-06",
+        "recordDate": "1995-07-10",
+        "paymentDate": "1995-08-01",
+        "declarationDate": "1995-07-03",
+        "adjDividend": 0.20625,
+        "dividend": 0.4125,
+        "yield": 4.541619797525309,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1995-04-04",
+        "recordDate": "1995-04-10",
+        "paymentDate": "1995-05-01",
+        "declarationDate": "1995-03-31",
+        "adjDividend": 0.20625,
+        "dividend": 0.4125,
+        "yield": 5.010978670012547,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1995-01-04",
+        "recordDate": "1995-01-10",
+        "paymentDate": "1995-02-01",
+        "declarationDate": "",
+        "adjDividend": 0.1975,
+        "dividend": 0.395,
+        "yield": 5.231788079470199,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1994-10-04",
+        "recordDate": "1994-10-11",
+        "paymentDate": "1994-11-01",
+        "declarationDate": "",
+        "adjDividend": 0.1975,
+        "dividend": 0.395,
+        "yield": 5.172185430463577,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1994-07-01",
+        "recordDate": "1994-07-10",
+        "paymentDate": "1994-08-01",
+        "declarationDate": "",
+        "adjDividend": 0.1975,
+        "dividend": 0.395,
+        "yield": 4.756623536660505,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1994-04-04",
+        "recordDate": "1994-04-10",
+        "paymentDate": "1994-05-02",
+        "declarationDate": "",
+        "adjDividend": 0.1975,
+        "dividend": 0.395,
+        "yield": 5.233196159122086,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1994-01-04",
+        "recordDate": "1994-01-10",
+        "paymentDate": "1994-02-01",
+        "declarationDate": "1993-12-21",
+        "adjDividend": 0.1885,
+        "dividend": 0.3775,
+        "yield": 4.920091324200913,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1993-10-04",
+        "recordDate": "1993-10-10",
+        "paymentDate": "1993-11-01",
+        "declarationDate": "1993-09-30",
+        "adjDividend": 0.1885,
+        "dividend": 0.3775,
+        "yield": 4.5848651960784315,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1993-07-02",
+        "recordDate": "1993-07-10",
+        "paymentDate": "1993-08-02",
+        "declarationDate": "1993-06-30",
+        "adjDividend": 0.1885,
+        "dividend": 0.3775,
+        "yield": 5.059645535105658,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1993-04-02",
+        "recordDate": "1993-04-10",
+        "paymentDate": "1993-05-03",
+        "declarationDate": "1993-04-01",
+        "adjDividend": 0.18875,
+        "dividend": 0.755,
+        "yield": 5.109299097848716,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1993-01-04",
+        "recordDate": "1993-01-10",
+        "paymentDate": "1993-02-01",
+        "declarationDate": "1992-12-24",
+        "adjDividend": 0.1825,
+        "dividend": 0.73,
+        "yield": 5.3013798111837325,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1992-10-05",
+        "recordDate": "1992-10-10",
+        "paymentDate": "1992-11-02",
+        "declarationDate": "1992-10-05",
+        "adjDividend": 0.1825,
+        "dividend": 0.73,
+        "yield": 5.753968253968254,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1992-07-06",
+        "recordDate": "1992-07-10",
+        "paymentDate": "1992-08-03",
+        "declarationDate": "1992-07-02",
+        "adjDividend": 0.1825,
+        "dividend": 0.73,
+        "yield": 5.985037406483791,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1992-04-06",
+        "recordDate": "1992-04-10",
+        "paymentDate": "1992-05-01",
+        "declarationDate": "1992-04-02",
+        "adjDividend": 0.1825,
+        "dividend": 0.73,
+        "yield": 6.505914467697907,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1992-01-06",
+        "recordDate": "1992-01-10",
+        "paymentDate": "1992-02-03",
+        "declarationDate": "1991-12-30",
+        "adjDividend": 0.1775,
+        "dividend": 0.71,
+        "yield": 5.824446267432322,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1991-10-04",
+        "recordDate": "1991-10-10",
+        "paymentDate": "1991-11-01",
+        "declarationDate": "1991-10-03",
+        "adjDividend": 0.1775,
+        "dividend": 0.71,
+        "yield": 6.759348034515819,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1991-07-03",
+        "recordDate": "1991-07-10",
+        "paymentDate": "1991-08-01",
+        "declarationDate": "1991-07-03",
+        "adjDividend": 0.1775,
+        "dividend": 0.71,
+        "yield": 6.999999999999999,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1991-04-04",
+        "recordDate": "1991-04-10",
+        "paymentDate": "1991-05-01",
+        "declarationDate": "1991-04-03",
+        "adjDividend": 0.1775,
+        "dividend": 0.71,
+        "yield": 6.7279767666989345,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1991-01-04",
+        "recordDate": "1991-01-10",
+        "paymentDate": "1991-02-01",
+        "declarationDate": "1990-12-20",
+        "adjDividend": 0.1725,
+        "dividend": 0.69,
+        "yield": 6.771344455348381,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1990-10-03",
+        "recordDate": "1990-10-10",
+        "paymentDate": "1990-11-01",
+        "declarationDate": "1990-10-02",
+        "adjDividend": 0.1725,
+        "dividend": 0.69,
+        "yield": 6.719367588932807,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1990-07-03",
+        "recordDate": "1990-07-10",
+        "paymentDate": "1990-08-01",
+        "declarationDate": "1990-07-03",
+        "adjDividend": 0.1725,
+        "dividend": 0.69,
+        "yield": 6.542968749999998,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1990-04-04",
+        "recordDate": "1990-04-10",
+        "paymentDate": "1990-05-01",
+        "declarationDate": "1990-03-30",
+        "adjDividend": 0.1725,
+        "dividend": 0.69,
+        "yield": 6.2205466540999055,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1990-01-04",
+        "recordDate": "1990-01-10",
+        "paymentDate": "1990-02-01",
+        "declarationDate": "1989-12-19",
+        "adjDividend": 0.1625,
+        "dividend": 0.65,
+        "yield": 5.613126079447324,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1989-10-03",
+        "recordDate": "1989-10-10",
+        "paymentDate": "1989-11-01",
+        "declarationDate": "1989-10-02",
+        "adjDividend": 0.1625,
+        "dividend": 0.65,
+        "yield": 5.987884436160298,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1989-07-05",
+        "recordDate": "1989-07-11",
+        "paymentDate": "1989-08-01",
+        "declarationDate": "1989-07-03",
+        "adjDividend": 0.1625,
+        "dividend": 0.8606,
+        "yield": 6.519507186858315,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1989-04-04",
+        "recordDate": "1989-04-10",
+        "paymentDate": "1989-05-01",
+        "declarationDate": "1989-04-03",
+        "adjDividend": 0.1625,
+        "dividend": 0.8606,
+        "yield": 7.5602409638554215,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1989-01-03",
+        "recordDate": "1989-01-09",
+        "paymentDate": "1989-02-01",
+        "declarationDate": "1988-12-19",
+        "adjDividend": 0.155,
+        "dividend": 0.62,
+        "yield": 8.344549125168237,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1988-10-04",
+        "recordDate": "1988-10-11",
+        "paymentDate": "1988-11-01",
+        "declarationDate": "1988-10-04",
+        "adjDividend": 0.155,
+        "dividend": 0.8209,
+        "yield": 8.155080213903743,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1988-07-01",
+        "recordDate": "1988-07-08",
+        "paymentDate": "1988-08-01",
+        "declarationDate": "1988-06-28",
+        "adjDividend": 0.155,
+        "dividend": 0.8209,
+        "yield": 8.174386920980927,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1988-04-04",
+        "recordDate": "1988-04-08",
+        "paymentDate": "1988-05-02",
+        "declarationDate": "1988-03-28",
+        "adjDividend": 0.155,
+        "dividend": 0.62,
+        "yield": 8.93939393939394,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1988-01-04",
+        "recordDate": "1988-01-08",
+        "paymentDate": "1988-02-01",
+        "declarationDate": "1987-12-21",
+        "adjDividend": 0.145,
+        "dividend": 0.58,
+        "yield": 8.90937019969278,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1987-10-05",
+        "recordDate": "1987-10-09",
+        "paymentDate": "1987-11-01",
+        "declarationDate": "1987-09-28",
+        "adjDividend": 0.145,
+        "dividend": 0.7679,
+        "yield": 6.947799511002445,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1987-07-06",
+        "recordDate": "1987-07-10",
+        "paymentDate": "1987-08-01",
+        "declarationDate": "1987-06-29",
+        "adjDividend": 0.145,
+        "dividend": 0.7679,
+        "yield": 7.785454545454544,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1987-04-06",
+        "recordDate": "1987-04-10",
+        "paymentDate": "1987-05-01",
+        "declarationDate": "1987-03-31",
+        "adjDividend": 0.145,
+        "dividend": 2.3038,
+        "yield": 7.506749311294765,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1987-01-05",
+        "recordDate": "1987-01-09",
+        "paymentDate": "1987-02-01",
+        "declarationDate": "1986-12-23",
+        "adjDividend": 0.13333,
+        "dividend": 2.1184,
+        "yield": 7.417524339360222,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1986-10-06",
+        "recordDate": "1986-10-10",
+        "paymentDate": "1986-11-01",
+        "declarationDate": "1986-09-30",
+        "adjDividend": 0.13333,
+        "dividend": 2.1184,
+        "yield": 7.720441176470589,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1986-07-03",
+        "recordDate": "1986-07-10",
+        "paymentDate": "1986-08-01",
+        "declarationDate": "1986-07-01",
+        "adjDividend": 0.13333,
+        "dividend": 2.1184,
+        "yield": 7.997832817337462,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1986-04-04",
+        "recordDate": "1986-04-10",
+        "paymentDate": "1986-05-01",
+        "declarationDate": "1986-04-04",
+        "adjDividend": 0.13333,
+        "dividend": 2.1184,
+        "yield": 8.88688811188811,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1986-01-06",
+        "recordDate": "1986-01-10",
+        "paymentDate": "1986-02-01",
+        "declarationDate": "1985-12-24",
+        "adjDividend": 0.125,
+        "dividend": 1.986,
+        "yield": 9.469696969696969,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1985-10-04",
+        "recordDate": "1985-10-10",
+        "paymentDate": "1985-11-01",
+        "declarationDate": "1985-10-02",
+        "adjDividend": 0.125,
+        "dividend": 1.986,
+        "yield": 10.158471074380165,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1985-07-03",
+        "recordDate": "1985-07-10",
+        "paymentDate": "1985-08-01",
+        "declarationDate": "1985-07-02",
+        "adjDividend": 0.125,
+        "dividend": 1.986,
+        "yield": 9.224045801526717,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1985-04-03",
+        "recordDate": "1985-04-10",
+        "paymentDate": "1985-05-01",
+        "declarationDate": "1985-04-02",
+        "adjDividend": 0.125,
+        "dividend": 1.986,
+        "yield": 10.237284482758621,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1985-01-04",
+        "recordDate": "1985-01-10",
+        "paymentDate": "1985-02-01",
+        "declarationDate": "1984-12-28",
+        "adjDividend": 0.11667,
+        "dividend": 1.8536,
+        "yield": 10.703669724770641,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1984-09-24",
+        "recordDate": "1984-09-28",
+        "paymentDate": "1984-11-01",
+        "declarationDate": "",
+        "adjDividend": 0.11667,
+        "dividend": 1.8536,
+        "yield": 8.663613861386137,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1984-06-25",
+        "recordDate": "1984-06-29",
+        "paymentDate": "1984-08-01",
+        "declarationDate": "",
+        "adjDividend": 0.11667,
+        "dividend": 1.8536,
+        "yield": 6.517877094972066,
+        "frequency": "Quarterly"
+      },
+      {
+        "symbol": "T",
+        "date": "1984-03-26",
+        "recordDate": "1984-03-30",
+        "paymentDate": "1984-05-01",
+        "declarationDate": "",
+        "adjDividend": 0.11667,
+        "dividend": 1.8536,
+        "yield": 3.2408333333333332,
+        "frequency": "Quarterly"
+      }
+    ],
+    "profile": [
+      {
+        "symbol": "T",
+        "price": 22.72,
+        "marketCap": 157866284800,
+        "beta": 0.395,
+        "lastDividend": 1.11,
+        "range": "21.99-29.79",
+        "change": 0.3,
+        "changePercentage": 1.33809,
+        "volume": 84785678,
+        "averageVolume": 43094603,
+        "companyName": "AT&T Inc.",
+        "currency": "USD",
+        "cik": "0000732717",
+        "isin": "US00206R1023",
+        "cusip": "00206R102",
+        "exchangeFullName": "New York Stock Exchange",
+        "exchange": "NYSE",
+        "industry": "Telecommunications Services",
+        "website": "https://www.att.com",
+        "description": "Globally, AT&T Inc. delivers an array of telecommunication, media, and technology offerings. Within its Communications division, the company supplies wireless voice and data communication services. It also markets mobile devices, such as smartphones, wireless data access cards, and portable computing gadgets, alongside accessories like protective cases and hands-free equipment. These products are distributed through AT&T's proprietary outlets, authorized agents, and external retail partners. Furthermore, this segment caters to a broad clientele including multinational corporations, small-to-medium-sized enterprises, government entities, and wholesale clients. For these customers, it delivers an extensive suite of services encompassing data, voice connectivity, cybersecurity, cloud-based solutions, outsourcing, and both managed and professional services, in addition to client-side equipment. Residential consumers also benefit from this division's provision of high-speed fiber optic internet and traditional landline telephone services. Its communication-related offerings and merchandise are promoted under well-known brand names such as AT&T, Cricket, AT&T PREPAID, and AT&T Fiber. The Latin America segment is responsible for delivering wireless communication services within Mexico, as well as video entertainment services across the wider Latin American region. These services and products are branded as AT&T and Unefon. Established in 1983 and headquartered in Dallas, Texas, the corporation was previously known as SBC Communications Inc. and officially adopted the name AT&T Inc. in 2005.",
+        "ceo": "John T. Stankey",
+        "sector": "Communication Services",
+        "country": "US",
+        "fullTimeEmployees": "139970",
+        "phone": "210 821 4105",
+        "address": "208 South Akard Street",
+        "city": "Dallas",
+        "state": "TX",
+        "zip": "75202",
+        "image": "https://images.financialmodelingprep.com/symbol/T.png",
+        "ipoDate": "1983-11-21",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "T",
+        "date": "2026-06-27 03:06:45",
+        "freeFloat": 99.78698326506763,
+        "floatShares": 6933538873,
+        "outstandingShares": 6948340000,
+        "source": "https://www.sec.gov/Archives/edgar/data/732717/000073271726000206/t-20260331.htm"
+      }
+    ]
+  },
+  "errors": {},
+  "warnings": {
+    "balance_sheet_limit": "8-quarter request unavailable under this subscription; fetched limit=5 for field inspection"
+  },
+  "latest_balance_sheet_critical_field_presence": {
+    "date": true,
+    "reportedDate": false,
+    "totalAssets": true,
+    "totalLiabilities": true,
+    "currentLiabilities": false,
+    "shortTermDebt": true,
+    "longTermDebt": true,
+    "totalDebt": true,
+    "cashAndCashEquivalents": true,
+    "totalStockholdersEquity": true,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": "adjClose",
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

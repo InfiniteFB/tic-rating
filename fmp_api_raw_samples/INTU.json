@@ -1,0 +1,123 @@
+{
+  "ticker": "INTU",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "INTU",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "INTU",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "INTU",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "INTU"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "INTU"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [],
+    "prices": [],
+    "dividends": [],
+    "profile": [
+      {
+        "symbol": "INTU",
+        "price": 267.72,
+        "marketCap": 73231325640,
+        "beta": 0.973785,
+        "lastDividend": 4.16,
+        "range": "252.84-813.7",
+        "change": 12.65,
+        "changePercentage": 4.95942,
+        "volume": 10714376,
+        "averageVolume": 5950332.5,
+        "companyName": "Intuit Inc.",
+        "currency": "USD",
+        "cik": "0000896878",
+        "isin": "US4612021034",
+        "cusip": "461202103",
+        "exchangeFullName": "NASDAQ",
+        "exchange": "NASDAQ",
+        "industry": "Software - Application",
+        "website": "https://www.intuit.com",
+        "description": "Intuit Inc. provides financial management, payments and capital, compliance, and marketing products and services in the United States. The company operates in four segments: Global Business Solutions, Consumer, Credit Karma, and ProTax. The Global Business Solutions segment provides QuickBooks services, which include financial and business management online services, desktop software, payroll solutions, time tracking, merchant payment processing and bill pay solutions, checking accounts, and financing services for small and mid-market businesses; and Mailchimp, a marketing automation and customer relationship management. This segment also offers QuickBooks online services and desktop software solutions comprising QuickBooks Online, QuickBooks Live, QuickBooks Online Advanced, QuickBooks Self-Employed, QuickBooks Solopreneur financial and business management offerings, QuickBooks Online Payroll, QuickBooks Checking, QuickBooks Desktop software subscriptions, and QuickBooks Assisted Payroll. The Consumer segment provides do-it-yourself and assisted TurboTax income tax preparation products and services. The Credit Karma segment offers consumers with a personal finance platform that provides recommendations for credit card, home, auto, and personal loan, and insurance products; online savings and checking accounts; and access to its credit scores and reports, credit and identity monitoring, credit report dispute, credit building tools, and tools. The ProTax segment provides Lacerte, ProSeries, and ProFile desktop tax-preparation software products; and ProConnect Tax Online bill pay tax products, electronic tax filing service, and bank products and related services. It sells products and services through direct sales channels, multichannel shop-and-buy experiences, mobile application stores, and partner and other channels. Intuit Inc. was founded in 1983 and is headquartered in Mountain View, California.",
+        "ceo": "Sasan K. Goodarzi",
+        "sector": "Technology",
+        "country": "US",
+        "fullTimeEmployees": "18200",
+        "phone": "650 944 6000",
+        "address": "2700 Coast Avenue",
+        "city": "Mountain View",
+        "state": "CA",
+        "zip": "94043",
+        "image": "https://images.financialmodelingprep.com/symbol/INTU.png",
+        "ipoDate": "1993-03-12",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "INTU",
+        "date": "2026-06-25 05:14:55",
+        "freeFloat": 97.71399993419537,
+        "floatShares": 267381596.88899997,
+        "outstandingShares": 273537000,
+        "source": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000025/intu-20260430.htm"
+      }
+    ]
+  },
+  "errors": {
+    "balance_sheet": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1081)",
+    "prices": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "dividends": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "warnings": {},
+  "latest_balance_sheet_critical_field_presence": {
+    "date": false,
+    "reportedDate": false,
+    "totalAssets": false,
+    "totalLiabilities": false,
+    "currentLiabilities": false,
+    "shortTermDebt": false,
+    "longTermDebt": false,
+    "totalDebt": false,
+    "cashAndCashEquivalents": false,
+    "totalStockholdersEquity": false,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": null,
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "ticker": "PNC",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "PNC",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "PNC",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "PNC",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "PNC"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "PNC"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [],
+    "prices": [],
+    "dividends": [],
+    "profile": [
+      {
+        "symbol": "PNC",
+        "price": 244.99,
+        "marketCap": 98379409350,
+        "beta": 0.918,
+        "lastDividend": 6.8,
+        "range": "176.88-249.01",
+        "change": -0.29,
+        "changePercentage": -0.11823,
+        "volume": 2664883,
+        "averageVolume": 2086435,
+        "companyName": "The PNC Financial Services Group, Inc.",
+        "currency": "USD",
+        "cik": "0000713676",
+        "isin": "US6934751057",
+        "cusip": "693475105",
+        "exchangeFullName": "New York Stock Exchange",
+        "exchange": "NYSE",
+        "industry": "Banks - Regional",
+        "website": "https://www.pnc.com",
+        "description": "PNC Financial Services Group, Inc. stands as a diversified financial institution operating across the United States. Founded in 1852 and headquartered in Pittsburgh, Pennsylvania, the company maintains an extensive physical footprint, boasting 2,591 branches and 9,502 ATMs. Its Retail Banking division delivers a full spectrum of financial solutions to individual consumers and small businesses. This includes a variety of deposit accounts such as checking, savings, money market, and certificates of deposit. Lending products span residential mortgages, home equity loans and lines of credit, auto loans, credit cards, education financing, and personal and small business loans and credit lines. Additionally, the segment provides brokerage, insurance, investment, and cash management services, all accessible via its branch network, ATMs, call centers, and digital banking channels. The Corporate & Institutional Banking segment caters to the needs of mid-sized and large corporations, government entities, and not-for-profit organizations. It offers secured and unsecured commercial loans, letters of credit, and equipment leases. Services extend to sophisticated cash and investment management, including receivables and disbursement handling, fund transfers, international payment processing, and access to online/mobile information reporting. Furthermore, this segment provides expert advice on foreign exchange, derivatives, fixed income, securities underwriting, loan syndications, and mergers and acquisitions, alongside offering equity capital markets advisory, commercial loan servicing, and technology solutions. PNC's Asset Management Group specializes in wealth management for a diverse clientele. For high net worth and ultra high net worth individuals and their families, it delivers tailored investment and retirement planning, customized investment management, credit and cash management strategies, and trust administration. This also includes specialized multi-generational family planning services for its wealthiest clients. Institutional clients benefit from outsourced chief investment officer capabilities, custody services, private real estate investment opportunities, cash and fixed income solutions, and fiduciary retirement advisory services.",
+        "ceo": "William S. Demchak",
+        "sector": "Financial Services",
+        "country": "US",
+        "fullTimeEmployees": "53686",
+        "phone": "888 762 2265",
+        "address": "The Tower at PNC Plaza",
+        "city": "Pittsburgh",
+        "state": "PA",
+        "zip": "15222-2401",
+        "image": "https://images.financialmodelingprep.com/symbol/PNC.png",
+        "ipoDate": "1975-11-17",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "PNC",
+        "date": "2026-06-25 15:23:10",
+        "freeFloat": 99.25790893130626,
+        "floatShares": 398585022,
+        "outstandingShares": 401565000,
+        "source": "https://www.sec.gov/Archives/edgar/data/713676/000071367626000038/pnc-20260331.htm"
+      }
+    ]
+  },
+  "errors": {
+    "balance_sheet": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "prices": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "dividends": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "warnings": {},
+  "latest_balance_sheet_critical_field_presence": {
+    "date": false,
+    "reportedDate": false,
+    "totalAssets": false,
+    "totalLiabilities": false,
+    "currentLiabilities": false,
+    "shortTermDebt": false,
+    "longTermDebt": false,
+    "totalDebt": false,
+    "cashAndCashEquivalents": false,
+    "totalStockholdersEquity": false,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": null,
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

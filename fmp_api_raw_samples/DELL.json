@@ -1,0 +1,123 @@
+{
+  "ticker": "DELL",
+  "requested_date_range": {
+    "from": "2024-06-28",
+    "to": "2026-06-28"
+  },
+  "requests": {
+    "balance_sheet": {
+      "endpoint": "/stable/balance-sheet-statement",
+      "params": {
+        "symbol": "DELL",
+        "period": "quarter",
+        "limit": 8
+      }
+    },
+    "prices": {
+      "endpoint": "/stable/historical-price-eod/dividend-adjusted",
+      "params": {
+        "symbol": "DELL",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "dividends": {
+      "endpoint": "/stable/dividends",
+      "params": {
+        "symbol": "DELL",
+        "from": "2024-06-28",
+        "to": "2026-06-28"
+      }
+    },
+    "profile": {
+      "endpoint": "/stable/profile",
+      "params": {
+        "symbol": "DELL"
+      }
+    },
+    "shares_float": {
+      "endpoint": "/stable/shares-float",
+      "params": {
+        "symbol": "DELL"
+      }
+    }
+  },
+  "responses": {
+    "balance_sheet": [],
+    "prices": [],
+    "dividends": [],
+    "profile": [
+      {
+        "symbol": "DELL",
+        "price": 399.49,
+        "marketCap": 265361609219,
+        "beta": 1.378,
+        "lastDividend": 2.205,
+        "range": "110.22-469.47",
+        "change": -9.96,
+        "changePercentage": -2.43253,
+        "volume": 10767471,
+        "averageVolume": 8765150,
+        "companyName": "Dell Technologies Inc.",
+        "currency": "USD",
+        "cik": "0001571996",
+        "isin": "US24703L2025",
+        "cusip": "24703L202",
+        "exchangeFullName": "New York Stock Exchange",
+        "exchange": "NYSE",
+        "industry": "Computer Hardware",
+        "website": "http://www.dell.com",
+        "description": "Dell Technologies Inc. is a worldwide technology leader that designs, develops, manufactures, markets, sells, and provides support for a broad spectrum of information technology (IT) solutions, products, and services. The company's business activities are structured into three primary segments: the Infrastructure Solutions Group (ISG), the Client Solutions Group (CSG), and VMware. The ISG division focuses on delivering enterprise-grade offerings, including both traditional and next-generation storage solutions, alongside various server configurations such as rack, blade, tower, and hyperscale models. This segment also provides networking products and related services aimed at helping corporate clients modernize their IT infrastructure, enrich end-user experiences, and accelerate critical business applications and processes. Complementary software, peripherals, and extensive support services—encompassing deployment, configuration, and extended warranties—are also part of its portfolio. The CSG segment addresses end-user computing requirements by offering personal computers like desktops, workstations, and notebooks, as well as displays and projectors. It further includes proprietary and third-party software, peripheral devices, and a full suite of support, installation, setup, and extended warranty services. The VMware division specializes in assisting customers with managing intricate IT landscapes, particularly concerning hybrid and multi-cloud environments, modern applications, network infrastructure, security protocols, and digital workspaces. Its services enable efficient resource management across private, multi-cloud, and multi-device setups. Furthermore, Dell Technologies offers information security solutions and cloud software, including Infrastructure-as-a-Service (IaaS), which empower customers to migrate, operate, and manage mission-critical applications within cloud-based IT environments. Founded in 1984, the company was initially known as Denali Holding Inc. before officially changing its name to Dell Technologies Inc. in August 2016. Its global headquarters are situated in Round Rock, Texas.",
+        "ceo": "Michael Saul Dell",
+        "sector": "Technology",
+        "country": "US",
+        "fullTimeEmployees": "108000",
+        "phone": "800 289 3355",
+        "address": "One Dell Way",
+        "city": "Round Rock",
+        "state": "TX",
+        "zip": "78682",
+        "image": "https://images.financialmodelingprep.com/symbol/DELL.png",
+        "ipoDate": "2016-08-17",
+        "defaultImage": false,
+        "isEtf": false,
+        "isActivelyTrading": true,
+        "isAdr": false,
+        "isFund": false
+      }
+    ],
+    "shares_float": [
+      {
+        "symbol": "DELL",
+        "date": "2026-06-27 04:18:15",
+        "freeFloat": 91.2731,
+        "floatShares": 606282427,
+        "outstandingShares": 664250943,
+        "source": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm"
+      }
+    ]
+  },
+  "errors": {
+    "balance_sheet": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "prices": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/",
+    "dividends": "HTTP 402: Premium Query Parameter: 'Special Endpoint : This value set for 'symbol' is not available under your current subscription please visit our subscription page to upgrade your plan at https://financialmodelingprep.com/"
+  },
+  "warnings": {},
+  "latest_balance_sheet_critical_field_presence": {
+    "date": false,
+    "reportedDate": false,
+    "totalAssets": false,
+    "totalLiabilities": false,
+    "currentLiabilities": false,
+    "shortTermDebt": false,
+    "longTermDebt": false,
+    "totalDebt": false,
+    "cashAndCashEquivalents": false,
+    "totalStockholdersEquity": false,
+    "numberOfShares": false
+  },
+  "adjusted_close_source_field": null,
+  "shares_outstanding_source_fields": [
+    "outstandingShares"
+  ]
+}

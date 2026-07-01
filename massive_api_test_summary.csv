@@ -1,0 +1,11 @@
+ticker,quarterly_rows,latest_period_end,latest_filing_date,has_total_assets,has_total_liabilities,has_current_liabilities,has_debt_current,has_long_term_debt,has_direct_total_debt,has_computable_total_debt,derived_total_debt_rows,latest_derived_total_debt,has_cash_and_equivalents,has_stockholders_equity,daily_price_rows,price_split_adjusted,has_direct_adjusted_close,derived_adjusted_price_rows,latest_dividend_adjusted_close,dividend_rows,has_dividend_adjustment_factor,has_shares_outstanding,shares_outstanding_field,error_message
+COST,8,2026-05-10,2026-06-03,True,True,True,False,True,False,False,0,,True,True,125,True,False,125,935.47,2,True,True,weighted_shares_outstanding,
+KO,8,2026-04-03,2026-04-30,True,True,True,True,True,False,True,8,43890000000.0,True,True,125,True,False,125,81.27,2,True,True,weighted_shares_outstanding,
+DELL,8,2026-05-01,2026-06-09,True,True,True,True,True,False,True,8,31161000000.0,True,True,125,True,False,125,431.46,2,True,True,weighted_shares_outstanding,
+ORCL,8,2026-05-31,2026-06-22,True,True,True,True,True,False,True,8,129541000000.0,True,True,125,True,False,125,146.55,2,True,True,weighted_shares_outstanding,
+PNC,8,2026-03-31,2026-05-05,True,True,True,True,True,False,True,8,66666000000.0,True,True,125,True,False,125,246.22,2,True,True,weighted_shares_outstanding,
+WMT,8,2026-04-30,2026-05-29,True,True,True,True,True,False,True,8,58129000000.0,True,True,125,True,False,125,113.26,2,True,True,weighted_shares_outstanding,
+INTU,8,2026-04-30,2026-05-20,True,True,True,True,True,False,True,7,6162000000.0,True,True,125,True,False,125,261.0,2,True,True,weighted_shares_outstanding,
+AMZN,8,2026-03-31,2026-04-30,True,True,True,False,True,False,False,0,,True,True,125,True,False,125,238.34,0,False,True,weighted_shares_outstanding,
+T,8,2026-03-31,2026-04-27,True,True,True,True,True,False,True,8,138407000000.0,True,True,125,True,False,125,20.7,2,True,True,weighted_shares_outstanding,
+KHC,8,2026-03-28,2026-05-06,True,True,True,True,True,False,True,8,21427000000.0,True,True,125,True,False,125,23.62,2,True,True,weighted_shares_outstanding,
