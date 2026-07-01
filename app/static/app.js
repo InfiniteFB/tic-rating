@@ -275,7 +275,6 @@
     const ttcPd = fmtPct(res.sp_ttc_pd);
     const outlook = res.credit_outlook;
     const outlookTag = outlookLabel(outlook);
-    const partial = res.partial ? `<span class="tag tag-neutral">partial</span>` : "";
 
     els.hero.innerHTML = `
       <div class="hero-grid">
@@ -287,7 +286,6 @@
           <div class="hero-ticker">
             <span class="tk">${ticker}</span>
             ${outlookTag.tag}
-            ${partial}
           </div>
           <div class="hero-kpis">
             <div class="kpi">
@@ -429,7 +427,9 @@
     });
 
     // EM convergence
+    const emCard = $("chart-em").closest(".chart-card");
     if (sigmaHist.length) {
+      if (emCard) emCard.style.display = "";
       emChart = new Chart($("chart-em"), {
         type: "line",
         data: {
@@ -443,12 +443,14 @@
         },
         options: baseOpts((v) => (v * 100).toFixed(2) + "%"),
       });
-    } else {
-      $("chart-em").parentElement.parentElement.style.display = "none";
+    } else if (emCard) {
+      emCard.style.display = "none";
     }
 
     // Asset vs Equity
+    const aeCard = $("chart-ae").closest(".chart-card");
     if (assets.length && dayInputs.length) {
+      if (aeCard) aeCard.style.display = "";
       const labels = dayInputs.map((d) => fmtDate(d?.date));
       const equity = dayInputs.map((d) => (isNum(d?.equity) ? d.equity : null));
       aeChart = new Chart($("chart-ae"), {
@@ -462,8 +464,8 @@
         },
         options: baseOpts((v) => fmtMoney(v)),
       });
-    } else {
-      $("chart-ae").parentElement.parentElement.style.display = "none";
+    } else if (aeCard) {
+      aeCard.style.display = "none";
     }
   }
 
