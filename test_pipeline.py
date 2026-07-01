@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
+from unittest.mock import patch
 import rating_inputs, kmv_engine, ttc_conversion
 from app import serialize
+from app import pipeline
 
 SAMPLE = Path("massive_api_raw_samples/KO.json")
 
@@ -85,3 +87,56 @@ def test_result_dict_handles_none_result():
     assert out2["compute_error"] == "ValueError: boom"
     assert out2["unrateable_reason"] is None
     json.dumps(out); json.dumps(out2)
+
+
+def _fake_fetch_all(sample_name):
+    def _inner(tickers, **kw):
+        s = json.loads(Path(f"massive_api_raw_samples/{sample_name}.json").read_text())
+        return {tickers[0]: s}
+    return _inner
+
+def test_rate_ticker_happy_path():
+    with patch("app.pipeline.fetch_all", _fake_fetch_all("KO")):
+        out = pipeline.rate_ticker("KO", days=400, st_debt_fallback="strict",
+                                   horizon_days=365.0, fallback_rate=0.045)
+    assert out["result"]["sp_letter"]
+    assert out["result"]["unrateable_reason"] is None
+    assert out["intermediate"]["em"]["iterations"] >= 1
+
+def test_rate_ticker_unrateable_returns_reason_not_crash():
+    with patch("app.pipeline.fetch_all", _fake_fetch_all("COST")):
+        out = pipeline.rate_ticker("COST", days=400, st_debt_fallback="strict",
+                                   horizon_days=365.0, fallback_rate=0.045)
+    assert out["result"]["unrateable_reason"]
+    assert out["result"]["sp_letter"] is None
+    assert out["source"]
+
+def test_rate_ticker_caliber_switch_makes_cost_rateable():
+    with patch("app.pipeline.fetch_all", _fake_fetch_all("COST")):
+        out = pipeline.rate_ticker("COST", days=400, st_debt_fallback="zero",
+                                   horizon_days=365.0, fallback_rate=0.045)
+    assert out["result"]["unrateable_reason"] is None
+    assert out["result"]["sp_letter"]
+
+def test_rate_ticker_empty_prices_flagged_ratelimit():
+    calls = {"n": 0}
+    def _empty(tickers, **kw):
+        calls["n"] += 1
+        s = json.loads(Path("massive_api_raw_samples/KO.json").read_text())
+        s["derived"]["daily_dividend_adjusted_prices"] = []
+        return {tickers[0]: s}
+    with patch("app.pipeline.time.sleep"), patch("app.pipeline.fetch_all", _empty):
+        out = pipeline.rate_ticker("KO", days=400, st_debt_fallback="strict",
+                                   horizon_days=365.0, fallback_rate=0.045)
+    assert calls["n"] == 2
+    assert any("rate" in w.lower() for w in out["meta"]["warnings"])
+
+def test_rate_ticker_not_found_raises():
+    def _empty(tickers, **kw): return {tickers[0]: {}}
+    with patch("app.pipeline.fetch_all", _empty):
+        try:
+            pipeline.rate_ticker("ZZZZ", days=400, st_debt_fallback="strict",
+                                 horizon_days=365.0, fallback_rate=0.045)
+            assert False, "expected NotFound"
+        except pipeline.NotFound:
+            pass
