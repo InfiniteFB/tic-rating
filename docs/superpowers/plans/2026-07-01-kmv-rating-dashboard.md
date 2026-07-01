@@ -6,7 +6,12 @@
 
 **Architecture:** A FastAPI backend acts as an *orchestration + serialization* layer over the already-verified, stdlib-only engine (`rating_pipeline` → `rating_inputs` → `kmv_engine` → `ttc_conversion`); it never re-implements or alters any formula. A static vanilla-JS SPA (served by FastAPI) renders four sections (Source / Intermediate / Rating / AI) and calls `/api/rate` and `/api/explain`. Every layer degrades to structured JSON instead of crashing.
 
-**Tech Stack:** Python 3.11+ stdlib engine (unchanged), FastAPI + uvicorn (only new runtime deps), pytest + httpx `TestClient` (test deps), vanilla HTML/CSS/JS + Chart.js via CDN (no build step).
+**Tech Stack:** Python 3.11+ stdlib engine (unchanged), FastAPI + uvicorn + `anthropic` SDK (new runtime deps), pytest + httpx `TestClient` (test deps), vanilla HTML/CSS/JS + Chart.js via CDN (no build step).
+
+**LLM (confirmed + live-verified 2026-07-01):** MiniMax via its Anthropic
+Messages-compatible endpoint. `LLM_BASE_URL=https://api.minimaxi.com/anthropic`,
+`LLM_MODEL=MiniMax-M3`, auth via the `anthropic` SDK with the user-provided
+`sk-cp-…` key. A raw `curl` to `/v1/messages` returned HTTP 200 with a text block.
 
 **Spec:** `docs/superpowers/specs/2026-07-01-kmv-rating-dashboard-design.md`
 
@@ -60,6 +65,7 @@
 ```
 fastapi>=0.110
 uvicorn[standard]>=0.29
+anthropic>=0.39
 # test-only
 pytest>=8.0
 httpx>=0.27
@@ -71,8 +77,8 @@ httpx>=0.27
 ```
 MASSIVE_API_KEY=your-massive-key
 LLM_API_KEY=your-llm-key
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL=gpt-4o-mini
+LLM_BASE_URL=https://api.minimaxi.com/anthropic
+LLM_MODEL=MiniMax-M3
 ```
 
 `.env` — populate real values. **Never paste the real LLM key into any tracked
@@ -86,8 +92,8 @@ MASSIVE=$(grep -oE 'MASSIVE_API_KEY=[^ ]+' ~/.zshrc | head -1 | cut -d= -f2)
 cat > .env <<EOF
 MASSIVE_API_KEY=$MASSIVE
 LLM_API_KEY=$LLM_KEY
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL=gpt-4o-mini
+LLM_BASE_URL=https://api.minimaxi.com/anthropic
+LLM_MODEL=MiniMax-M3
 EOF
 ```
 (Confirm `.env` is in `.gitignore` — it already is. `git check-ignore .env`
@@ -97,7 +103,7 @@ must print `.env` before proceeding.)
 
 - [ ] **Step 4: Install deps and verify import**
 
-Run: `python3 -m pip install -r requirements.txt && python3 -c "import fastapi, uvicorn, httpx; print('ok')"`
+Run: `python3 -m pip install -r requirements.txt && python3 -c "import fastapi, uvicorn, httpx, anthropic; print('ok')"`
 Expected: `ok`
 
 - [ ] **Step 5: Verify existing engine tests still pass**
@@ -371,46 +377,68 @@ git commit -m "feat: pipeline orchestration with unrateable/compute-error/rate-l
 
 ---
 
-## Task 3: `llm.py` — OpenAI-compatible client, health probe, prompts
+## Task 3: `llm.py` — Anthropic-SDK (MiniMax) client, health probe, prompts
+
+**Provider is MiniMax's Anthropic Messages-compatible endpoint.** Use the
+`anthropic` SDK, not OpenAI. The SDK call shape (from the user's own snippet):
+```python
+client = anthropic.Anthropic(api_key=..., base_url=...)
+msg = client.messages.create(model="MiniMax-M3", max_tokens=1200,
+        system="...", messages=[{"role":"user","content":[{"type":"text","text":"..."}]}])
+# msg.content is a list of blocks; take .text of blocks where .type == "text"
+```
 
 **Files:**
 - Create: `app/llm.py`
 - Test: `test_llm.py`
 
-- [ ] **Step 1: Write failing tests** (mock `httpx`)
+- [ ] **Step 1: Write failing tests** (mock the SDK client's `messages.create`)
 
 ```python
 # test_llm.py
+from types import SimpleNamespace
 from unittest.mock import patch, MagicMock
 from app import llm
 
-def test_build_explanation_prompt_includes_values():
+def _fake_msg(text):
+    # mimic anthropic's response: .content is a list of blocks with .type/.text
+    return SimpleNamespace(content=[SimpleNamespace(type="text", text=text)])
+
+def test_build_prompt_includes_values():
     payload = {"ticker": "KO",
                "result": {"sp_letter": "AAA", "sp_ttc_pd": 0.0002, "credit_outlook": -0.0001},
                "intermediate": {"metrics": {"dd": 8.1, "pit_pd": 1e-9, "pd_fh": 2e-9,
                                             "tic": 0.01, "risk_score": 1.0, "ccm": 0.5, "mu": 20.0}}}
-    msgs = llm.build_messages(payload)
-    text = " ".join(m["content"] for m in msgs)
+    system, user = llm.build_prompt(payload)
+    text = system + " " + user
     assert "KO" in text and "AAA" in text
     assert "TiC" in text and "8.1" in text            # grounded in real numbers
     assert "distance-to-default" in text.lower() or "DD" in text
 
-def test_explain_returns_text_on_success():
-    fake = MagicMock(status_code=200)
-    fake.json.return_value = {"choices": [{"message": {"content": "Because DD is high, KO is safe."}}]}
-    with patch("app.llm.httpx.post", return_value=fake):
-        out = llm.explain({"ticker": "KO", "result": {"sp_letter": "AAA"}, "intermediate": {"metrics": {}}})
+def test_explain_splits_two_sections_on_success():
+    body = "### CALIBER EXPLANATION\nDD measures ...\n### RESULT ANALYSIS\nKO looks safe."
+    fake_client = MagicMock()
+    fake_client.messages.create.return_value = _fake_msg(body)
+    with patch("app.llm._get_client", return_value=fake_client):
+        out = llm.explain({"ticker": "KO", "result": {"sp_letter": "AAA"},
+                           "intermediate": {"metrics": {}}})
     assert out["error"] is None
-    assert "KO" in out["caliber_explanation"] + out["result_analysis"] or out["result_analysis"]
+    assert "DD measures" in out["caliber_explanation"]
+    assert "KO looks safe" in out["result_analysis"]
 
-def test_explain_degrades_on_http_error():
-    with patch("app.llm.httpx.post", side_effect=Exception("connection refused")):
-        out = llm.explain({"ticker": "KO", "result": {"sp_letter": "AAA"}, "intermediate": {"metrics": {}}})
+def test_explain_degrades_on_error():
+    fake_client = MagicMock()
+    fake_client.messages.create.side_effect = Exception("connection refused")
+    with patch("app.llm._get_client", return_value=fake_client):
+        out = llm.explain({"ticker": "KO", "result": {"sp_letter": "AAA"},
+                           "intermediate": {"metrics": {}}})
     assert out["error"]                                # surfaced, not raised
     assert out["caliber_explanation"] == "" and out["result_analysis"] == ""
 
 def test_health_probe_returns_bool():
-    with patch("app.llm.httpx.post", side_effect=Exception("no route")):
+    fake_client = MagicMock()
+    fake_client.messages.create.side_effect = Exception("no route")
+    with patch("app.llm._get_client", return_value=fake_client):
         h = llm.health()
     assert h["reachable"] is False and h["detail"]
 ```
@@ -419,11 +447,13 @@ def test_health_probe_returns_bool():
 
 - [ ] **Step 3: Implement `app/llm.py`**
 
-- Read `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL` from env.
-- `build_messages(payload)`: a system prompt describing the KMV/TiC methodology + a user prompt that injects this run's actual metric values and asks for TWO clearly delimited sections — `### CALIBER EXPLANATION` (what DD/EDF/TiC/CCM/PD_FH/TTC mean, using the run's numbers; **must flag the known TiC-vs-deck discrepancy**) and `### RESULT ANALYSIS` (credit judgment for this ticker + model-limitation note re: large-cap low-vol optimism). English.
-- `_chat(messages) -> str`: `httpx.post(f"{BASE_URL}/chat/completions", json={model, messages, temperature:0.2}, headers={Authorization: Bearer KEY}, timeout=60)`; raise on non-200.
-- `explain(payload) -> {caliber_explanation, result_analysis, model, error}`: call `_chat`, split on the `###` markers; on ANY exception return empty strings + `error=str(exc)` (never raise).
-- `health() -> {reachable, detail}`: tiny 1-token probe; catch all, return `reachable=False` with the reason.
+- Read `LLM_API_KEY`, `LLM_BASE_URL` (default `https://api.minimaxi.com/anthropic`),
+  `LLM_MODEL` (default `MiniMax-M3`) from env.
+- `_get_client()`: build and cache `anthropic.Anthropic(api_key=LLM_API_KEY, base_url=LLM_BASE_URL)`. **Factored into its own function so tests can patch it.**
+- `build_prompt(payload) -> (system: str, user: str)`: `system` describes the KMV/TiC methodology; `user` injects this run's actual metric values (ticker, sp_letter, DD, EDF/pit_pd, PD_FH, TiC, RiskScore, CCM, mu, TTC_PD, outlook) and asks for exactly two sections delimited by literal headers `### CALIBER EXPLANATION` (what each caliber means, using the run's numbers; **must flag the known TiC-vs-deck discrepancy** — see `kmv_engine.py` / memory) and `### RESULT ANALYSIS` (credit judgment for this ticker + model-limitation note re: large-cap low-vol optimism). English.
+- `_chat(system, user) -> str`: `_get_client().messages.create(model=MODEL, max_tokens=1200, system=system, messages=[{"role":"user","content":[{"type":"text","text":user}]}])`; join `.text` of blocks where `getattr(b,"type",None)=="text"`.
+- `explain(payload) -> {caliber_explanation, result_analysis, model, error}`: build prompt, call `_chat`, split the returned text on the two `###` markers (regex/split; be tolerant of missing markers — if only one section returned, put it all in `result_analysis`). On ANY exception return both strings empty + `error=str(exc)`, `model=LLM_MODEL` (never raise).
+- `health() -> {reachable, detail}`: a 1-token `messages.create` probe; catch all, return `{"reachable": False, "detail": str(exc)}` on failure, else `{"reachable": True, "detail": "ok"}`.
 
 - [ ] **Step 4: Run — verify pass** (`python3 -m pytest test_llm.py -q`).
 
@@ -431,7 +461,7 @@ def test_health_probe_returns_bool():
 
 ```bash
 git add app/llm.py test_llm.py
-git commit -m "feat: OpenAI-compatible LLM client with grounded prompts and graceful degradation"
+git commit -m "feat: MiniMax (Anthropic SDK) LLM client with grounded prompts and graceful degradation"
 ```
 
 ---
@@ -493,7 +523,10 @@ def test_unexpected_error_becomes_500_json_not_html():
     assert "error" in r.json()
 
 def test_explain_endpoint_degrades():
-    with patch("app.llm.httpx.post", side_effect=Exception("no endpoint")):
+    from unittest.mock import MagicMock
+    fake_client = MagicMock()
+    fake_client.messages.create.side_effect = Exception("no endpoint")
+    with patch("app.llm._get_client", return_value=fake_client):
         r = client.post("/api/explain", json={"ticker": "KO", "result": {"sp_letter": "AAA"},
                                               "intermediate": {"metrics": {}}})
     assert r.status_code == 200
@@ -568,7 +601,7 @@ git commit -m "feat: single-page dashboard UI (source/intermediate/rating/AI) wi
 - [ ] **Step 2: Start the server**
 
 Run (background): `python3 -m uvicorn app.main:app --port 8000`
-Then: `curl -s localhost:8000/api/health` → inspect `massive_key:true`, and `llm.reachable` (may be false if `sk-cp-` base_url is wrong — that's expected/graceful).
+Then: `curl -s localhost:8000/api/health` → inspect `massive_key:true` and `llm.reachable:true` (MiniMax endpoint was live-verified; if false, check `.env` `LLM_BASE_URL`/`LLM_API_KEY`).
 
 - [ ] **Step 3: Live rate a real ticker** (needs network + key; slow first call)
 

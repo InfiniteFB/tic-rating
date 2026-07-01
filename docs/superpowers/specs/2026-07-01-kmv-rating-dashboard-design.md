@@ -154,18 +154,23 @@ Backend has a global exception handler turning any unexpected error into
 
 ## 7. LLM integration
 
-- `.env`: `LLM_API_KEY` (user-provided `sk-cp-…`), `LLM_BASE_URL` (configurable),
-  `LLM_MODEL` (configurable). OpenAI `/v1/chat/completions` compatible.
-- On startup / `/api/health`, probe reachability. Endpoint for `sk-cp-` is
-  unknown to us — try a sensible OpenAI-compatible default; if the probe fails,
-  the UI banner says "LLM endpoint not reachable, set LLM_BASE_URL" and rating
-  functionality is **unaffected**.
+- **Provider confirmed:** MiniMax via its **Anthropic Messages-compatible**
+  endpoint. `.env`: `LLM_API_KEY` (user-provided `sk-cp-…`),
+  `LLM_BASE_URL=https://api.minimaxi.com/anthropic`, `LLM_MODEL=MiniMax-M3`.
+- Use the `anthropic` SDK: `anthropic.Anthropic(api_key=LLM_API_KEY,
+  base_url=LLM_BASE_URL).messages.create(model=LLM_MODEL, max_tokens=..,
+  system=.., messages=[{role:"user", content:[{type:"text", text:..}]}])`.
+  Response is `message.content` — a list of blocks; concatenate blocks whose
+  `.type == "text"`. (Live-verified 2026-07-01: HTTP 200, returns text blocks.)
+- On startup / `/api/health`, probe reachability with a 1-token message. If it
+  fails, the UI banner says "LLM endpoint not reachable" and rating functionality
+  is **unaffected** (fully decoupled).
 - Prompts inject this run's formulas *and* actual numeric values so the
   explanation is grounded in the specific ticker, not generic.
 
 ## 8. Tech choices & testing
 
-- Backend: FastAPI + uvicorn (the only two new deps). Engine stays stdlib-only.
+- Backend: FastAPI + uvicorn + anthropic SDK (the new deps). Engine stays stdlib-only.
 - Front-end: single `index.html` + vanilla JS + Chart.js via CDN. No build step.
 - Tests: `test_api.py` (pytest + FastAPI `TestClient`) covering each error
   fallback path plus one happy path, with Massive mocked to an offline sample so
