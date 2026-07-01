@@ -47,3 +47,50 @@ def test_health_probe_returns_bool():
     with patch("app.llm._get_client", return_value=fake_client):
         h = llm.health()
     assert h["reachable"] is False and h["detail"]
+
+
+def test_split_sections_case_insensitive_headings():
+    text = "### caliber explanation\nDD is the caliber.\n### result analysis\nKO safe."
+    caliber, result = llm._split_sections(text)
+    assert caliber == "DD is the caliber."
+    assert result == "KO safe."
+
+
+def test_split_sections_only_result_heading():
+    text = "### RESULT ANALYSIS\nOnly the analysis is here."
+    caliber, result = llm._split_sections(text)
+    assert caliber == ""
+    assert result == "Only the analysis is here."
+
+
+def test_split_sections_only_caliber_heading():
+    text = "### CALIBER EXPLANATION\nOnly the caliber is here."
+    caliber, result = llm._split_sections(text)
+    assert caliber == "Only the caliber is here."
+    assert result == ""
+
+
+def test_split_sections_reversed_order():
+    text = ("### RESULT ANALYSIS\nKO is safe.\n"
+            "### CALIBER EXPLANATION\nDD measures distance.")
+    caliber, result = llm._split_sections(text)
+    assert caliber == "DD measures distance."
+    assert result == "KO is safe."
+
+
+def test_split_sections_ignores_unrelated_hashes():
+    text = ("### CALIBER EXPLANATION\nDD explained.\n### Note: read carefully.\n"
+            "### RESULT ANALYSIS\nKO analysis here.")
+    caliber, result = llm._split_sections(text)
+    # The unrelated "### Note" heading must not split content or get dropped;
+    # it stays attached to the caliber section it appears within.
+    assert "DD explained." in caliber
+    assert "### Note: read carefully." in caliber
+    assert result == "KO analysis here."
+
+
+def test_split_sections_no_headings_all_to_result():
+    text = "Just some free-form narration with no headings at all."
+    caliber, result = llm._split_sections(text)
+    assert caliber == ""
+    assert result == "Just some free-form narration with no headings at all."

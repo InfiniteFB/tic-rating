@@ -174,10 +174,17 @@ qualitative credit concerns.
 def _extract_text(message: Any) -> str:
     """Concatenate the text of every text-type content block in a response."""
     parts: list[str] = []
-    for block in getattr(message, "content", None) or []:
+    content = getattr(message, "content", None)
+    content = content if isinstance(content, list) else []
+    for block in content:
         if getattr(block, "type", None) == "text":
             parts.append(getattr(block, "text", "") or "")
     return "".join(parts)
+
+
+def _user_messages(text: str) -> list[dict[str, Any]]:
+    """Wrap a plain string into the Anthropic Messages ``messages`` shape."""
+    return [{"role": "user", "content": [{"type": "text", "text": text}]}]
 
 
 def _chat(system: str, user: str) -> str:
@@ -185,7 +192,7 @@ def _chat(system: str, user: str) -> str:
         model=_model(),
         max_tokens=1200,
         system=system,
-        messages=[{"role": "user", "content": [{"type": "text", "text": user}]}],
+        messages=_user_messages(user),
     )
     return _extract_text(message)
 
@@ -257,7 +264,7 @@ def health() -> dict[str, Any]:
             model=_model(),
             max_tokens=4,
             system="ping",
-            messages=[{"role": "user", "content": [{"type": "text", "text": "ping"}]}],
+            messages=_user_messages("ping"),
         )
         return {"reachable": True, "detail": "ok"}
     except Exception as exc:  # noqa: BLE001 - health probe must never crash the caller
