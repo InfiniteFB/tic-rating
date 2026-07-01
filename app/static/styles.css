@@ -2,6 +2,11 @@
    KMV Credit Rating Dashboard — institutional analytics terminal
    ============================================================ */
 
+/* The [hidden] attribute must win over component display rules
+   (e.g. .banner{display:flex}), which otherwise override the UA
+   default [hidden]{display:none} and leak empty banners/sections. */
+[hidden] { display: none !important; }
+
 :root {
   /* surfaces */
   --bg: #f6f7f9;
