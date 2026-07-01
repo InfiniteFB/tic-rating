@@ -48,12 +48,31 @@ def test_json_serializable():
     }
     json.dumps(payload)  # must not raise
 
+def test_no_infinity_or_nan_tokens_in_json():
+    # inf/nan in raw inputs must not leak into the serialized JSON as the
+    # illegal `Infinity` / `NaN` tokens that json.dumps emits by default.
+    sample = json.loads(SAMPLE.read_text())
+    sample.setdefault("derived", {}).setdefault("risk_free_rate_1y_series", [])
+    sample["derived"]["risk_free_rate_1y_series"] = [
+        {"date": "2025-05-27", "rate": float("inf")},
+        {"date": "2025-05-28", "rate": float("nan")},
+    ]
+    sample["derived"].setdefault("sofr_series", [])
+    sample["derived"]["sofr_series"] = [{"date": "2025-05-27", "rate": float("inf")}]
+    src = serialize.source_dict(sample)
+    assert src["risk_free_rate_1y_series"][0]["rate"] is None
+    assert src["risk_free_rate_1y_series"][1]["rate"] is None
+    assert src["sofr_series"][0]["rate"] is None
+    text = json.dumps(src)
+    assert "Infinity" not in text
+    assert "NaN" not in text
+
 def test_intermediate_dict_handles_none_result():
     _, bundle, *_ = _rate_ko()
     inter = serialize.intermediate_dict(bundle, None)
     assert inter["day_inputs"]
     assert inter["assets"] == []
-    assert inter["em"] == {} or inter["em"].get("iterations") in (None, 0)
+    assert inter["em"] == {}
     assert inter["metrics"] == {}
     json.dumps(inter)
 

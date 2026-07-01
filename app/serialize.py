@@ -3,8 +3,9 @@ JSON-safe plain dicts for the rating dashboard API.
 
 Pure functions, no IO. Every function tolerates missing/optional data (raw
 Massive API samples vary in field presence) and every float passes through
-:func:`_num` so ``json.dumps`` never chokes on inf/nan (``tic`` can be inf for
-extremely safe credits).
+:func:`_num`. This avoids emitting the illegal ``Infinity`` / ``NaN`` tokens
+that ``json.dumps`` produces by default (which break strict JSON parsers and
+the frontend); ``tic`` in particular can be inf for extremely safe credits.
 """
 
 from __future__ import annotations
@@ -14,8 +15,12 @@ from typing import Any
 
 
 def _num(x: Any) -> float | None:
-    """Coerce to float; inf/nan/unconvertible become None (JSON-safe)."""
-    if x is None:
+    """Coerce to float; None/bool/inf/nan/unconvertible become None (JSON-safe).
+
+    ``bool`` is rejected explicitly (it is an ``int`` subclass) so a flag like
+    ``converged`` accidentally routed here yields None rather than 1.0/0.0.
+    """
+    if x is None or isinstance(x, bool):
         return None
     try:
         val = float(x)
@@ -42,9 +47,19 @@ def _shares_outstanding(overview: Any) -> float | None:
     for row in _rows(overview):
         for field in ("weighted_shares_outstanding", "share_class_shares_outstanding"):
             val = row.get(field)
-            if val:
+            if val is not None:
                 return _num(val)
     return None
+
+
+def _rate_series(rows: Any) -> list[dict[str, Any]]:
+    """Sanitize a [{date, rate}, ...] series so every ``rate`` is JSON-safe."""
+    out: list[dict[str, Any]] = []
+    for row in rows or []:
+        if not isinstance(row, dict):
+            continue
+        out.append({"date": row.get("date"), "rate": _num(row.get("rate"))})
+    return out
 
 
 def source_dict(sample: dict[str, Any]) -> dict[str, Any]:
@@ -84,23 +99,32 @@ def source_dict(sample: dict[str, Any]) -> dict[str, Any]:
         "shares_outstanding": _shares_outstanding(responses.get("ticker_overview", {})),
         "balance_sheet": balance_sheet,
         "prices": prices,
-        "risk_free_rate_1y_series": derived.get("risk_free_rate_1y_series", []) or [],
-        "sofr_series": derived.get("sofr_series", []) or [],
+        "risk_free_rate_1y_series": _rate_series(derived.get("risk_free_rate_1y_series")),
+        "sofr_series": _rate_series(derived.get("sofr_series")),
         "notes": sample.get("notes", {}) or {},
     }
 
 
 def _default_points(bundle: Any) -> list[dict[str, Any]]:
-    """Distinct per-quarter default points implied by bundle.days (debt series),
-    in chronological order of first appearance."""
+    """Per-quarter default-point schedule implied by bundle.days.
+
+    Collapses consecutive trading days that share the same as-of default point
+    into one row (the first day the quarter's debt level took effect), so two
+    quarters with an identical debt level still surface as separate dated rows.
+    A run boundary is a *change* in debt vs. the previous day, which matches the
+    step-function shape of the per-quarter default point.
+    """
     points: list[dict[str, Any]] = []
-    seen: set[float] = set()
+    prev_debt: float | None = None
+    started = False
     for day in getattr(bundle, "days", []) or []:
         debt = _num(getattr(day, "debt", None))
-        if debt is None or debt in seen:
+        if debt is None:
             continue
-        seen.add(debt)
-        points.append({"date": getattr(day, "date", None), "debt": debt})
+        if not started or debt != prev_debt:
+            points.append({"date": getattr(day, "date", None), "debt": debt})
+            prev_debt = debt
+            started = True
     return points
 
 
