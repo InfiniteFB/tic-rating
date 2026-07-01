@@ -1,1 +1,162 @@
-<!doctype html><title>KMV Rating Dashboard</title><h1>KMV Rating Dashboard</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KMV Credit Rating Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">KMV Credit Rating Dashboard</div>
+          <div class="brand-sub">Structural (Merton/KMV) credit model with PIT&rarr;TTC conversion</div>
+        </div>
+      </div>
+      <div class="health" id="health" title="Backend health">
+        <span class="health-dot" id="health-dot"></span>
+        <span class="health-label" id="health-label">checking&hellip;</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HEALTH BANNER ============ -->
+  <div class="banner banner-warn" id="health-banner" hidden>
+    <span class="banner-text" id="health-banner-text"></span>
+    <button class="banner-close" id="health-banner-close" aria-label="Dismiss">&times;</button>
+  </div>
+
+  <main class="wrap">
+    <!-- ============ INPUT PANEL ============ -->
+    <section class="card input-card" aria-label="Query">
+      <form id="rate-form" autocomplete="off">
+        <div class="ticker-row">
+          <div class="ticker-field">
+            <label for="ticker" class="field-label">Ticker</label>
+            <input id="ticker" name="ticker" class="ticker-input" type="text"
+                   placeholder="e.g. KO, WMT, AAPL" spellcheck="false" autocapitalize="characters" />
+          </div>
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            <span class="btn-label">Fetch &amp; Rate</span>
+          </button>
+        </div>
+
+        <details class="methodology" id="methodology">
+          <summary>Methodology settings</summary>
+          <div class="settings-grid">
+            <div class="setting">
+              <label for="days">Time window <span class="unit">days</span></label>
+              <input id="days" name="days" type="number" value="400" min="30" step="1" />
+            </div>
+            <div class="setting">
+              <label for="st_debt_fallback">Short-term debt fallback</label>
+              <select id="st_debt_fallback" name="st_debt_fallback">
+                <option value="strict">strict</option>
+                <option value="zero">zero</option>
+                <option value="curliab">curliab</option>
+              </select>
+            </div>
+            <div class="setting">
+              <label for="horizon_days">Debt horizon <span class="unit">days</span></label>
+              <input id="horizon_days" name="horizon_days" type="number" value="365" step="1" />
+            </div>
+            <div class="setting">
+              <label for="fallback_rate">Risk-free fallback</label>
+              <input id="fallback_rate" name="fallback_rate" type="number" value="0.045" step="0.001" />
+              <span class="hint">applies only when the rate feed is unavailable</span>
+            </div>
+          </div>
+        </details>
+      </form>
+    </section>
+
+    <!-- ============ ERROR BANNER ============ -->
+    <div class="banner banner-error" id="error-banner" hidden>
+      <span class="banner-text" id="error-banner-text"></span>
+      <button class="banner-close" id="error-banner-close" aria-label="Dismiss">&times;</button>
+    </div>
+
+    <!-- ============ LOADING ============ -->
+    <section class="card loading-card" id="loading" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <div class="loading-text">Fetching market data &amp; rating&hellip;<span class="loading-sub">first query can take ~30s</span></div>
+    </section>
+
+    <!-- ============ RESULTS (populated by JS) ============ -->
+    <div id="results" hidden>
+      <!-- Rating hero -->
+      <section class="card hero" id="hero"></section>
+
+      <!-- Metrics -->
+      <section class="section" id="metrics-section" hidden>
+        <h2 class="section-title">Model metrics</h2>
+        <div class="stat-grid" id="metrics-grid"></div>
+      </section>
+
+      <!-- Charts -->
+      <section class="section" id="charts-section" hidden>
+        <h2 class="section-title">Diagnostics</h2>
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <div class="chart-head">EM convergence <span class="chart-sub">asset volatility &sigma;<sub>A</sub> per iteration</span></div>
+            <div class="chart-holder"><canvas id="chart-em"></canvas></div>
+          </div>
+          <div class="card chart-card">
+            <div class="chart-head">Asset vs Equity <span class="chart-sub">market value over time</span></div>
+            <div class="chart-holder"><canvas id="chart-ae"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Interpretation -->
+      <section class="section" id="ai-section" hidden>
+        <div class="section-head">
+          <h2 class="section-title">AI interpretation</h2>
+          <button class="btn btn-ghost" id="explain-btn">Explain this rating</button>
+        </div>
+        <div class="card ai-card" id="ai-card" hidden></div>
+      </section>
+
+      <!-- Intermediate data -->
+      <section class="section" id="intermediate-section" hidden>
+        <h2 class="section-title">Intermediate data</h2>
+        <div id="intermediate-body"></div>
+      </section>
+
+      <!-- Source data -->
+      <section class="section" id="source-section" hidden>
+        <h2 class="section-title">Source data</h2>
+        <div id="source-body"></div>
+      </section>
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <div class="empty-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+        </svg>
+      </div>
+      <div class="empty-title">Enter a ticker to run a structural credit rating</div>
+      <div class="empty-sub">The model fetches market data, calibrates asset value &amp; volatility via EM, and converts a point-in-time PD to a through-the-cycle S&amp;P-scale letter.</div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    KMV / Merton structural model &middot; PIT&rarr;TTC &middot; data via massive-api, FRED DGS1, SOFR
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
