@@ -9,5 +9,9 @@
  "unrateable": 5,
  "reasons": {
   "no quarter reports total_liabilities": 5
- }
+ },
+ "without_prior_snapshot": 1,
+ "without_prior_tickers": [
+  "MRSH"
+ ]
 }

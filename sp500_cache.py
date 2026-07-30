@@ -470,13 +470,27 @@ def derive_stage(
     data_dir.joinpath("index.json").write_text(
         json.dumps(index, separators=(",", ":"), ensure_ascii=False), encoding="utf-8"
     )
+    # The prior snapshot can fail on its own while the company still rates, and
+    # that failure is invisible unless counted here: --prior has to land inside
+    # the --window calibration span, so shortening the window silently strips
+    # every comparison. At window=150 the prior sits on trading day 8 of 150 —
+    # anything under ~143 loses it for the whole index.
+    no_prior = [r for r in index if "snaps" in r and "unrateable_reason" in r["snaps"][1]]
     summary = {
         "generated_for": {"current": cutoff_now, "prior": prior, "window": window},
         "constituents": len(index),
         "rated": rated,
         "unrateable": len(index) - rated,
         "reasons": dict(sorted(reasons.items(), key=lambda kv: -kv[1])),
+        "without_prior_snapshot": len(no_prior),
+        "without_prior_tickers": [r["ticker"] for r in no_prior][:20],
     }
+    if rated and len(no_prior) > rated * 0.1:
+        print(
+            f"WARNING: {len(no_prior)}/{rated} names lost their prior snapshot — "
+            f"--prior {prior} falls outside a {window}-day calibration window",
+            file=sys.stderr,
+        )
     data_dir.joinpath("summary.json").write_text(
         json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8"
     )
