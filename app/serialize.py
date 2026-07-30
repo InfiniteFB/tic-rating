@@ -157,6 +157,7 @@ def intermediate_dict(bundle: Any, result: Any) -> dict[str, Any]:
         "converged": result.converged,
         "sigma_history": [_num(v) for v in result.sigma_history],
         "sigma_a": _num(result.sigma_a),
+        "sigma_e": _num(result.sigma_e),
         "eta_a": _num(result.eta_a),
         "r_a": _num(result.r_a),
     }
@@ -191,8 +192,11 @@ def result_dict(
         "alpha": _num(sp.get("alpha")),
         "rs_sp": _num(sp.get("rs_sp")),
         "sp_letter": sp.get("sp_letter"),
+        "sp_letter_fine": sp.get("sp_letter_fine"),
         "sp_ttc_pd": _num(sp.get("sp_ttc_pd")),
         "credit_outlook": _num(sp.get("credit_outlook")),
+        "outlook": sp.get("outlook"),  # "+" / "-", professor's convention
+
         "unrateable_reason": unrateable_reason or None,
         "compute_error": compute_error or None,
         "partial": bool(compute_error),

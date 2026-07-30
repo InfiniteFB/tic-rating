@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   candles.css — the price section. Up bars hollow, down bars solid accent:
+   the same two-value logic as the rest of the interface, so the K-line reads
+   as part of the system rather than a widget dropped into it.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.quote__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+  margin-bottom: 0.8rem;
+}
+.quote__ranges { display: flex; gap: 0; margin-left: auto; }
+.btn--range { border-right-width: 0; padding: 0.38rem 0.75rem; }
+.btn--range:last-child { border-right-width: 1px; }
+.btn--range[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+.candles__frame { border-top: 1px solid var(--ink); padding-top: 0.7rem; }
+svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cursor: crosshair; }
+
+/* candle bodies: hollow up, solid down */
+.candle__wick { stroke-width: 1; }
+.candle--up.candle__wick { stroke: var(--ink); }
+.candle--down.candle__wick { stroke: var(--red); }
+.candle--up.candle__body { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.candle--down.candle__body { fill: var(--red); stroke: var(--red); stroke-width: 1; }
+.candle--up.candle__vol { fill: var(--ink); fill-opacity: 0.22; }
+.candle--down.candle__vol { fill: var(--red); fill-opacity: 0.35; }
+
+.cross__line { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+.cross__dot { fill: var(--red); pointer-events: none; }
+
+/* readout: fixed height so hovering never reflows the page */
+.candles__readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 1.1rem;
+  min-height: 2.4rem;
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-body);
+  font-weight: 500;
+}
+.candles__readout .label { margin-right: 0.3rem; font-style: normal; }
+.candles__date { font-weight: 700; letter-spacing: 0.02em; }
+.candles__span { margin-left: auto; color: var(--ink-3); font-size: var(--t-small); font-weight: 400; }
+.candles__span b { font-weight: 700; margin-left: 0.35rem; }
+
+/* ── quick picks ────────────────────────────────────────────────────── */
+.search {
+  display: grid;
+  grid-template-columns: minmax(0, 30rem) auto;
+  gap: var(--gap);
+  align-items: end;
+  position: relative;
+}
+@media (max-width: 620px) { .search { grid-template-columns: 1fr; } }
+
+.search__field {
+  font-family: var(--black);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  background: transparent;
+  width: 100%;
+}
+.search__field::placeholder { color: var(--paper-3); }
+.search__hint { font-size: var(--t-small); color: var(--ink-3); padding-bottom: 0.5rem; }
+.search__hint kbd {
+  font-family: var(--sans); font-size: 0.68rem; border: 1px solid var(--rule);
+  padding: 0.05rem 0.3rem; margin: 0 0.1rem;
+}
+
+#q-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: min(30rem, 100%);
+  z-index: 5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  max-height: 17rem;
+  overflow: auto;
+}
+#q-list li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--rule);
+}
+#q-list li:last-child { border-bottom: 0; }
+#q-list li[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+#q-list li[aria-selected="true"] :is(.q-opt__name, .q-opt__grade) { color: var(--paper); }
+.q-opt__tk { font-weight: 700; }
+.q-opt__name { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.q-opt__grade { font-weight: 700; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 1px; margin-top: 1.1rem; }
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  background: var(--paper-2);
+  border: 0;
+  padding: 0.42rem 0.65rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  color: var(--ink);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.chip:hover { background: var(--ink); color: var(--paper); }
+.chip:hover .chip__grade { color: var(--paper); }
+.chip__tk { font-weight: 700; letter-spacing: 0.02em; }
+.chip__grade { font-size: var(--t-small); color: var(--ink-3); }
+
+.search__status {
+  margin-top: 0.7rem;
+  font-size: var(--t-small);
+  color: var(--red);
+  font-weight: 600;
+}
+.boot-error {
+  margin: var(--pad);
+  padding: 0.9rem;
+  border: 1px solid var(--red);
+  font-size: var(--t-body);
+  color: var(--ink-2);
+}
+.boot-error b { color: var(--red); }
+.boot-error code { background: var(--paper-2); padding: 0.05em 0.3em; }

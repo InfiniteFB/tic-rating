@@ -270,10 +270,11 @@
 
     // rateable
     const m = p?.intermediate?.metrics || {};
-    const letter = res.sp_letter || DASH;
+    const letter = res.sp_letter_fine || res.sp_letter || DASH;
     const color = gradeColor(res.sp_letter);
     const ttcPd = fmtPct(res.sp_ttc_pd);
     const outlook = res.credit_outlook;
+    const outlookSign = res.outlook ? ` (${res.outlook})` : "";
     const outlookTag = outlookLabel(outlook);
 
     els.hero.innerHTML = `
@@ -293,8 +294,8 @@
               <span class="kpi-value">${ttcPd}</span>
             </div>
             <div class="kpi">
-              <span class="kpi-label">PIT PD / EDF</span>
-              <span class="kpi-value">${fmtPct(m.pit_pd)}</span>
+              <span class="kpi-label">PIT PD (first-passage)</span>
+              <span class="kpi-value">${fmtPct(m.pd_fh)}</span>
             </div>
             <div class="kpi">
               <span class="kpi-label">Distance to default</span>
@@ -302,7 +303,7 @@
             </div>
             <div class="kpi">
               <span class="kpi-label">Credit outlook</span>
-              <span class="kpi-value" style="color:${outlookTag.color}">${fmtSignedPct(outlook)}</span>
+              <span class="kpi-value" style="color:${outlookTag.color}">${fmtSignedPct(outlook)}${escapeHtml(outlookSign)}</span>
             </div>
           </div>
           <div class="chain">
@@ -568,8 +569,9 @@
               ${emItem("Iterations", isNum(em.iterations) ? String(em.iterations) : DASH)}
               ${emItem("Converged", em.converged === true ? "yes" : em.converged === false ? "no" : DASH)}
               ${emItem("σ_A", isNum(em.sigma_a) ? fmtPct(em.sigma_a) : DASH)}
+              ${emItem("σ_E equity vol", isNum(em.sigma_e) ? fmtPct(em.sigma_e) : DASH)}
               ${emItem("η_A", fmtNum(em.eta_a, 4))}
-              ${emItem("R_A", fmtNum(em.r_a, 4))}
+              ${emItem("R_A (annualized)", fmtNum(em.r_a, 4))}
             </div>
           </div>
         </details>`;

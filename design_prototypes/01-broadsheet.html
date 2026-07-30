@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Style 01 · Financial Broadsheet — KMV / TiC Rating</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   STYLE 01 · FINANCIAL BROADSHEET
+   A rating is a published opinion — so publish it. Nameplate, hairline
+   rules, figure plates, signed opinion column, lettered appendices.
+   No cards. No shadows. No rounded rectangles.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --paper:oklch(97.6% .011 85); --paper-2:oklch(95% .014 84); --paper-3:oklch(92.4% .017 82);
+  --ink:oklch(21% .014 55); --ink-2:oklch(41% .012 55); --ink-3:oklch(57% .010 60);
+  --rule:oklch(83% .015 70); --rule-2:oklch(89.5% .012 74);
+  --oxblood:oklch(43% .135 28); --forest:oklch(44% .085 152);
+  --aaa:oklch(40% .09 158); --a:oklch(37% .06 232); --bb:oklch(52% .13 62); --ccc:oklch(43% .15 25);
+  --serif:"Newsreader",Georgia,serif; --disp:"Instrument Serif",Georgia,serif;
+  --gut:clamp(1.15rem,3vw,2.6rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:clamp(15px,.4vw+14px,16.5px);line-height:1.52;font-variant-numeric:tabular-nums;
+  background-image:repeating-linear-gradient(90deg,oklch(0% 0 0/.012) 0 1px,transparent 1px 3px);
+}
+.sheet{max-width:1220px;margin:0 auto;padding:0 var(--gut) 5rem}
+a{color:inherit}
+
+/* ── nameplate ── */
+.folio{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0 .55rem;
+  font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.folio b{color:var(--ink-2);font-weight:500}
+.nameplate{border-top:2.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:1.3rem 0 .9rem}
+.nameplate h1{font-family:var(--disp);font-weight:400;font-size:clamp(2.4rem,7vw,5.2rem);
+  line-height:.9;letter-spacing:-.02em;margin:0}
+.nameplate h1 em{font-style:italic;color:var(--oxblood)}
+.deck{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:baseline;margin-top:.85rem;
+  border-top:1px solid var(--rule-2);padding-top:.65rem}
+.deck p{margin:0;max-width:52ch;font-size:.94rem;font-style:italic;color:var(--ink-2)}
+.status{margin-left:auto;display:inline-flex;align-items:center;gap:.45rem;font-size:.64rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--forest)}
+.status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--forest)}
+
+/* ── section apparatus ── */
+.sec{padding-top:2.4rem}
+.sec>h2{font-weight:400;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+  display:flex;align-items:center;gap:1rem;margin:0 0 1rem}
+.sec>h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+.sec>h2 .rt{font-style:italic;letter-spacing:.02em;text-transform:none;font-size:.82rem}
+
+/* ── register (the 10-name market table) ── */
+/* a narrow viewport scrolls the table, never the page */
+.tscroll{overflow-x:auto;overscroll-behavior-x:contain}
+table.register{width:100%;min-width:44rem;border-collapse:collapse;font-size:.88rem}
+.register thead th{text-align:right;font-weight:400;font-size:.6rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);padding:.4rem .7rem .5rem;border-bottom:1px solid var(--ink)}
+.register thead th:nth-child(-n+2){text-align:left}
+.register td{text-align:right;padding:.46rem .7rem;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+.register td:nth-child(-n+2){text-align:left}
+.register tbody tr{cursor:pointer;transition:background .25s cubic-bezier(.16,1,.3,1)}
+.register tbody tr:hover{background:var(--paper-2)}
+.register tbody tr.on{background:var(--paper-3)}
+.register tbody tr.on td:first-child{box-shadow:inset 3px 0 0 var(--oxblood)}
+.register .tk{font-family:var(--disp);font-size:1.12rem;letter-spacing:.01em}
+.register .co{color:var(--ink-2);max-width:22ch;overflow:hidden;text-overflow:ellipsis}
+.register .gr{font-family:var(--disp);font-size:1.15rem}
+.register .from{color:var(--ink-3);font-style:italic;font-size:.8rem}
+.up{color:var(--forest)}.down{color:var(--oxblood)}.flat{color:var(--ink-3)}
+.b-aaa{color:var(--aaa)}.b-a{color:var(--a)}.b-bb{color:var(--bb)}.b-ccc{color:var(--ccc)}
+
+/* ── verdict ── */
+.verdict{display:grid;grid-template-columns:minmax(0,.66fr) minmax(0,1fr);gap:0 var(--gut);
+  padding:2.2rem 0 1.5rem;border-bottom:1px solid var(--rule)}
+@media(max-width:820px){.verdict{grid-template-columns:1fr}}
+.mark .letter{font-family:var(--disp);font-size:clamp(6rem,18vw,13rem);line-height:.78;
+  letter-spacing:-.045em;margin-left:-.05em}
+.mark .under{border-top:1px solid var(--ink);margin-top:.45rem;padding-top:.38rem;display:flex;
+  justify-content:space-between;gap:.6rem;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.mark .prior{margin-top:.6rem;font-size:.9rem;font-style:italic;color:var(--ink-2)}
+.mark .prior b{font-style:normal;font-family:var(--disp);font-size:1.15rem}
+.lede p{margin:0 0 1rem;font-size:1.08rem}
+.lede p:first-child::first-letter{font-family:var(--disp);float:left;font-size:3.4rem;line-height:.76;
+  padding:.1em .1em 0 0;color:var(--oxblood)}
+.rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));border-top:1px solid var(--ink);margin:0}
+.rail div{padding:.75rem .9rem .75rem 0;border-right:1px solid var(--rule-2)}
+.rail div:last-child{border-right:0}
+.rail dt{font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.28rem}
+.rail dd{margin:0;font-family:var(--disp);font-size:1.5rem;line-height:1}
+
+/* ── conversion chain ── */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem 1rem;padding:1.3rem 0;
+  border-bottom:1px solid var(--rule)}
+.chain .lbl{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-right:.3rem}
+.chain b{font-weight:400;font-style:italic;color:var(--ink-2);margin-right:.32rem}
+.chain var{font-family:var(--disp);font-style:normal;font-size:1.2rem}
+.chain .arrow{color:var(--rule);font-size:1rem}
+
+/* ── figures tables ── */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--gut)}
+.cols>*{min-width:0}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+table.figures{width:100%;min-width:21rem;border-collapse:collapse}
+.figures thead th{font-weight:400;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);padding:.35rem 0 .5rem;text-align:right;border-bottom:1px solid var(--ink)}
+.figures thead th:first-child{text-align:left}
+.figures tbody tr{border-bottom:1px solid var(--rule-2)}
+.figures tbody tr:hover{background:var(--paper-2)}
+.figures th[scope=row]{text-align:left;font-weight:400;padding:.52rem 1rem .52rem 0;font-size:.95rem}
+.figures th[scope=row] i{display:block;font-size:.74rem;font-style:italic;color:var(--ink-3);margin-top:.05rem}
+.figures td{text-align:right;padding:.52rem 0 .52rem .8rem;font-family:var(--disp);font-size:1.14rem;white-space:nowrap}
+.figures td.prior{font-family:var(--serif);font-size:.92rem;color:var(--ink-2)}
+.figures td.chg{font-family:var(--serif);font-size:.82rem;font-style:italic;width:9.5rem}
+.figures tr.lead th[scope=row]{font-size:1.02rem}
+.figures tr.lead td{font-size:1.55rem}
+.fn{vertical-align:super;font-size:.6rem;color:var(--oxblood);margin-left:.15em;font-family:var(--serif);font-style:normal}
+.footnote{margin:.85rem 0 0;font-size:.79rem;font-style:italic;color:var(--ink-3);max-width:66ch;
+  padding-left:.9rem;border-left:2px solid var(--rule)}
+
+/* ── plates ── */
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:var(--gut) var(--gut)}
+@media(max-width:820px){.plates{grid-template-columns:1fr}}
+.plate{border-top:1px solid var(--ink);padding-top:.8rem;margin:0}
+.plate svg{display:block;width:100%;height:auto}
+.plate figcaption{margin-top:.55rem;font-size:.79rem;font-style:italic;color:var(--ink-2);
+  border-top:1px solid var(--rule-2);padding-top:.45rem}
+.plate figcaption b{font-style:normal;font-weight:600;color:var(--ink)}
+/* chart primitives */
+svg .ch-grid{stroke:var(--rule-2);stroke-width:1}
+svg .ch-grid.ch-ig{stroke:var(--oxblood);stroke-dasharray:3 3;opacity:.5}
+svg .ch-ig-lab{fill:var(--oxblood);font-style:italic}
+svg .ch-axis{stroke:var(--ink);stroke-width:1}
+svg .ch-tick{fill:var(--ink-3);font-family:"Newsreader",serif;font-size:8.5px}
+svg .ch-lab{fill:var(--ink-2);font-family:"Newsreader",serif;font-size:9.5px}
+svg .ch-val{fill:var(--ink);font-family:"Instrument Serif",serif;font-size:10.5px}
+svg .ch-conn{stroke-width:1.6}
+svg .ch-conn.ch-up{stroke:var(--forest)}svg .ch-conn.ch-down{stroke:var(--oxblood)}
+svg .ch-conn.ch-flat{stroke:var(--rule)}
+svg .ch-prior{fill:var(--paper);stroke:var(--ink-2);stroke-width:1.2}
+svg .ch-cur{fill:var(--ink)}
+svg .ch-cur.ch-up{fill:var(--forest)}svg .ch-cur.ch-down{fill:var(--oxblood)}
+svg .ch-lab.ch-up{fill:var(--forest)}svg .ch-lab.ch-down{fill:var(--oxblood)}
+svg .ch-bar-a{fill:var(--forest);fill-opacity:.82}
+svg .ch-bar-e{fill:var(--ink);fill-opacity:.28}
+svg .ch-line-a{fill:none;stroke:var(--forest);stroke-width:1.9}
+svg .ch-line-e{fill:none;stroke:var(--ink);stroke-width:1.25;stroke-dasharray:4 2.5}
+svg .ch-line-d{fill:none;stroke:var(--oxblood);stroke-width:1.5}
+svg .ch-fill-a{fill:var(--forest);fill-opacity:.07;stroke:none}
+.plate-empty{padding:1.4rem 0 .6rem;font-size:.86rem;font-style:italic;color:var(--ink-3);max-width:44ch}
+.plate-empty b{font-style:normal;font-weight:600;color:var(--oxblood)}
+
+/* ── opinion ── */
+.opinion{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:1.3rem 0}
+.opinion h3{font-family:var(--disp);font-weight:400;font-size:1.45rem;margin:0 0 .05rem}
+.byline{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.9rem}
+.two-col{columns:2;column-gap:var(--gut);column-rule:1px solid var(--rule-2)}
+@media(max-width:820px){.two-col{columns:1}}
+.opinion p{margin:0 0 .85rem}
+.pull{font-family:var(--disp);font-size:1.42rem;line-height:1.26;color:var(--oxblood);
+  border-left:2px solid var(--oxblood);padding-left:.9rem;margin:0 0 1rem;break-inside:avoid}
+.ghost{border:0;background:none;font-family:var(--serif);font-size:.78rem;font-style:italic;
+  color:var(--ink-2);cursor:pointer;border-bottom:1px dotted var(--ink-3);padding:.1rem 0}
+
+/* ── appendices ── */
+details.appendix{border-bottom:1px solid var(--rule)}
+details.appendix:first-of-type{border-top:1px solid var(--ink)}
+details.appendix>summary{list-style:none;cursor:pointer;padding:.72rem 0;display:flex;align-items:baseline;gap:.65rem;font-size:.9rem}
+details.appendix>summary::-webkit-details-marker{display:none}
+details.appendix>summary::before{content:"＋";color:var(--oxblood);font-size:.78rem}
+details.appendix[open]>summary::before{content:"－"}
+details.appendix>summary .n{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+details.appendix>summary .ct{margin-left:auto;font-style:italic;color:var(--ink-3);font-size:.78rem}
+.appendix-body{padding:.15rem 0 1.3rem}
+.scroller{max-height:330px;overflow:auto;border:1px solid var(--rule-2)}
+table.data{width:100%;border-collapse:collapse;font-size:.82rem}
+table.data th{position:sticky;top:0;background:var(--paper-2);text-align:right;font-weight:500;
+  padding:.46rem .75rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+  border-bottom:1px solid var(--rule)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data td{text-align:right;padding:.38rem .75rem;border-bottom:1px solid var(--rule-2)}
+table.data tbody tr:hover{background:var(--paper-2)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));border-top:1px solid var(--rule)}
+.strip div{padding:.55rem .85rem .55rem 0;border-right:1px solid var(--rule-2)}
+.strip div:last-child{border-right:0}
+.strip .k{display:block;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.strip .v{font-family:var(--disp);font-size:1.1rem}
+.colophon{margin-top:3rem;border-top:2.5px solid var(--ink);padding-top:.75rem;display:flex;flex-wrap:wrap;
+  gap:.4rem 1.3rem;font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+
+@media(prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(13px);animation:rise .85s cubic-bezier(.16,1,.3,1) forwards}
+  .d1{animation-delay:.05s}.d2{animation-delay:.11s}.d3{animation-delay:.18s}
+  .d4{animation-delay:.26s}.d5{animation-delay:.35s}.d6{animation-delay:.45s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .mark .letter{animation:drop 1s cubic-bezier(.16,1,.3,1) both}
+  @keyframes drop{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span><b>PFPA</b> — Structural Credit Research</span>
+    <span id="folio-date">Merton / KMV · PIT → TTC</span>
+  </div>
+
+  <header class="nameplate rise">
+    <h1>The Default <em>Ledger</em></h1>
+    <div class="deck">
+      <p>Ten names, priced off market equity and balance-sheet debt, calibrated by EM, then converted from a point-in-time probability to a through-the-cycle letter on the S&amp;P scale.</p>
+      <span class="status">Model output loaded</span>
+    </div>
+  </header>
+
+  <!-- ══ REGISTER ══ -->
+  <section class="sec rise d1">
+    <h2>The register <span class="rt" id="reg-note"></span></h2>
+    <div class="tscroll">
+      <table class="register">
+        <thead><tr>
+          <th>Name</th><th>Company</th><th>Rating</th><th>Prior</th><th>Move</th>
+          <th>DD</th><th>RS</th><th>SP_PD</th><th>EDF</th><th>Outlook</th>
+        </tr></thead>
+        <tbody id="reg-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ VERDICT ══ -->
+  <section class="verdict" id="verdict"></section>
+  <div class="chain" id="chain"></div>
+
+  <!-- ══ FIGURES ══ -->
+  <section class="sec">
+    <h2>Table I · Every model entry <span class="rt" id="tbl-note"></span></h2>
+    <div class="cols">
+      <div>
+        <div class="tscroll"><table class="figures" id="tbl-snap"></table></div>
+        <p class="footnote"><span class="fn">†</span> RS = 100 · TiC. The TiC scale disagrees with the worked example in the course deck; RS is treated as the practical scale. Asset and MarketCap are reported in thousands of USD in the source workbook and rendered here at full magnitude.</p>
+      </div>
+      <div>
+        <div class="tscroll"><table class="figures" id="tbl-calib"></table></div>
+        <p class="footnote">Calibration is fitted once per name over the trailing window and shared by both snapshots, which is why AssetVol, AssetRet and StockVol carry no change column.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PLATES ══ -->
+  <section class="sec">
+    <h2>Plates · Diagnostics</h2>
+    <div class="plates">
+      <figure class="plate"><div id="plate-dd"></div>
+        <figcaption><b>Fig. 1</b> — Distance to default across the register. Hollow marker is the prior snapshot, filled is current; a green connector means the name moved away from the barrier.</figcaption></figure>
+      <figure class="plate"><div id="plate-mig"></div>
+        <figcaption><b>Fig. 2</b> — Rating migration between the two dates, plotted on notch position. The dashed rule is the investment-grade boundary.</figcaption></figure>
+      <figure class="plate"><div id="plate-pd"></div>
+        <figcaption id="cap-pd"></figcaption></figure>
+      <figure class="plate"><div id="plate-ae"></div>
+        <figcaption id="cap-ae"></figcaption></figure>
+      <figure class="plate"><div id="plate-em"></div>
+        <figcaption id="cap-em"></figcaption></figure>
+      <figure class="plate"><div id="plate-paths"></div>
+        <figcaption id="cap-paths"></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ══ OPINION ══ -->
+  <section class="sec">
+    <h2>Opinion · Model interpretation</h2>
+    <article class="opinion" id="opinion"></article>
+  </section>
+
+  <!-- ══ APPENDICES ══ -->
+  <section class="sec">
+    <h2>Appendices · Provenance</h2>
+    <details class="appendix" open>
+      <summary><span class="n">A</span> Calibration &amp; snapshot dates</summary>
+      <div class="appendix-body"><div class="strip" id="app-a"></div></div>
+    </details>
+    <details class="appendix">
+      <summary><span class="n">B</span> Full register, every field <span class="ct" id="app-b-ct"></span></summary>
+      <div class="appendix-body"><div class="scroller"><table class="data" id="app-b"></table></div></div>
+    </details>
+    <details class="appendix">
+      <summary><span class="n">C</span> Units &amp; source notes</summary>
+      <div class="appendix-body">
+        <div class="strip">
+          <div><span class="k">Source</span><span class="v">TiC Rating (Prof)</span></div>
+          <div><span class="k">Monetary unit</span><span class="v">USD thousands</span></div>
+          <div><span class="k">Snapshots</span><span class="v">2</span></div>
+          <div><span class="k">Names</span><span class="v" id="app-c-n"></span></div>
+        </div>
+        <p class="footnote">Probabilities below 1e-3 % are printed in exponential form rather than rounded to zero; an exact zero in the workbook is printed as <em>0</em> and plotted at the log-axis floor.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer class="colophon">
+    <span>Merton / KMV structural model</span><span>PIT → TTC conversion</span>
+    <span>Data: massive-api · FRED DGS1 · SOFR</span>
+    <span style="margin-left:auto">Instrument Serif &amp; Newsreader</span>
+  </footer>
+</div>
+
+<script src="tic-data.js"></script>
+<script src="tic-series.js"></script>
+<script src="tic-lib.js"></script>
+<script>
+(function(){
+  "use strict";
+  const F = TIC.fmt, E = TIC.esc, $ = (id)=>document.getElementById(id);
+  const cos = TIC.all;
+  let sel = TIC.byTicker("KO") || cos[0];
+
+  const curDate = cos[0].snaps[0].date, priorDate = cos[0].snaps[1].date;
+  $("folio-date").textContent = "As of " + curDate + " · Merton / KMV · PIT → TTC";
+  $("reg-note").textContent = "— " + cos.length + " names, " + curDate + " against " + priorDate;
+  $("app-c-n").textContent = cos.length;
+  $("app-b-ct").textContent = cos.length + " names × " + (TIC.CALIB_FIELDS.length + TIC.SNAP_FIELDS.length * 2) + " entries";
+
+  /* ── register ── */
+  function register(){
+    $("reg-body").innerHTML = cos.map(c=>{
+      const [cur,pr]=c.snaps, m=TIC.migration(c), ol=TIC.outlook(cur.outlook);
+      return `<tr data-tk="${c.ticker}" class="${c.ticker===sel.ticker?"on":""}">
+        <td><span class="tk">${E(c.ticker)}</span></td>
+        <td class="co">${E(c.name)}</td>
+        <td><span class="gr b-${TIC.bucket(cur.spRating)}">${E(cur.spRating)}</span></td>
+        <td class="from">${E(pr.spRating)}</td>
+        <td class="${m.dir}">${m.notches?(m.notches>0?"▲ +":"▼ −")+Math.abs(m.notches):"·"}</td>
+        <td>${F.num(cur.dd,2)}</td><td>${F.num(cur.rs,3)}</td>
+        <td>${F.pct(cur.spPd)}</td><td>${F.pct(cur.edf)}</td>
+        <td class="${ol.cls}">${ol.sym} ${ol.label}</td></tr>`;
+    }).join("");
+    $("reg-body").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click",()=>{
+      sel = TIC.byTicker(tr.dataset.tk); render();
+      document.getElementById("verdict").scrollIntoView({behavior:"smooth",block:"start"});
+    }));
+  }
+
+  /* ── verdict ── */
+  function verdict(){
+    const [cur,pr]=sel.snaps, m=TIC.migration(sel), ol=TIC.outlook(cur.outlook);
+    const cov = cur.asset/(cur.asset-cur.marketCap);
+    $("verdict").innerHTML = `
+      <div class="mark">
+        <div class="letter b-${TIC.bucket(cur.spRating)}">${E(cur.spRating)}</div>
+        <div class="under"><span>S&amp;P scale · ${E(cur.date)}</span>
+          <span class="${ol.cls}">${ol.sym} ${ol.label} outlook</span></div>
+        <div class="prior">Six months earlier: <b>${E(pr.spRating)}</b> —
+          <span class="${m.dir}">${m.notches?TIC.deltaInfo({rating:true},cur.spRating,pr.spRating).text:"no notch change"}</span></div>
+      </div>
+      <div class="lede">
+        <p>${E(sel.name)} shows an asset base of <strong>${F.moneyK(cur.asset)}</strong> against equity of
+        <strong>${F.moneyK(cur.marketCap)}</strong>, an implied debt wedge of <strong>${F.moneyK(cur.asset-cur.marketCap)}</strong>
+        and asset coverage of <strong>${F.num(cov,2)}×</strong>. Calibrated asset volatility over the trailing
+        ${sel.window} days is <strong>${F.pct(sel.assetVol)}</strong> against observed equity volatility of
+        <strong>${F.pct(sel.stockVol)}</strong>, leaving the firm <strong>${F.num(cur.dd,3)}</strong> standard
+        deviations from the default barrier.</p>
+        <dl class="rail">
+          <div><dt>SP_PD · through-the-cycle</dt><dd>${F.pct(cur.spPd)}</dd></div>
+          <div><dt>FP_PD · first passage</dt><dd>${F.pct(cur.fpPd)}</dd></div>
+          <div><dt>EDF · Merton</dt><dd>${F.pct(cur.edf)}</dd></div>
+          <div><dt>DD</dt><dd>${F.num(cur.dd,3)}</dd></div>
+          <div><dt>Mu · years</dt><dd>${F.num(cur.mu,2)}</dd></div>
+        </dl>
+      </div>`;
+
+    const node=(k,v,cls)=>`<span><b>${k}</b><var${cls?` class="${cls}"`:""}>${v}</var></span>`;
+    $("chain").innerHTML = `<span class="lbl">PIT → TTC</span>`
+      + node("CCM",F.num(cur.ccm,6)) + `<span class="arrow">→</span>`
+      + node("RS",F.num(cur.rs,4)) + `<span class="arrow">→</span>`
+      + node("FP_PD",F.pct(cur.fpPd)) + `<span class="arrow">→</span>`
+      + node("α",F.num(cur.alpha,6)) + `<span class="arrow">→</span>`
+      + node("SP_CCM",F.num(cur.spCcm,6)) + `<span class="arrow">→</span>`
+      + node("SP_PD",F.pct(cur.spPd)) + `<span class="arrow">→</span>`
+      + node("letter",E(cur.spRating),"b-"+TIC.bucket(cur.spRating));
+  }
+
+  /* ── every entry, two dates + change ── */
+  function tables(){
+    const [cur,pr]=sel.snaps;
+    $("tbl-note").textContent = "— " + E(sel.ticker) + ", " + cur.date + " against " + pr.date;
+    const lead = new Set(["spRating","dd","spPd"]);
+    $("tbl-snap").innerHTML =
+      `<thead><tr><th>Snapshot entry</th><th>${E(cur.date)}</th><th>${E(pr.date)}</th><th>Change</th></tr></thead><tbody>`
+      + TIC.SNAP_FIELDS.map(f=>{
+        const d=TIC.deltaInfo(f,cur[f.key],pr[f.key]);
+        const cls = f.rating ? " b-"+TIC.bucket(cur.spRating) : f.flag ? " "+TIC.outlook(cur.outlook).cls : "";
+        return `<tr class="${lead.has(f.key)?"lead":""}">
+          <th scope="row">${f.label}${f.key==="rs"?'<span class="fn">†</span>':""}<i>${f.gloss}</i></th>
+          <td class="${cls.trim()}">${f.f(cur[f.key])}</td>
+          <td class="prior">${f.f(pr[f.key])}</td>
+          <td class="chg ${d.cls}">${d.text}</td></tr>`;
+      }).join("") + `</tbody>`;
+
+    $("tbl-calib").innerHTML =
+      `<thead><tr><th>Calibration entry</th><th>Window ${sel.window} d</th></tr></thead><tbody>`
+      + TIC.CALIB_FIELDS.map(f=>`<tr><th scope="row">${f.label}<i>${f.gloss}</i></th><td>${f.f(sel[f.key])}</td></tr>`).join("")
+      + TIC.HEADER_FIELDS.map(f=>`<tr><th scope="row">${f.label}<i>workbook ${f.src}</i></th><td>${f.f(sel[f.key])}</td></tr>`).join("")
+      + `<tr class="lead"><th scope="row">Company<i>as filed</i></th><td style="font-size:1rem;font-family:var(--serif)">${E(sel.name)}</td></tr>`
+      + `</tbody>`;
+  }
+
+  /* ── plates ── */
+  function plates(){
+    $("plate-dd").innerHTML  = TIC.charts.dd(cos,{w:470});
+    $("plate-mig").innerHTML = TIC.charts.migration(cos,{w:470,h:300});
+    $("plate-pd").innerHTML  = TIC.charts.pd(sel,{w:470});
+    $("plate-ae").innerHTML  = TIC.charts.ae(sel,{w:470,h:212});
+    $("cap-pd").innerHTML = `<b>Fig. 3</b> — ${E(sel.ticker)}: the three probability measures on a log axis. FP_PD and EDF answer different questions, which is why they can sit decades apart.`;
+    $("cap-ae").innerHTML = `<b>Fig. 4</b> — ${E(sel.ticker)}: asset value against market capitalisation at both dates; the gap is the debt the model puts in the barrier.`;
+
+    // Figs 5 and 6 come from re-running the engine, not from the workbook
+    const s = TIC.series(sel.ticker);
+    const emSvg = TIC.charts.em(s,{w:470}), pathSvg = TIC.charts.paths(s,{w:470});
+    const dead = `<div class="plate-empty"><b>Not plottable for ${E(sel.ticker)}.</b>
+      The cached capture returned no daily prices, so the engine cannot be re-run offline for this name.
+      Re-pull the sample and this plate draws itself.</div>`;
+    $("plate-em").innerHTML = emSvg || dead;
+    $("plate-paths").innerHTML = pathSvg || dead;
+    $("cap-em").innerHTML = emSvg
+      ? `<b>Fig. 5</b> — EM calibration for ${E(sel.ticker)}: σ<sub>A</sub> at each iteration, settling at
+         <b>${F.pct(s.sigmaA)}</b> after ${s.iterations} iteration${s.iterations===1?"":"s"}. Short by nature —
+         the fixed point arrives in a handful of updates.`
+      : `<b>Fig. 5</b> — EM calibration. Requires the per-day price series.`;
+    $("cap-paths").innerHTML = pathSvg
+      ? `<b>Fig. 6</b> — ${E(sel.ticker)} over the ${s.dates.length}-day calibration window: recovered asset value,
+         equity, and the default point stepping on quarter ends. The vertical gap, divided by σ<sub>A</sub>, is DD.`
+      : `<b>Fig. 6</b> — Asset, equity and default-point paths. Requires the per-day price series.`;
+  }
+
+  /* ── opinion ── */
+  function opinion(){
+    const [cur,pr]=sel.snaps, m=TIC.migration(sel), ol=TIC.outlook(cur.outlook);
+    const volMove = sel.assetVol > sel.stockVol ? "above" : "below";
+    $("opinion").innerHTML = `
+      <h3>Why ${E(sel.ticker)} prints ${E(cur.spRating)}, and what would move it</h3>
+      <div class="byline">Generated commentary · reconciled against the workbook · <button class="ghost" id="re">re-run</button></div>
+      <div class="two-col">
+        <blockquote class="pull">${m.dir==="flat"
+          ? "Six months of market noise, and the letter did not move."
+          : m.dir==="up" ? "The upgrade is a distance story, not an earnings story."
+          : "The downgrade is priced in volatility, not in leverage."}</blockquote>
+        <p>Distance to default moved from <strong>${F.num(pr.dd,3)}</strong> to <strong>${F.num(cur.dd,3)}</strong>
+        while the point-in-time cycle multiplier went ${cur.ccm>pr.ccm?"up":"down"} from
+        <strong>${F.num(pr.ccm,6)}</strong> to <strong>${F.num(cur.ccm,6)}</strong>. Blending weight α of
+        <strong>${F.num(cur.alpha,6)}</strong> leaves the through-the-cycle result
+        ${cur.alpha>=0.999?"effectively unsmoothed":"partially smoothed toward the S&amp;P central tendency"}.</p>
+        <p>Calibrated asset volatility of <strong>${F.pct(sel.assetVol)}</strong> sits ${volMove} observed equity
+        volatility of <strong>${F.pct(sel.stockVol)}</strong>; with asset drift at
+        <strong>${F.num(sel.assetRet,4)}</strong>, implied life expectancy is <strong>${F.num(cur.mu,2)}</strong> years.</p>
+        <p>The ${ol.label} outlook comes from the sign of the credit-outlook derivative at this snapshot, so it can
+        disagree with the realised notch move over the same six months — as it does for several names in the register.</p>
+      </div>`;
+    document.getElementById("re").addEventListener("click",opinion);
+  }
+
+  /* ── appendices ── */
+  function appendices(){
+    $("app-a").innerHTML = [
+      ["Ticker",sel.ticker],["Company",sel.name],["Last quote",F.usd(sel.quote)],
+      ["Window",sel.window+" d"],["Current",sel.snaps[0].date],["Prior",sel.snaps[1].date],
+      ["AssetVol",F.pct(sel.assetVol)],["AssetRet",F.num(sel.assetRet,4)],["StockVol",F.pct(sel.stockVol)],
+    ].map(([k,v])=>`<div><span class="k">${E(k)}</span><span class="v">${E(v)}</span></div>`).join("");
+
+    const heads = ["Name","Date","AssetVol","AssetRet","StockVol"].concat(TIC.SNAP_FIELDS.map(f=>f.label));
+    const rows = cos.flatMap(c=>c.snaps.map((s,i)=>`<tr><td>${E(c.ticker)}</td><td>${E(s.date)}</td>
+      <td>${i?"·":F.pct(c.assetVol)}</td><td>${i?"·":F.num(c.assetRet,4)}</td><td>${i?"·":F.pct(c.stockVol)}</td>
+      ${TIC.SNAP_FIELDS.map(f=>`<td>${f.f(s[f.key])}</td>`).join("")}</tr>`));
+    $("app-b").innerHTML = `<thead><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody>`;
+  }
+
+  function render(){ register(); verdict(); tables(); plates(); opinion(); appendices(); }
+  render();
+})();
+</script>
+</body>
+</html>

@@ -13,10 +13,19 @@ course deck:
 The module is pure stdlib (math / statistics) so it matches the dependency-free
 style of ``test_massive_api.py`` and can run against the existing raw samples.
 
-Notation follows the deck exactly, including its quirk that the per-day return
-``R = sqrt(250) * log-return`` (see ``_annualized_log_returns``).  ``R_A`` is the
-mean of those scaled returns and is treated as ``eta_A - sigma_A**2 / 2`` at
-convergence, matching slide 108.
+Conventions (finalized 2026-07-29 against the professor's answer workbook
+"TiC Rating(Prof 更新).xlsx"; every item below reproduces his numbers):
+
+  * sigma_A       = stdev of sqrt(250)-scaled daily log asset returns (deck).
+  * R_A           = ANNUALIZED drift estimate eta_A - sigma_A^2/2
+                    = sqrt(250) * mean(scaled returns) = 250 * mean(daily ln-return).
+                    The deck's literal mean is 1/sqrt(250) of this; the extra
+                    sqrt(250) is required dimensionally and matches the answer key.
+  * DD            = (ln(A/D) + R_A) / sigma_A          (no-tau approximation,
+                    professor's in-class rule), EDF = Phi(-DD).
+  * CCM, mu       use |R_A|;  TiC = CCM/mu = sigma_A^2 / ln^2(A/D).
+  * PIT PD        = first-passage PD at T = 1 year (``pd_fh``), NOT the EDF.
+  * Default point = total liabilities (see rating_inputs.debt_basis).
 """
 
 from __future__ import annotations
@@ -84,19 +93,20 @@ class EMResult:
 
     sigma_a: float                     # asset volatility (annualized)
     eta_a: float                       # asset growth rate (annualized drift)
-    r_a: float                         # mean scaled return = eta_a - sigma_a^2/2
+    r_a: float                         # ANNUALIZED eta_a - sigma_a^2/2 (= sqrt(250) * mean scaled return)
     assets: list[float]                # recovered asset value per trading day
     iterations: int
     sigma_history: list[float]
     converged: bool
+    sigma_e: float = 0.0               # equity volatility (initial-step stdev, "StockVol")
     # Rating metrics evaluated at the latest day.
     asset_latest: float = 0.0
     equity_latest: float = 0.0
     debt_latest: float = 0.0
     tau_latest: float = 0.0
-    dd: float = 0.0                    # distance to default
+    dd: float = 0.0                    # distance to default, (ln(A/D) + R_A) / sigma_A
     pit_pd: float = 0.0                # EDF = Phi(-DD) (Merton, default at maturity)
-    pd_fh: float = 0.0                 # first-passage PD (paper eq 13, default any time <= T)
+    pd_fh: float = 0.0                 # first-passage PD at T=1y (the course's "PIT PD")
     tic: float = 0.0                   # TiC rating = sigma_a^2 / ln^2(A/D) (paper eq 12)
     risk_score: float = 0.0            # RiskScore = 100 * TiC (paper eq 5)
     ccm: float = 0.0                   # Credit Corrosion Measure (paper eq 11)
@@ -200,6 +210,7 @@ def run_em(
     assets = [d.equity for d in days]
     returns = _annualized_log_returns(assets)
     sigma = stdev(returns) if len(returns) > 1 else abs(returns[0]) if returns else 0.30
+    sigma_e = sigma  # equity volatility ("StockVol" in the answer workbook)
     sigma_history = [sigma]
 
     converged = False
@@ -220,7 +231,10 @@ def run_em(
             break
 
     returns = _annualized_log_returns(assets)
-    r_a = sum(returns) / len(returns) if returns else 0.0
+    # The scaled-return mean is (eta - sigma^2/2)/sqrt(250); multiply by
+    # sqrt(250) so r_a is the annualized drift term (professor's answer key).
+    mean_scaled = sum(returns) / len(returns) if returns else 0.0
+    r_a = math.sqrt(TRADING_DAYS) * mean_scaled
     eta_a = r_a + 0.5 * sigma * sigma
 
     result = EMResult(
@@ -231,6 +245,7 @@ def run_em(
         iterations=iterations,
         sigma_history=sigma_history,
         converged=converged,
+        sigma_e=sigma_e,
     )
     _attach_rating(result, days[-1])
     return result
@@ -247,10 +262,11 @@ def _attach_rating(result: EMResult, last: DayInput) -> None:
     if a <= 0 or d <= 0:
         return
     ln_ad = math.log(a / d)
-    tau = last.tau
     sigma = result.sigma_a
-    # DD = [ln(A/D) + (eta_A - sigma_A^2/2) * tau] / (sigma_A * sqrt(tau))
-    result.dd = (ln_ad + result.r_a * tau) / (sigma * math.sqrt(tau))
+    # DD = (ln(A/D) + R_A) / sigma_A -- the professor's no-tau approximation
+    # (in class, 2026-07-15: "the second term is R_A, directly from your
+    # algorithm"; matches the answer workbook exactly).
+    result.dd = (ln_ad + result.r_a) / sigma
     result.pit_pd = norm_cdf(-result.dd)  # EDF = Phi(-DD): Merton, default at maturity
 
     # TiC rating = sigma_A^2 / ln^2(A/D).
@@ -267,18 +283,20 @@ def _attach_rating(result: EMResult, last: DayInput) -> None:
     # RiskScore RS = 100 * TiC (paper eq 5) is the practical reporting scale.
     result.tic = (sigma ** 2) / (ln_ad ** 2) if ln_ad != 0 else float("inf")
     result.risk_score = 100.0 * result.tic
-    drift = abs(result.eta_a - 0.5 * sigma * sigma)
+    drift = abs(result.r_a)  # |R_A| = |eta_A - sigma_A^2/2|, annualized (paper eq 11)
     if drift > 0 and ln_ad != 0:
         result.ccm = (sigma ** 2) / (ln_ad * drift)
         result.mu = ln_ad / drift
 
-    # First-passage default probability (paper eq 13): unlike EDF (default only at
+    # First-passage default probability (paper eq 13) at the fixed 1-year
+    # horizon T=1 (the answer workbook's FP_PD): unlike EDF (default only at
     # maturity), this allows default at any time up to T. Generally >= EDF.
     #   PD_FH = Phi(sqrt(1/CCM)*(sqrt(T/mu) - sqrt(mu/T)))
     #         + exp(2/CCM) * Phi(-sqrt(1/CCM)*(sqrt(T/mu) + sqrt(mu/T)))
-    if result.ccm > 0 and result.mu > 0 and tau > 0:
+    if result.ccm > 0 and result.mu > 0:
+        horizon = 1.0
         c = math.sqrt(1.0 / result.ccm)
-        s_tm, s_mt = math.sqrt(tau / result.mu), math.sqrt(result.mu / tau)
+        s_tm, s_mt = math.sqrt(horizon / result.mu), math.sqrt(result.mu / horizon)
         term1 = norm_cdf(c * (s_tm - s_mt))
         # exp(2/CCM) overflows for extremely safe credits (CCM -> 0), but it
         # multiplies Phi(hugely-negative) which decays far faster, so the product

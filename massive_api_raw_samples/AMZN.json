@@ -3119,7 +3119,11 @@
       "request_id": "bff6de8ecdfdbda062c64613fbfc565a",
       "count": 275
     },
-    "dividends": {},
+    "dividends": {
+      "status": "OK",
+      "request_id": "bb7dbf116c56466080677c978c41bc04",
+      "results": []
+    },
     "ticker_overview": {
       "request_id": "afb94de98da86dd200af54c42ce75b6b",
       "results": {
@@ -3160,9 +3164,7 @@
       "status": "OK"
     }
   },
-  "errors": {
-    "dividends": "HTTP 500: empty response"
-  },
+  "errors": {},
   "derived": {
     "quarterly_total_debt": [
       {
@@ -7891,6 +7893,7 @@
     "total_debt": "No documented direct field; computable only when both debt components exist.",
     "price_adjustment": "Aggregate adjusted=true means split-adjusted, not dividend-adjusted.",
     "risk_free_rate": "FRED DGS1 ok (273 rows); flat fallback=0.045 used where series missing",
-    "sofr": "sofr feed ok (272 rows); flat fallback=0.045 used where series missing"
+    "sofr": "sofr feed ok (272 rows); flat fallback=0.045 used where series missing",
+    "dividends_retry": "dividends refetched 2026-07-08 after earlier HTTP 500; adjustment factors recomputed on derived daily prices"
   }
 }

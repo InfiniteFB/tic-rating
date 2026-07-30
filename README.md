@@ -1,113 +1,145 @@
-# KMV Credit Rating Dashboard
+# TiC Rating — structural credit ratings for the S&P 500
 
-A single-page web dashboard over the project's structural (Merton/KMV) credit
-rating engine. Type a stock ticker, fetch its market data live, and see **the
-source data, every intermediate quantity, and the final S&P-scale rating** — with
-adjustable methodology knobs, a time window, full error capture, and an LLM that
-explains the calibers and analyzes the result.
+Type a ticker, read a credit rating. The rating is not looked up from an agency —
+it is computed from market equity and balance-sheet debt with a Merton/KMV
+structural model, then converted from a point-in-time probability of default to a
+through-the-cycle letter on the S&P scale.
 
-The FastAPI backend is a thin *orchestration + serialization* layer over the
-already-verified, stdlib-only engine (`kmv_engine.py`, `rating_inputs.py`,
-`rating_pipeline.py`, `ttc_conversion.py`) — **no rating math was changed**, so
-results stay identical to the engine's 22 unit tests.
-
-## Architecture
-
-```
-Browser (static SPA: index.html + vanilla JS + Chart.js via CDN)
-        │  fetch JSON
-        ▼
-FastAPI (app/)
-  ├─ GET  /api/health   MASSIVE_API_KEY presence + LLM endpoint reachability
-  ├─ POST /api/rate     ticker + knobs → source + all intermediates + rating
-  ├─ POST /api/explain  rating payload → LLM caliber explanation + result analysis
-  └─ GET  /             serves the dashboard
-        │  orchestration only (no new math)
-        ▼
-rating_pipeline.fetch_all → rating_inputs.build_inputs
-                          → kmv_engine.rate_company → ttc_conversion.convert_fh_to_sp
-```
-
-Modules: `app/serialize.py` (engine objects → JSON-safe dicts), `app/pipeline.py`
-(orchestration + failure handling), `app/llm.py` (MiniMax via the Anthropic SDK),
-`app/main.py` (routes, static mount, global error handler), `app/static/*` (UI).
-
-## Setup
-
-Requires Python 3.11+. The machine's system Python is externally-managed, so use a
-virtualenv:
+498 of the 503 S&P 500 constituents are pre-computed and cached, each at two
+snapshot dates, with every intermediate quantity the model produces.
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
+python3 -m http.server 8141 --directory web     # the dashboard, no build step
+python3 -m uvicorn app.main:app --port 8137     # optional: the live single-ticker API
 ```
 
-Create a `.env` in the project root (it is git-ignored — never commit real keys):
+## What is in here
 
 ```
-MASSIVE_API_KEY=<your massive-api key>       # per-ticker market data
-LLM_API_KEY=<your sk-cp-… key>               # MiniMax
-LLM_BASE_URL=https://api.minimaxi.com/anthropic
-LLM_MODEL=MiniMax-M3
+web/                     the dashboard — static, dependency-free, ES modules
+  index.html               section order and mount points, nothing else
+  styles/                  tokens → base → layout → components → candles
+  js/
+    store.js               the only module that knows where data comes from
+    fields.js              canonical inventory of every model field + the S&P scale
+    format.js              money in thousands, probabilities down to 1e-27
+    charts.js              six analytic plates, as SVG strings
+    candles.js             interactive candlestick (crosshair, readout, ranges)
+    views/                 one module per section, each handed its mount points
+  data/                    generated payload (index + per-ticker series)
+
+sp500_cache.py           two-stage pipeline: fetch (network) → derive (offline)
+kmv_engine.py            EM asset recovery, DD, EDF, first-passage PD, TiC/CCM
+ttc_conversion.py        PIT → TTC on the S&P scale (Table 8, No-Regulatory-Arbitrage)
+rating_inputs.py         raw API payloads → per-day model inputs
+app/                     FastAPI service for rating a single ticker live
+design_prototypes/       four aesthetic directions explored before picking one
 ```
 
-See `.env.example` for the template. Both rate feeds (FRED DGS1, SOFR) are
-key-less; only per-ticker market data needs `MASSIVE_API_KEY`.
+The front end is a **static site**: no framework, no bundler, no runtime
+dependency beyond two webfonts. Everything it shows was computed offline by
+`sp500_cache.py` and written to `web/data/`.
 
-## Run
+## The dashboard
+
+**01 Search** — type a symbol or a company name; `/` focuses the field from
+anywhere, `↑↓` picks, `⏎` loads. Exact symbol matches rank above name matches, so
+`KO` never buries Coca-Cola. Underneath sit the twelve largest constituents by
+market value as quick picks, computed from the data rather than hard-coded.
+
+**02 Verdict** — the letter, six figures that justify it with their change since
+the prior snapshot, one sentence of context, and the full conversion chain
+`CCM → RS → FP_PD → α → SP_CCM → SP_PD → letter`.
+
+**03 Price** — interactive daily candlesticks over 1M / 3M / 6M / all. Hollow
+bodies closed up, solid bodies closed down, volume beneath; hover or drag for a
+per-day OHLC readout. These are raw split-adjusted bars, while the model
+calibrates on dividend-adjusted closes — different series, and the caption says so.
+
+**04 Entries** — every field the model emits, at both snapshots, with the change
+and a direction that knows which way is good news. The table iterates the field
+inventory in `js/fields.js`, so it is complete by construction.
+
+**05 Diagnostics** — six plates: distance-to-default dumbbells and rating
+migration across a sector peer set of similar size, the three probability
+measures on a log axis, asset against equity, EM convergence, and the model's own
+asset / equity / default-point paths.
+
+**06 Reading** — plain language assembled in the browser from the figures already
+on screen. Not a language-model call, and it introduces no number the tables do not show.
+
+**07 Index** — all 503 constituents: filter, sort any column, click through. The
+strip above is the rating distribution across the 27 notches.
+
+**08 Appendix** — provenance, per-day model inputs, the whole grid, and the names
+the model could not rate with the reason for each.
+
+## The data pipeline
 
 ```bash
-.venv/bin/python -m uvicorn app.main:app --port 8137
+python3 sp500_cache.py fetch                      # ~25 min, 8 workers, 2012 API calls
+python3 sp500_cache.py derive --data-out web/data # ~8 s, offline
 ```
 
-Open http://127.0.0.1:8137, type a ticker (e.g. `KO`, `WMT`), and click
-**Fetch & Rate**. The first query for a ticker can take ~30 s (live market-data
-fetch; free-tier rate limits apply). After a rating renders, click
-**Explain this rating** for the LLM interpretation.
+`fetch` pulls four endpoints per constituent, attaches the shared FRED DGS1 and
+SOFR series, and writes one raw capture per ticker. It is resumable — existing
+captures are skipped — and retries transient TLS resets, which are the dominant
+failure mode under concurrency (22% of tickers needed one on the last full run).
 
-## Adjustable knobs (methodology settings)
+`derive` re-runs the engine over those captures offline and writes the deployable
+payload. Money stays in the workbook's unit (thousands of USD); probabilities
+below 1e-3 % print in exponential form rather than rounding to zero.
 
-| Knob | Engine parameter | Effect |
+**One calibration per company.** `AssetVol`, `AssetRet` and `StockVol` are fitted
+once over the current window and reused for both snapshots — the course
+workbook's own structure. Re-calibrating on the earlier window instead lets `R_A`
+drift, and since `mu = ln(A/D)/|R_A|`, KO's implied life expectancy came out at
+211 years against the workbook's 6.6 before this was fixed.
+
+| Payload | Size | Gzipped |
 |---|---|---|
-| **Time window** (`days`, default 400) | `fetch_all(days=)` | Calendar-day price window (~250 trading days at 400). |
-| **Short-term-debt fallback** (`st_debt_fallback`: strict / zero / curliab) | `build_inputs(st_debt_fallback=)` | How to treat a missing `debt_current`. `strict` skips the quarter (may be UNRATEABLE); `zero` treats short-term debt as 0; `curliab` uses total current liabilities. |
-| **Debt horizon** (`horizon_days`, default 365) | `build_inputs(horizon_days=)` | Assumed debt maturity after each quarter-end (sets τ). |
-| **Risk-free fallback** (`fallback_rate`, default 0.045) | `fetch_all` + `build_inputs(rate=)` | **Only used when a day has no FRED rate.** On the normal live path every day carries a real FRED DGS1 rate, so adjusting this usually changes nothing. |
+| `data/index.json` — 503 rows, both snapshots | 408 KB | 100 KB |
+| `data/series/{TICKER}.json` — EM history, paths, 275 daily bars | 19 KB each | 5.6 KB each |
+| raw captures (git-ignored, regenerable) | 65 MB | — |
 
-## Error capture
+The index loads once; series load lazily on selection and are cached for the
+session, so a cold visit never pays for 498 of them.
 
-Every failure degrades to a clear message — never a white screen or a stack trace
-in the browser:
+## Reconciliation against the course workbook
 
-- **Ticker not found** → 404, red error banner with the reason.
-- **Unrateable** (e.g. strict fallback with no `debt_current`, or no shares) → a
-  "Not rateable" notice with the reason; source data still shown; one-click
-  buttons offer to retry with a different debt fallback when relevant.
-- **Rate-limited** (empty prices from the free tier) → one automatic retry, then a
-  warning; source data preserved.
-- **Compute error** (EM / math failure) → "showing inputs only" with the error;
-  intermediates still rendered.
-- **LLM unreachable** → the AI panel says so; the rating is unaffected (fully
-  decoupled). A top banner flags a missing market-data key or unreachable LLM.
-- Any unexpected server error becomes a `{error, detail}` 500 JSON.
+Re-running the engine at `window=150` reproduces the professor's answer workbook
+closely — KO calibrates to `AssetVol` 16.3242% against 16.3499%, `AssetRet`
++0.2474 against +0.2470, with `mu`, `ccm` and `dd` inside 2%. Two differences are
+known and deliberate:
+
+- **Top-of-table clamp.** `sp_ttc_pd` clamps at S&P Table 8's best anchor
+  (PD 0.0001), while the workbook floors at 0.0002, and the workbook also floors
+  `CCM*` at 0.3 where this implementation solves freely below it. Letters agree;
+  the printed `SP_PD` differs by 2× on the highest grades, which is 93 of the 498
+  names. See the comment block in `ttc_conversion.py`.
+- **Financials.** Bank and insurer debt bases are the known soft spot — PNC
+  calibrates to σ_A 6.16% here against 6.62% in the workbook, and Financials carry
+  the lowest median DD of any sector (4.32 across 75 names). Treat the sector's
+  absolute levels with suspicion; the relative ordering is more robust.
 
 ## Known limitations
 
-- **Large-cap optimism.** Structural PIT models are systematically optimistic for
-  large-cap, low-volatility firms (equity ≫ default point → huge DD → PD≈0 →
-  tends to AAA). This is a property of the Merton/KMV method, not a bug.
-- **TiC scale caveat.** The TiC value is shown with a footnote: its scale is known
-  to disagree with the course deck's worked example; **RiskScore = 100·TiC** is the
-  practical reporting scale. (See the comment in `kmv_engine.py._attach_rating`.)
-- **First query latency.** Live market-data fetches are slow on the first call for
-  a ticker and subject to free-tier rate limits.
+- **Large-cap optimism.** Structural PIT models are systematically generous to
+  large, low-volatility firms: equity ≫ default point → large DD → PD ≈ 0. 86% of
+  the index prints investment grade here. That is a property of the method.
+- **Cached, not live.** The dashboard reads a snapshot taken on 2026-07-30.
+  Refreshing it means re-running the pipeline; the site has no server.
+- **`AAA-` is not a real S&P notch.** It is what the course's fine-notched scale
+  emits, reproduced verbatim so the interface never disagrees with the model.
+- **Five constituents cannot be rated** — newly listed or spun-off entities with
+  no quarterly balance sheet under their current symbol. They are listed with
+  their reason rather than hidden.
 
 ## Tests
 
 ```bash
-.venv/bin/python -m pytest -q
+python3 -m pytest -q
 ```
 
-Covers the engine (22 tests, unchanged) plus the new `serialize` / `pipeline` /
-`llm` / `api` layers, with Massive and the LLM mocked so tests never hit the
-network.
+Engine tests plus the `serialize` / `pipeline` / `llm` / `api` layers, with the
+market-data API and the LLM mocked so tests never hit the network.

@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Style 03 · Drafting Sheet — KMV / TiC Rating</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   STYLE 03 · DRAFTING SHEET
+   The model is a measurement, so the page is a drawing: title block,
+   grid ground, crop marks, leader lines, a dimensioned distance to the
+   default barrier, and a revision table for the two snapshots.
+   Monospace is used as drafting annotation, never as decoration.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --sheet:oklch(95.5% .009 232); --sheet-2:oklch(92.8% .012 232); --sheet-3:oklch(89% .015 232);
+  --ink:oklch(27% .035 248); --ink-2:oklch(44% .028 248); --ink-3:oklch(60% .022 248);
+  --line:oklch(74% .028 245); --line-2:oklch(83% .020 240);
+  --blue:oklch(50% .105 250); --rust:oklch(55% .155 42); --moss:oklch(48% .085 158);
+  --cond:"IBM Plex Sans Condensed",Arial Narrow,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --pad:clamp(.9rem,2vw,1.7rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;color:var(--ink);font-family:var(--cond);font-size:14px;line-height:1.4;
+  background:var(--sheet);
+  /* 4 / 20 unit drafting ground */
+  background-image:
+    repeating-linear-gradient(to right,oklch(60% .03 245/.10) 0 1px,transparent 1px 20px),
+    repeating-linear-gradient(to bottom,oklch(60% .03 245/.10) 0 1px,transparent 1px 20px),
+    repeating-linear-gradient(to right,oklch(60% .03 245/.055) 0 1px,transparent 1px 4px),
+    repeating-linear-gradient(to bottom,oklch(60% .03 245/.055) 0 1px,transparent 1px 4px);
+}
+.sheet{max-width:1280px;margin:0 auto;padding:20px}
+/* the drawing border with crop marks */
+.border{position:relative;border:1px solid var(--ink);background:oklch(96.5% .006 232/.72);
+  backdrop-filter:saturate(1.05)}
+.border::before,.border::after{content:"";position:absolute;width:13px;height:13px;pointer-events:none}
+.border::before{top:-1px;left:-1px;border-top:2px solid var(--rust);border-left:2px solid var(--rust)}
+.border::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--rust);border-right:2px solid var(--rust)}
+
+/* ── title block ── */
+.titleblock{display:grid;grid-template-columns:2.4fr repeat(4,1fr);border-bottom:1px solid var(--ink)}
+@media(max-width:820px){.titleblock{grid-template-columns:1fr 1fr}}
+.titleblock>div{padding:.6rem .8rem;border-right:1px solid var(--line)}
+.titleblock>div:last-child{border-right:0}
+.tb-k{display:block;font-size:.56rem;letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.2rem}
+.tb-v{font-family:var(--mono);font-size:.9rem;font-weight:500}
+.titleblock .name{font-family:var(--cond);font-weight:700;font-size:clamp(1.3rem,3vw,2.15rem);
+  line-height:1.02;letter-spacing:-.015em;text-transform:uppercase}
+.titleblock .name em{font-style:normal;color:var(--rust)}
+.titleblock .name small{display:block;font-weight:400;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-2);margin-top:.3rem}
+
+/* ── section heads ── */
+.zone{border-bottom:1px solid var(--ink);padding:var(--pad)}
+.zone>h2{display:flex;align-items:center;gap:.7rem;margin:0 0 1rem;font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:700;color:var(--ink-2)}
+.zone>h2 .tag{font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--sheet);
+  background:var(--ink);padding:.16rem .4rem;letter-spacing:.08em}
+.zone>h2::after{content:"";flex:1;border-top:1px dashed var(--line)}
+.zone>h2 .rt{font-family:var(--mono);font-weight:400;letter-spacing:.02em;text-transform:none;
+  font-size:.72rem;color:var(--ink-3)}
+
+/* ── plan: callout + parts list ── */
+.plan{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:var(--pad)}
+.plan>*{min-width:0}
+@media(max-width:960px){.plan{grid-template-columns:1fr}}
+.callout{border:1px solid var(--line);padding:.9rem;background:oklch(97% .005 232/.7)}
+.callout svg{display:block;width:100%;height:auto}
+.callout .cap{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);margin-top:.5rem;
+  border-top:1px dashed var(--line);padding-top:.4rem}
+.spec{margin-top:.7rem;border:1px solid var(--line)}
+.spec div{display:flex;justify-content:space-between;gap:.6rem;padding:.32rem .55rem;border-bottom:1px solid var(--line-2)}
+.spec div:last-child{border-bottom:0}
+.spec .k{font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.spec .v{font-family:var(--mono);font-size:.82rem;font-weight:500}
+
+/* a narrow viewport scrolls the table, never the sheet */
+.tscroll{overflow-x:auto;overscroll-behavior-x:contain}
+table.bom{width:100%;min-width:52rem;border-collapse:collapse;font-family:var(--mono);font-size:.78rem}
+.bom thead th{text-align:right;font-family:var(--cond);font-weight:600;font-size:.56rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-3);padding:.3rem .5rem .45rem;border-bottom:1px solid var(--ink);white-space:nowrap}
+.bom thead th:nth-child(-n+3){text-align:left}
+.bom td{text-align:right;padding:.36rem .5rem;border-bottom:1px solid var(--line-2);white-space:nowrap}
+.bom td:nth-child(-n+3){text-align:left}
+.bom tbody tr{cursor:pointer;transition:background .2s cubic-bezier(.16,1,.3,1)}
+.bom tbody tr:hover{background:var(--sheet-2)}
+.bom tbody tr.on{background:var(--sheet-3);outline:1px solid var(--blue);outline-offset:-1px}
+.bom .item{color:var(--ink-3)}
+.bom .tk{font-weight:600}
+.bom .co{font-family:var(--cond);color:var(--ink-2);max-width:19ch;overflow:hidden;text-overflow:ellipsis}
+.up{color:var(--moss)}.down{color:var(--rust)}.flat{color:var(--ink-3)}
+.sub-ig{color:var(--rust)}
+
+/* ── revision table (the two snapshots) ── */
+table.rev{width:100%;min-width:22rem;border-collapse:collapse;font-family:var(--mono);font-size:.82rem}
+.rev thead th{text-align:right;font-family:var(--cond);font-weight:600;font-size:.56rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-3);padding:.3rem .6rem .45rem;border-bottom:1px solid var(--ink)}
+.rev thead th:first-child{text-align:left}
+.rev thead th .rv{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.02em;
+  text-transform:none;color:var(--ink)}
+.rev tbody tr{border-bottom:1px solid var(--line-2)}
+.rev tbody tr:hover{background:var(--sheet-2)}
+.rev th[scope=row]{text-align:left;font-family:var(--cond);font-weight:600;font-size:.8rem;letter-spacing:.09em;
+  text-transform:uppercase;padding:.42rem 1rem .42rem 0;white-space:nowrap}
+.rev th[scope=row] i{display:block;font-family:var(--cond);font-style:normal;font-weight:400;letter-spacing:0;
+  text-transform:none;font-size:.72rem;color:var(--ink-3)}
+.rev td{text-align:right;padding:.42rem .6rem;white-space:nowrap}
+.rev td.b{color:var(--ink-3)}
+.rev td.d{font-size:.74rem}
+.rev tr.key th[scope=row],.rev tr.key td{background:oklch(88% .028 245/.35)}
+.rev tr.key td:not(.b):not(.d){font-weight:600}
+.cols2{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--pad)}
+.cols2>*{min-width:0}
+@media(max-width:960px){.cols2{grid-template-columns:1fr}}
+.note{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);margin:.7rem 0 0;
+  border-left:2px solid var(--line);padding-left:.6rem;max-width:74ch}
+
+/* ── plates ── */
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad)}
+@media(max-width:960px){.plates{grid-template-columns:1fr}}
+.plate{margin:0;border:1px solid var(--line);padding:.7rem;background:oklch(97% .005 232/.6);position:relative}
+.plate::before{content:attr(data-no);position:absolute;top:-1px;left:-1px;font-family:var(--mono);font-size:.6rem;
+  font-weight:600;background:var(--ink);color:var(--sheet);padding:.1rem .35rem;letter-spacing:.06em}
+.plate svg{display:block;width:100%;height:auto;margin-top:.6rem}
+.plate figcaption{font-family:var(--mono);font-size:.68rem;color:var(--ink-2);margin-top:.5rem;
+  border-top:1px dashed var(--line);padding-top:.4rem}
+svg .ch-grid{stroke:var(--line-2)}
+svg .ch-grid.ch-ig{stroke:var(--rust);stroke-dasharray:4 2}
+svg .ch-ig-lab{fill:var(--rust)}
+svg .ch-axis{stroke:var(--ink)}
+svg .ch-tick{fill:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:7.5px}
+svg .ch-lab{fill:var(--ink-2);font-family:"IBM Plex Mono",monospace;font-size:8.5px}
+svg .ch-val{fill:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:600}
+svg .ch-conn{stroke-width:1.4}
+svg .ch-conn.ch-up{stroke:var(--moss)}svg .ch-conn.ch-down{stroke:var(--rust)}
+svg .ch-conn.ch-flat{stroke:var(--line)}
+svg .ch-prior{fill:none;stroke:var(--ink-2);stroke-width:1.2}
+svg .ch-cur{fill:var(--blue)}svg .ch-cur.ch-up{fill:var(--moss)}svg .ch-cur.ch-down{fill:var(--rust)}
+svg .ch-lab.ch-up{fill:var(--moss)}svg .ch-lab.ch-down{fill:var(--rust)}
+svg .ch-bar-a{fill:var(--blue);fill-opacity:.75}
+svg .ch-bar-e{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:3 2}
+svg .ch-line-a{fill:none;stroke:var(--blue);stroke-width:1.6}
+svg .ch-line-e{fill:none;stroke:var(--ink-2);stroke-width:1;stroke-dasharray:4 2}
+svg .ch-line-d{fill:none;stroke:var(--rust);stroke-width:1.4}
+svg .ch-fill-a{fill:var(--blue);fill-opacity:.08;stroke:none}
+.plate-empty{padding:1rem 0 .3rem;font-family:var(--mono);font-size:.7rem;color:var(--ink-3);max-width:46ch}
+.plate-empty b{color:var(--rust)}
+/* dimension primitives for the callout */
+svg .dim{stroke:var(--rust);stroke-width:1}
+svg .dim-x{stroke:var(--ink);stroke-width:1;stroke-dasharray:5 2 1 2}
+svg .dim-t{fill:var(--rust);font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:600}
+svg .lead{stroke:var(--ink-2);stroke-width:.8}
+svg .body-f{fill:var(--blue);fill-opacity:.14;stroke:var(--blue);stroke-width:1}
+svg .bar-f{fill:var(--rust);fill-opacity:.18;stroke:var(--rust);stroke-width:1}
+
+/* ── drawing notes ── */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--pad) calc(var(--pad) * 1.4)}
+.notes ol{margin:0;padding-left:1.6rem;font-size:.86rem;color:var(--ink-2)}
+.notes li{margin-bottom:.6rem}
+.notes li::marker{font-family:var(--mono);font-size:.78rem;color:var(--rust)}
+.notes b{color:var(--ink);font-weight:600}
+.notes .head{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:.5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+.ghost{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--ink);background:none;color:var(--ink);padding:.4rem .8rem;cursor:pointer;
+  transition:background .25s cubic-bezier(.16,1,.3,1),color .25s}
+.ghost:hover{background:var(--ink);color:var(--sheet)}
+
+/* ── schedule ── */
+.scroller{max-height:340px;overflow:auto;border:1px solid var(--line)}
+table.sched{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.72rem}
+.sched th{position:sticky;top:0;background:var(--sheet-2);text-align:right;font-family:var(--cond);font-weight:600;
+  padding:.34rem .55rem;font-size:.54rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2);
+  border-bottom:1px solid var(--ink)}
+.sched th:first-child,.sched td:first-child{text-align:left;font-weight:600}
+.sched td{text-align:right;padding:.3rem .55rem;border-bottom:1px solid var(--line-2);white-space:nowrap}
+.sched tbody tr:hover{background:var(--sheet-2)}
+footer.stamp{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;padding:.7rem var(--pad);font-family:var(--mono);
+  font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+@media(prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(10px);animation:rise .75s cubic-bezier(.16,1,.3,1) forwards}
+  .d1{animation-delay:.05s}.d2{animation-delay:.11s}.d3{animation-delay:.18s}.d4{animation-delay:.26s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .callout svg .dim,.callout svg .dim-t{animation:ink .8s cubic-bezier(.16,1,.3,1) both .35s}
+  @keyframes ink{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<div class="border">
+
+  <!-- ══ TITLE BLOCK ══ -->
+  <div class="titleblock">
+    <div class="name">TiC / KMV <em>rating sheet</em>
+      <small id="tb-subject">structural credit measurement</small></div>
+    <div><span class="tb-k">Sheet</span><span class="tb-v">01 / 01</span></div>
+    <div><span class="tb-k">Rev</span><span class="tb-v" id="tb-rev">B</span></div>
+    <div><span class="tb-k">Window</span><span class="tb-v" id="tb-window"></span></div>
+    <div><span class="tb-k">Scale</span><span class="tb-v">σ units</span></div>
+  </div>
+
+  <!-- ══ PLAN ══ -->
+  <section class="zone rise">
+    <h2><span class="tag">A</span>Plan — selected subject &amp; register
+      <span class="rt" id="h-plan"></span></h2>
+    <div class="plan">
+      <div>
+        <div class="callout" id="callout"></div>
+        <div class="spec" id="spec"></div>
+      </div>
+      <div>
+        <div class="tscroll">
+          <table class="bom">
+            <thead><tr><th>Item</th><th>Name</th><th>Subject</th><th>SP_Rating</th><th>Prior</th><th>Move</th>
+              <th>DD</th><th>RS</th><th>SP_PD</th><th>FP_PD</th><th>EDF</th><th>Outlook</th></tr></thead>
+            <tbody id="bom"></tbody>
+          </table>
+        </div>
+        <p class="note">Register is sorted as filed in the workbook. Click any item to redraw the plan and every
+          annotation on this sheet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ REVISIONS ══ -->
+  <section class="zone">
+    <h2><span class="tag">B</span>Revisions — every model entry, both snapshots
+      <span class="rt" id="h-rev"></span></h2>
+    <div class="cols2">
+      <div>
+        <div class="tscroll"><table class="rev" id="t-snap"></table></div>
+        <p class="note">† RS = 100 · TiC. The TiC scale disagrees with the course deck's worked example, so RS is
+          carried as the practical scale. Asset and MarketCap are filed in thousands of USD and drawn at full magnitude.</p>
+      </div>
+      <div>
+        <div class="tscroll"><table class="rev" id="t-calib"></table></div>
+        <p class="note">Calibration is fitted once per subject over the window and shared by both revisions, so it
+          carries no change column.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DIAGNOSTICS ══ -->
+  <section class="zone">
+    <h2><span class="tag">C</span>Details — diagnostics</h2>
+    <div class="plates">
+      <figure class="plate" data-no="C1"><div id="p-dd"></div>
+        <figcaption>Distance to default, whole register. Open marker = prior revision; rust connector = moved
+          toward the barrier.</figcaption></figure>
+      <figure class="plate" data-no="C2"><div id="p-mig"></div>
+        <figcaption>Rating migration on notch position. Dashed rule marks the investment-grade boundary.</figcaption></figure>
+      <figure class="plate" data-no="C3"><div id="p-pd"></div>
+        <figcaption id="c-pd"></figcaption></figure>
+      <figure class="plate" data-no="C4"><div id="p-ae"></div>
+        <figcaption id="c-ae"></figcaption></figure>
+      <figure class="plate" data-no="C5"><div id="p-em"></div>
+        <figcaption id="c-em"></figcaption></figure>
+      <figure class="plate" data-no="C6"><div id="p-paths"></div>
+        <figcaption id="c-paths"></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ══ NOTES ══ -->
+  <section class="zone">
+    <h2><span class="tag">D</span>General notes<span class="rt">generated reading, reconciled against the model</span></h2>
+    <div class="notes" id="notes"></div>
+  </section>
+
+  <!-- ══ SCHEDULE ══ -->
+  <section class="zone">
+    <h2><span class="tag">E</span>Schedule — full register, every field <span class="rt" id="h-sched"></span></h2>
+    <div class="scroller"><table class="sched" id="sched"></table></div>
+    <p class="note">Probabilities under 1e-3 % are drawn in exponential form rather than rounded to zero. An exact
+      zero is filed as 0 and plotted at the log-axis floor.</p>
+  </section>
+
+  <footer class="stamp">
+    <span>Merton / KMV structural</span><span>PIT → TTC</span>
+    <span>Sources: massive-api · FRED DGS1 · SOFR</span>
+    <span style="margin-left:auto">IBM Plex Sans Condensed / Mono</span>
+  </footer>
+</div>
+</div>
+
+<script src="tic-data.js"></script>
+<script src="tic-series.js"></script>
+<script src="tic-lib.js"></script>
+<script>
+(function(){
+  "use strict";
+  const F=TIC.fmt,E=TIC.esc,$=(id)=>document.getElementById(id);
+  const cos=TIC.all; let sel=TIC.byTicker("DELL")||cos[0];
+
+  $("tb-window").textContent = sel.window+" d";
+  $("h-sched").textContent = cos.length+" subjects × "+(TIC.CALIB_FIELDS.length+TIC.SNAP_FIELDS.length*2)+" entries";
+
+  /* ── the dimensioned callout: DD as a measured clearance ── */
+  function callout(){
+    const [a,b]=sel.snaps, ol=TIC.outlook(a.outlook);
+    const w=300,h=210, base=150, x0=34, x1=280;
+    const ddMax=Math.max(a.dd,b.dd,3)*1.18;
+    const px=(dd)=>x1-(dd/ddMax)*(x1-x0);   // barrier on the right, asset value to the left
+    const cur=px(a.dd), pri=px(b.dd);
+    const body=`
+      <svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Distance to default drawn as a dimensioned clearance">
+        <!-- default barrier -->
+        <rect class="bar-f" x="${x1}" y="42" width="14" height="${base-42}"/>
+        <text class="ch-tick" x="${x1+7}" y="${base+12}" text-anchor="middle">D</text>
+        <text class="ch-lab" x="${x1+7}" y="34" text-anchor="middle">barrier</text>
+        <!-- asset value body -->
+        <rect class="body-f" x="${cur-46}" y="60" width="46" height="${base-60}"/>
+        <text class="ch-lab" x="${cur-23}" y="52" text-anchor="middle">V_A</text>
+        <text class="ch-val" x="${cur-23}" y="${base-12}" text-anchor="middle">${F.moneyK(a.asset)}</text>
+        <line class="ch-axis" x1="${x0-8}" y1="${base}" x2="${x1+16}" y2="${base}"/>
+        <!-- dimension line: current -->
+        <line class="dim-x" x1="${cur}" y1="60" x2="${cur}" y2="${base+30}"/>
+        <line class="dim-x" x1="${x1}" y1="42" x2="${x1}" y2="${base+30}"/>
+        <line class="dim" x1="${cur}" y1="${base+22}" x2="${x1}" y2="${base+22}"/>
+        <path class="dim" d="M${cur} ${base+22} l7 -3 v6 z" fill="currentColor"/>
+        <path class="dim" d="M${x1} ${base+22} l-7 -3 v6 z" fill="currentColor"/>
+        <text class="dim-t" x="${(cur+x1)/2}" y="${base+17}" text-anchor="middle">DD = ${F.num(a.dd,4)} σ</text>
+        <!-- prior revision, ghosted -->
+        <line class="ch-conn ch-flat" x1="${pri}" y1="${base+38}" x2="${x1}" y2="${base+38}" stroke-dasharray="3 2"/>
+        <circle class="ch-prior" cx="${pri}" cy="${base+38}" r="3"/>
+        <text class="ch-tick" x="${x0-8}" y="${base+41}">rev A ${F.num(b.dd,3)} σ</text>
+        <!-- rating callout bubble -->
+        <line class="lead" x1="${cur-46}" y1="60" x2="66" y2="26"/>
+        <circle cx="42" cy="24" r="21" fill="none" stroke="var(--ink)" stroke-width="1"/>
+        <text x="42" y="29" text-anchor="middle" font-family="IBM Plex Sans Condensed" font-weight="700"
+          font-size="17" fill="${TIC.isIG(a.spRating)?"var(--blue)":"var(--rust)"}">${E(a.spRating)}</text>
+      </svg>
+      <div class="cap">Clearance between the market value of assets and the default point, measured in calibrated
+        asset-volatility units. Rev A is the ${E(b.date)} snapshot.</div>`;
+    $("callout").innerHTML = body;
+
+    $("spec").innerHTML = [
+      ["Subject",sel.ticker+" — "+sel.name],["As of",a.date],["Last quote",F.usd(sel.quote)],
+      ["SP_Rating",a.spRating+" ("+(TIC.isIG(a.spRating)?"investment grade":"speculative")+")"],
+      ["Outlook",ol.sym+" "+ol.label],["AssetVol",F.pct(sel.assetVol)],["StockVol",F.pct(sel.stockVol)],
+      ["AssetRet",F.num(sel.assetRet,4)],["Mu",F.num(a.mu,4)+" yr"],
+    ].map(([k,v])=>`<div><span class="k">${E(k)}</span><span class="v">${E(v)}</span></div>`).join("");
+
+    $("tb-subject").textContent = sel.ticker+" · "+sel.name;
+    $("h-plan").textContent = a.date+" (rev B) against "+b.date+" (rev A)";
+  }
+
+  function bom(){
+    $("bom").innerHTML = cos.map((c,i)=>{
+      const [a,b]=c.snaps,m=TIC.migration(c),ol=TIC.outlook(a.outlook);
+      return `<tr data-tk="${c.ticker}" class="${c.ticker===sel.ticker?"on":""}">
+        <td class="item">${String(i+1).padStart(3,"0")}</td><td class="tk">${E(c.ticker)}</td>
+        <td class="co">${E(c.name)}</td>
+        <td class="${TIC.isIG(a.spRating)?"":"sub-ig"}">${E(a.spRating)}</td><td class="flat">${E(b.spRating)}</td>
+        <td class="${m.dir}">${m.notches?(m.notches>0?"+":"−")+Math.abs(m.notches):"0"}</td>
+        <td>${F.num(a.dd,3)}</td><td>${F.num(a.rs,3)}</td><td>${F.pct(a.spPd)}</td>
+        <td>${F.pct(a.fpPd)}</td><td>${F.pct(a.edf)}</td><td class="${ol.cls}">${ol.raw}</td></tr>`;
+    }).join("");
+    $("bom").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click",()=>{
+      sel=TIC.byTicker(tr.dataset.tk); render();
+    }));
+  }
+
+  function revisions(){
+    const [a,b]=sel.snaps;
+    $("h-rev").textContent = sel.ticker;
+    const key=new Set(["spRating","dd","spPd"]);
+    $("t-snap").innerHTML =
+      `<thead><tr><th>Entry</th><th><span class="rv">rev B</span>${E(a.date)}</th>
+        <th><span class="rv">rev A</span>${E(b.date)}</th><th><span class="rv">Δ</span>change</th></tr></thead><tbody>`
+      + TIC.SNAP_FIELDS.map(f=>{
+        const d=TIC.deltaInfo(f,a[f.key],b[f.key]);
+        const cls=f.rating?(TIC.isIG(a.spRating)?"":"sub-ig"):f.flag?TIC.outlook(a.outlook).cls:"";
+        return `<tr class="${key.has(f.key)?"key":""}">
+          <th scope="row">${f.label}${f.key==="rs"?" †":""}<i>${f.gloss}</i></th>
+          <td class="${cls}">${f.f(a[f.key])}</td><td class="b">${f.f(b[f.key])}</td>
+          <td class="d ${d.cls}">${d.text}</td></tr>`;}).join("")+`</tbody>`;
+
+    $("t-calib").innerHTML = `<thead><tr><th>Calibration &amp; header</th><th><span class="rv">window</span>${sel.window} d</th></tr></thead><tbody>`
+      + TIC.CALIB_FIELDS.map(f=>`<tr class="key"><th scope="row">${f.label}<i>${f.gloss}</i></th><td>${f.f(sel[f.key])}</td></tr>`).join("")
+      + TIC.HEADER_FIELDS.map(f=>`<tr><th scope="row">${f.label}<i>workbook ${f.src}</i></th><td>${E(f.f(sel[f.key]))}</td></tr>`).join("")
+      + `<tr><th scope="row">Company<i>as filed</i></th><td style="font-family:var(--cond)">${E(sel.name)}</td></tr></tbody>`;
+  }
+
+  function plates(){
+    $("p-dd").innerHTML=TIC.charts.dd(cos,{w:480});
+    $("p-mig").innerHTML=TIC.charts.migration(cos,{w:480,h:300});
+    $("p-pd").innerHTML=TIC.charts.pd(sel,{w:480});
+    $("p-ae").innerHTML=TIC.charts.ae(sel,{w:480,h:216});
+    $("c-pd").innerHTML=`${E(sel.ticker)}: FP_PD, SP_PD and EDF on a log axis. The three answer different questions, so decades of separation are expected, not an error.`;
+    $("c-ae").innerHTML=`${E(sel.ticker)}: solid fill = Asset, dashed outline = MarketCap, at both revisions. The gap is the debt placed in the barrier.`;
+
+    // C5 and C6 are re-measured by the engine — the workbook carries no series
+    const s=TIC.series(sel.ticker);
+    const emSvg=TIC.charts.em(s,{w:480}), pathSvg=TIC.charts.paths(s,{w:480,h:236});
+    const dead=`<div class="plate-empty"><b>NO SERIES ON FILE.</b> The cached capture for ${E(sel.ticker)} returned no
+      daily prices, so the engine cannot be re-run offline. Re-pull the sample to draw this detail.</div>`;
+    $("p-em").innerHTML=emSvg||dead;
+    $("p-paths").innerHTML=pathSvg||dead;
+    $("c-em").innerHTML=emSvg
+      ? `EM calibration: σ_A per iteration, settling at ${F.pct(s.sigmaA)} after ${s.iterations} iteration${s.iterations===1?"":"s"}${s.converged?"":" (iteration cap)"}. A short series by nature.`
+      : `EM calibration. Requires the per-day price series.`;
+    $("c-paths").innerHTML=pathSvg
+      ? `${E(sel.ticker)} over ${s.dates.length} trading days: asset value, equity, and the default point stepping on quarter ends. The clearance dimensioned in the plan is this gap divided by σ_A.`
+      : `Asset, equity and default-point paths. Requires the per-day price series.`;
+  }
+
+  function notes(){
+    const [a,b]=sel.snaps,m=TIC.migration(sel),ol=TIC.outlook(a.outlook);
+    const cov=a.asset/(a.asset-a.marketCap);
+    $("notes").innerHTML = `
+      <div><div class="head">Measurement</div><ol>
+        <li>Asset value <b>${F.moneyK(a.asset)}</b> against a default point of
+          <b>${F.moneyK(a.asset-a.marketCap)}</b> gives <b>${F.num(cov,2)}×</b> coverage and a clearance of
+          <b>${F.num(a.dd,4)} σ</b>.</li>
+        <li>Calibrated AssetVol <b>${F.pct(sel.assetVol)}</b> sits ${sel.assetVol>sel.stockVol?"above":"below"}
+          observed StockVol <b>${F.pct(sel.stockVol)}</b>; drift AssetRet is <b>${F.num(sel.assetRet,4)}</b>.</li>
+        <li>Implied life expectancy Mu is <b>${F.num(a.mu,4)}</b> years, which sets the horizon the cycle
+          multiplier is applied over.</li>
+      </ol></div>
+      <div><div class="head">Conversion</div><ol start="4">
+        <li>CCM moved from <b>${F.num(b.ccm,6)}</b> to <b>${F.num(a.ccm,6)}</b>, carrying RS to
+          <b>${F.num(a.rs,4)}</b>.</li>
+        <li>Alpha <b>${F.num(a.alpha,6)}</b> —
+          ${a.alpha>=0.999?"the PIT signal passes through effectively unsmoothed":"the result is blended back toward the S&amp;P central tendency"}.</li>
+        <li>SP_CCM <b>${F.num(a.spCcm,6)}</b> maps the score to SP_PD <b>${F.pct(a.spPd)}</b>, which resolves to
+          <b>${E(a.spRating)}</b> ${m.dir==="flat"?"— unchanged from rev A":"— "+TIC.deltaInfo({rating:true},a.spRating,b.spRating).text+" from rev A"}.</li>
+        <li>Outlook <b>${ol.raw} (${ol.label})</b> is the sign of the derivative at this revision, so it may
+          disagree with the realised notch move.</li>
+      </ol><button class="ghost" id="re">Redraw notes</button></div>`;
+    document.getElementById("re").addEventListener("click",notes);
+  }
+
+  function schedule(){
+    const heads=["Subject","Rev","Date","AssetVol","AssetRet","StockVol"].concat(TIC.SNAP_FIELDS.map(f=>f.label));
+    const rows=cos.flatMap(c=>c.snaps.map((s,i)=>`<tr><td>${E(c.ticker)}</td><td>${i?"A":"B"}</td><td>${E(s.date)}</td>
+      <td>${i?"·":F.pct(c.assetVol)}</td><td>${i?"·":F.num(c.assetRet,4)}</td><td>${i?"·":F.pct(c.stockVol)}</td>
+      ${TIC.SNAP_FIELDS.map(f=>`<td>${f.f(s[f.key])}</td>`).join("")}</tr>`));
+    $("sched").innerHTML=`<thead><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody>`;
+  }
+
+  function render(){callout();bom();revisions();plates();notes();schedule();}
+  render();
+})();
+</script>
+</body>
+</html>

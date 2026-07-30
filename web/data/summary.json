@@ -1,0 +1,13 @@
+{
+ "generated_for": {
+  "current": "2026-07-30",
+  "prior": "2026-01-02",
+  "window": 150
+ },
+ "constituents": 503,
+ "rated": 498,
+ "unrateable": 5,
+ "reasons": {
+  "no quarter reports total_liabilities": 5
+ }
+}

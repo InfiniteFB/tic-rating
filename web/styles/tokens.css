@@ -1,0 +1,52 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   tokens.css — the only place raw values live.
+   Swiss grid direction: cool white ground, near-black ink, one vermilion
+   accent spent only where the eye must go. Green/red are reserved for
+   direction (better / worse) and never used decoratively.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── ground & ink ─────────────────────────────────────────────────── */
+  --paper:    oklch(96.8% 0.003 250);
+  --paper-2:  oklch(94.0% 0.004 250);
+  --paper-3:  oklch(90.5% 0.006 250);
+  --ink:      oklch(17.5% 0.012 255);
+  --ink-2:    oklch(38.0% 0.010 255);
+  --ink-3:    oklch(56.0% 0.008 255);
+  --rule:     oklch(85.0% 0.006 255);
+  --grid:     oklch(91.0% 0.006 255);
+
+  /* ── accents ──────────────────────────────────────────────────────── */
+  --red:      oklch(55% 0.195 30);   /* the single accent */
+  --green:    oklch(46% 0.095 155);  /* direction: improved */
+  --blue:     oklch(48% 0.085 245);  /* neutral data series */
+
+  /* ── type ─────────────────────────────────────────────────────────── */
+  --sans:  "Archivo", Helvetica, Arial, sans-serif;
+  --black: "Archivo Black", Helvetica, sans-serif;
+
+  --t-micro: 0.56rem;   /* uppercase labels, .18em tracking */
+  --t-small: 0.72rem;
+  --t-body:  0.84rem;
+  --t-lead:  1.02rem;
+  --t-fig:   1.30rem;   /* figures that carry weight */
+
+  --track-label: 0.17em;
+
+  /* ── space ────────────────────────────────────────────────────────── */
+  --pad:    clamp(1rem, 2.4vw, 2.2rem);
+  --gap:    0.75rem;
+  --rail-w: 56px;
+
+  /* ── motion ───────────────────────────────────────────────────────── */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);   /* ease-out-quint, no bounce */
+  --fast: 0.22s;
+  --slow: 0.8s;
+}
+
+/* Grade buckets. Deliberately NOT a rainbow: investment grade reads as ink,
+   speculative grade reads as the accent. The letter carries the information,
+   colour only splits the one boundary that matters. */
+:root {
+  --grade-ig:  var(--ink);
+  --grade-spec: var(--red);
+}

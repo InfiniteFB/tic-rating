@@ -23,7 +23,9 @@ so tests can patch ``app.pipeline.fetch_all`` and ``app.pipeline.time.sleep``.
 
 from __future__ import annotations
 
+import json
 import time
+from pathlib import Path
 from typing import Any
 
 from rating_pipeline import fetch_all
@@ -51,6 +53,37 @@ def _has_signal(sample: dict[str, Any]) -> bool:
     return bool(responses.get("ticker_overview")) or bool(responses.get("balance_sheet"))
 
 
+_SAMPLES_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _cached_sample(ticker: str) -> tuple[dict[str, Any], str] | None:
+    """Newest locally archived raw sample for ``ticker``, or None.
+
+    Searches every ``massive_api_raw_samples*`` directory (flat or dated,
+    including nested layouts) and picks the file with the latest mtime.  This
+    is the offline fallback for when the Massive API key expires.
+    """
+    candidates = [
+        p
+        for pattern in ("massive_api_raw_samples*/**/*.json", "massive_api_raw_samples*/*.json")
+        for p in _SAMPLES_ROOT.glob(pattern)
+        if p.stem.upper() == ticker.upper()
+    ]
+    if not candidates:
+        return None
+    best = max(candidates, key=lambda p: p.stat().st_mtime)
+    try:
+        sample = json.loads(best.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    prices = ((sample.get("derived", {}) or {}).get("daily_dividend_adjusted_prices") or [])
+    if not prices:
+        return None
+    stamp = time.strftime("%Y-%m-%d", time.localtime(best.stat().st_mtime))
+    label = f"{best.relative_to(_SAMPLES_ROOT)} (archived {stamp}, data through {prices[-1].get('date')})"
+    return sample, label
+
+
 def _fetch_one(
     ticker: str,
     *,
@@ -60,26 +93,42 @@ def _fetch_one(
 ) -> tuple[dict[str, Any], list[str]]:
     """Fetch the raw sample for ``ticker``, retrying once on apparent rate-limiting.
 
-    Returns (sample, warnings). Raises :class:`NotFound` if the provider has
-    no data at all for the ticker (empty ``responses``).
+    Returns (sample, warnings).  If the live API is unavailable (expired key,
+    network failure, empty responses) the newest local archive is used instead,
+    with a warning.  Raises :class:`NotFound` only when neither the provider
+    nor the local archive has anything for the ticker.
     """
     warnings: list[str] = []
     attempts = retries + 1
     sample: dict[str, Any] = {}
+    fetch_error: str | None = None
     for attempt in range(attempts):
-        result = fetch_all([ticker], days=days, fallback_rate=fallback_rate)
+        try:
+            result = fetch_all([ticker], days=days, fallback_rate=fallback_rate)
+        except Exception as exc:  # expired key / network down -> offline fallback
+            fetch_error = f"{type(exc).__name__}: {exc}"
+            break
         sample = result.get(ticker, {}) or {}
         prices = ((sample.get("derived", {}) or {}).get("daily_dividend_adjusted_prices") or [])
         if prices:
             return sample, warnings
         if not _has_signal(sample):
-            raise NotFound(f"No data found for ticker '{ticker}'")
+            fetch_error = "provider returned no data (expired key or unknown ticker)"
+            break
         # Empty prices but other responses present looks like rate limiting.
         if attempt < attempts - 1:
             warnings.append("Price data came back empty; possible rate limiting, retrying.")
             time.sleep(2)
             continue
         warnings.append("Price data still empty after retry; possible rate limiting.")
+
+    cached = _cached_sample(ticker)
+    if cached is not None:
+        sample, label = cached
+        warnings.append(f"Live API unavailable ({fetch_error or 'no usable prices'}); using cached sample {label}.")
+        return sample, warnings
+    if fetch_error is not None and not _has_signal(sample):
+        raise NotFound(f"No data found for ticker '{ticker}' (live: {fetch_error}; no local archive)")
     return sample, warnings
 
 

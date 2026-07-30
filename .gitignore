@@ -11,3 +11,27 @@ venv/
 
 # OS
 .DS_Store
+
+# S&P 500 raw API captures — regenerable via `python3 sp500_cache.py fetch`
+sp500_cache/raw/
+
+# Course material — not ours to publish
+TiC Rating*.xlsx
+录播/
+output/
+em_data_package*/
+em_data_package*.zip
+PFPA*.docx
+PFPA*.pdf
+
+# Regenerable intermediates
+sp500_cache/
+massive_api_raw_samples_2*/
+massive_api_raw_samples_backup*/
+
+# Agent / tooling scratch
+.omc/
+.codex/
+.playwright-mcp/
+.impeccable.md
+*-full.png

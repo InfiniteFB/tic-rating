@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Style 04 · Archival Specimen — KMV / TiC Rating</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   STYLE 04 · ARCHIVAL SPECIMEN
+   Each company is a specimen sheet in a catalogue: accession number,
+   stamped grade, leader-dotted record, and a margin reserved for the
+   cataloguer's annotations. Ivory, umber, botanical green, oxide red.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --ivory:oklch(96.4% .020 92); --ivory-2:oklch(93.6% .026 90); --ivory-3:oklch(90% .030 88);
+  --umber:oklch(25.5% .034 62); --umber-2:oklch(42% .030 62); --umber-3:oklch(58% .026 66);
+  --rule:oklch(81% .034 82); --rule-2:oklch(87% .028 84);
+  --moss:oklch(41% .062 150); --oxide:oklch(46% .132 32); --indigo:oklch(38% .075 262);
+  --disp:"Fraunces",Georgia,serif; --body:"Spectral",Georgia,serif;
+  --pad:clamp(1.1rem,3vw,2.6rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ivory);color:var(--umber);font-family:var(--body);
+  font-size:clamp(14.5px,.35vw+13.5px,16px);line-height:1.6;font-variant-numeric:tabular-nums;
+  background-image:radial-gradient(oklch(60% .05 70/.045) .5px,transparent .5px);
+  background-size:7px 7px}
+.leaf{max-width:1240px;margin:0 auto;padding:0 var(--pad) 5rem}
+em{font-style:italic}
+
+/* small caps label, used throughout instead of icons */
+.sc{font-family:var(--body);font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--umber-3)}
+
+/* ── head ── */
+.head{padding:2.2rem 0 1.1rem;border-bottom:3px double var(--rule)}
+.head h1{font-family:var(--disp);font-variation-settings:"opsz" 120,"SOFT" 30;font-weight:500;
+  font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.02em;margin:0}
+.head h1 i{font-style:italic;font-weight:400;color:var(--moss)}
+.head .row{display:flex;flex-wrap:wrap;gap:.6rem 2.2rem;align-items:baseline;margin-top:1rem}
+.head p{margin:0;max-width:50ch;color:var(--umber-2);font-size:.96rem}
+.head .acc{margin-left:auto;text-align:right}
+.head .acc b{display:block;font-family:var(--disp);font-weight:500;font-size:1.1rem}
+
+/* ── catalogue ── */
+section{padding-top:2.4rem}
+h2.head2{display:flex;align-items:baseline;gap:1rem;margin:0 0 1.1rem;font-family:var(--body);
+  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--umber-2)}
+h2.head2::after{content:"";flex:1;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);height:3px}
+h2.head2 .rt{font-size:.82rem;letter-spacing:.02em;text-transform:none;font-style:italic;color:var(--umber-3)}
+
+.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:1px;
+  background:var(--rule-2);border:1px solid var(--rule)}
+.card{background:var(--ivory);padding:.85rem .95rem;cursor:pointer;position:relative;
+  transition:background .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1)}
+.card:hover{background:var(--ivory-2)}
+.card.on{background:var(--ivory-3)}
+.card.on::after{content:"";position:absolute;inset:0;border:1.5px solid var(--oxide);pointer-events:none}
+.card .no{font-family:var(--body);font-size:.6rem;letter-spacing:.18em;color:var(--umber-3)}
+.card .tk{font-family:var(--disp);font-weight:600;font-size:1.5rem;line-height:1.1;letter-spacing:-.01em}
+.card .co{font-size:.78rem;color:var(--umber-2);height:2.5em;overflow:hidden}
+.card .btm{display:flex;justify-content:space-between;align-items:flex-end;margin-top:.5rem;
+  border-top:1px dotted var(--rule);padding-top:.4rem}
+.card .gr{font-family:var(--disp);font-weight:600;font-size:1.22rem}
+.card .mv{font-size:.72rem;font-style:italic}
+.up{color:var(--moss)}.down{color:var(--oxide)}.flat{color:var(--umber-3)}
+.ig{color:var(--indigo)}.spec{color:var(--oxide)}
+
+/* ── specimen sheet: content + margin ── */
+.sheet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15.5rem);gap:0 var(--pad);
+  border-top:1px solid var(--rule);padding-top:1.4rem}
+@media(max-width:900px){.sheet{grid-template-columns:1fr}}
+.margin{border-left:1px solid var(--rule);padding-left:1.1rem}
+@media(max-width:900px){.margin{border-left:0;border-top:1px solid var(--rule);padding:1rem 0 0;margin-top:1.4rem}}
+.margin .m-note{margin:0 0 1.1rem;font-size:.82rem;color:var(--umber-2);font-style:italic}
+.margin .m-note b{font-style:normal;font-weight:600;color:var(--umber)}
+.margin .m-h{margin-bottom:.4rem}
+
+/* stamped grade */
+.stamp{display:flex;align-items:center;gap:1.3rem;flex-wrap:wrap}
+.seal{width:132px;height:132px;flex:0 0 auto;position:relative;transform:rotate(-3deg)}
+.seal svg{display:block;width:100%;height:100%}
+.stamp .about h3{font-family:var(--disp);font-variation-settings:"opsz" 100;font-weight:500;
+  font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.06;margin:0 0 .2rem;letter-spacing:-.015em}
+.stamp .about .sub{font-size:.9rem;color:var(--umber-2);font-style:italic}
+.stamp .about .mv{margin-top:.5rem;font-size:.88rem}
+
+.record{margin:1.5rem 0 0}
+.rec-row{display:flex;align-items:baseline;gap:.5rem;padding:.34rem 0}
+.rec-row+.rec-row{border-top:1px dotted var(--rule)}
+.rec-row .k{font-size:.88rem;color:var(--umber-2);white-space:nowrap}
+.rec-row .k em{font-style:italic;color:var(--umber-3);font-size:.8rem}
+.rec-row .fill{flex:1;border-bottom:1px dotted var(--rule-2);transform:translateY(-.22em)}
+.rec-row .v{font-family:var(--disp);font-weight:500;font-size:1.06rem;white-space:nowrap}
+.rec-row .p{font-size:.82rem;color:var(--umber-3);white-space:nowrap;min-width:6.5rem;text-align:right}
+.rec-row .d{font-size:.78rem;font-style:italic;min-width:7rem;text-align:right}
+.rec-row.key .v{font-size:1.35rem}
+.rec-head{display:flex;gap:.5rem;padding-bottom:.3rem;border-bottom:1px solid var(--rule)}
+.rec-head .k{flex:1}
+.rec-head .p,.rec-head .d{min-width:6.5rem;text-align:right}
+.rec-head .d{min-width:7rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--pad)}
+.two>*{min-width:0}
+@media(max-width:780px){.two{grid-template-columns:1fr}}
+/* the leader-dot record has to survive a phone: shrink the two right-hand
+   columns rather than pushing the page sideways */
+@media(max-width:560px){
+  .rec-row .p{min-width:5rem}.rec-row .d{min-width:5.4rem}
+  .rec-head .p{min-width:5rem}.rec-head .d{min-width:5.4rem}
+  .rec-row .k{white-space:normal}.rec-row .v{font-size:1rem}
+  .rec-row.key .v{font-size:1.16rem}
+}
+
+/* ── plates ── */
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad)}
+@media(max-width:900px){.plates{grid-template-columns:1fr}}
+.plate{margin:0}
+.plate .fr{border:1px solid var(--rule);padding:.8rem;background:oklch(97.6% .015 92)}
+.plate svg{display:block;width:100%;height:auto}
+.plate figcaption{margin-top:.5rem;font-size:.82rem;font-style:italic;color:var(--umber-2)}
+.plate figcaption b{font-style:normal;font-family:var(--disp);font-weight:600;color:var(--umber)}
+svg .ch-grid{stroke:var(--rule-2)}
+svg .ch-grid.ch-ig{stroke:var(--oxide);stroke-dasharray:3 3;opacity:.55}
+svg .ch-ig-lab{fill:var(--oxide);font-style:italic}
+svg .ch-axis{stroke:var(--umber)}
+svg .ch-tick{fill:var(--umber-3);font-family:"Spectral",serif;font-size:8.5px}
+svg .ch-lab{fill:var(--umber-2);font-family:"Spectral",serif;font-size:9.5px}
+svg .ch-val{fill:var(--umber);font-family:"Fraunces",serif;font-size:10px;font-weight:600}
+svg .ch-conn{stroke-width:1.5}
+svg .ch-conn.ch-up{stroke:var(--moss)}svg .ch-conn.ch-down{stroke:var(--oxide)}
+svg .ch-conn.ch-flat{stroke:var(--rule)}
+svg .ch-prior{fill:var(--ivory);stroke:var(--umber-2);stroke-width:1.1}
+svg .ch-cur{fill:var(--umber)}svg .ch-cur.ch-up{fill:var(--moss)}svg .ch-cur.ch-down{fill:var(--oxide)}
+svg .ch-lab.ch-up{fill:var(--moss)}svg .ch-lab.ch-down{fill:var(--oxide)}
+svg .ch-bar-a{fill:var(--moss);fill-opacity:.7}
+svg .ch-bar-e{fill:var(--oxide);fill-opacity:.42}
+svg .ch-line-a{fill:none;stroke:var(--moss);stroke-width:1.8}
+svg .ch-line-e{fill:none;stroke:var(--umber-2);stroke-width:1.1;stroke-dasharray:3.5 2.5}
+svg .ch-line-d{fill:none;stroke:var(--oxide);stroke-width:1.5}
+svg .ch-fill-a{fill:var(--moss);fill-opacity:.08;stroke:none}
+.plate-empty{padding:1.2rem 0 .4rem;font-size:.84rem;font-style:italic;color:var(--umber-3);max-width:44ch}
+.plate-empty b{font-style:normal;font-weight:600;color:var(--oxide)}
+
+/* ── cataloguer's note ── */
+.essay{border-top:1px solid var(--rule);border-bottom:3px double var(--rule);padding:1.3rem 0}
+.essay h3{font-family:var(--disp);font-weight:500;font-size:1.5rem;margin:0 0 .15rem;letter-spacing:-.01em}
+.essay .by{margin-bottom:.9rem}
+.essay p{margin:0 0 .8rem;max-width:74ch}
+.essay p:first-of-type::first-letter{font-family:var(--disp);float:left;font-size:3.1rem;line-height:.8;
+  padding:.1em .12em 0 0;color:var(--oxide);font-weight:500}
+.essay b{font-weight:600}
+.ghost{font-family:var(--body);font-size:.72rem;font-style:italic;color:var(--umber-2);background:none;
+  border:0;border-bottom:1px dotted var(--umber-3);cursor:pointer;padding:.1rem 0}
+
+/* ── ledger ── */
+details.fold{border-bottom:1px solid var(--rule-2)}
+details.fold:first-of-type{border-top:1px solid var(--rule)}
+details.fold>summary{list-style:none;cursor:pointer;padding:.7rem 0;display:flex;align-items:baseline;gap:.6rem;
+  font-size:.92rem}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"◦";color:var(--oxide)}
+details.fold[open]>summary::before{content:"•"}
+details.fold>summary .ct{margin-left:auto;font-style:italic;color:var(--umber-3);font-size:.8rem}
+.fold-body{padding:.2rem 0 1.2rem}
+.scroller{max-height:340px;overflow:auto;border:1px solid var(--rule-2)}
+table.ledger{width:100%;border-collapse:collapse;font-size:.8rem}
+.ledger th{position:sticky;top:0;background:var(--ivory-2);text-align:right;font-weight:500;padding:.44rem .7rem;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--umber-2);border-bottom:1px solid var(--rule)}
+.ledger th:first-child,.ledger td:first-child{text-align:left}
+.ledger td{text-align:right;padding:.34rem .7rem;border-bottom:1px dotted var(--rule-2);white-space:nowrap}
+.ledger tbody tr:hover{background:var(--ivory-2)}
+.colophon{margin-top:2.6rem;border-top:3px double var(--rule);padding-top:.8rem;display:flex;flex-wrap:wrap;
+  gap:.4rem 1.5rem;font-size:.72rem;font-style:italic;color:var(--umber-3)}
+
+@media(prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(12px);animation:rise .85s cubic-bezier(.16,1,.3,1) forwards}
+  .d1{animation-delay:.06s}.d2{animation-delay:.14s}.d3{animation-delay:.23s}.d4{animation-delay:.33s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .seal{animation:press .7s cubic-bezier(.16,1,.3,1) both .2s}
+  @keyframes press{from{opacity:0;transform:rotate(-9deg) scale(1.1)}to{opacity:1;transform:rotate(-3deg) scale(1)}}
+}
+</style>
+</head>
+<body>
+<div class="leaf">
+
+  <header class="head">
+    <h1>Catalogue of <i>credit specimens</i></h1>
+    <div class="row">
+      <p>Ten issuers measured by the Merton–KMV structural model, each recorded at two accession dates and
+        converted from a point-in-time probability to a through-the-cycle letter.</p>
+      <div class="acc"><span class="sc">Collection</span><b id="h-coll"></b>
+        <span class="sc" id="h-dates"></span></div>
+    </div>
+  </header>
+
+  <section class="rise">
+    <h2 class="head2">I · The catalogue <span class="rt" id="n-cat"></span></h2>
+    <div class="cat" id="cat"></div>
+  </section>
+
+  <section class="rise d1">
+    <h2 class="head2">II · Specimen record <span class="rt" id="n-rec"></span></h2>
+    <div class="sheet">
+      <div>
+        <div class="stamp" id="stamp"></div>
+        <div class="record">
+          <div class="two">
+            <div>
+              <div class="rec-head"><span class="k sc">Snapshot entry</span><span class="p sc" id="rh-a"></span><span class="d sc">Change</span></div>
+              <div id="rec-snap"></div>
+            </div>
+            <div>
+              <div class="rec-head"><span class="k sc">Calibration &amp; header</span><span class="p sc">Window</span></div>
+              <div id="rec-calib"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="margin" id="margin"></aside>
+    </div>
+  </section>
+
+  <section class="rise d2">
+    <h2 class="head2">III · Plates</h2>
+    <div class="plates">
+      <figure class="plate"><div class="fr" id="p-dd"></div>
+        <figcaption><b>Plate i.</b> Distance to default across the collection. The hollow marker is the earlier
+          accession; an oxide-red connector means the specimen drifted toward the barrier.</figcaption></figure>
+      <figure class="plate"><div class="fr" id="p-mig"></div>
+        <figcaption><b>Plate ii.</b> Migration of the letter grade between accessions, plotted on notch position.
+          The dashed rule is the investment-grade boundary.</figcaption></figure>
+      <figure class="plate"><div class="fr" id="p-pd"></div>
+        <figcaption id="c-pd"></figcaption></figure>
+      <figure class="plate"><div class="fr" id="p-ae"></div>
+        <figcaption id="c-ae"></figcaption></figure>
+      <figure class="plate"><div class="fr" id="p-em"></div>
+        <figcaption id="c-em"></figcaption></figure>
+      <figure class="plate"><div class="fr" id="p-paths"></div>
+        <figcaption id="c-paths"></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="rise d3">
+    <h2 class="head2">IV · Cataloguer's note</h2>
+    <article class="essay" id="essay"></article>
+  </section>
+
+  <section class="rise d4">
+    <h2 class="head2">V · Ledger</h2>
+    <details class="fold" open>
+      <summary>Accession record for this specimen <span class="ct" id="l-ct"></span></summary>
+      <div class="fold-body" id="l-kv"></div>
+    </details>
+    <details class="fold">
+      <summary>Complete collection, every field <span class="ct" id="l-ct2"></span></summary>
+      <div class="fold-body"><div class="scroller"><table class="ledger" id="ledger"></table></div></div>
+    </details>
+    <details class="fold">
+      <summary>Conventions of this catalogue</summary>
+      <div class="fold-body">
+        <p style="margin:0;max-width:74ch">Monetary entries are filed in thousands of United States dollars and
+          printed at full magnitude. Probabilities below one thousandth of a percent are set in exponential form
+          rather than rounded away; an exact zero is recorded as <em>0</em> and plotted at the log-axis floor.
+          RS is carried as 100 · TiC — the TiC scale disagrees with the worked example in the course deck, so RS is
+          treated as the practical scale throughout.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer class="colophon">
+    <span>Merton–KMV structural model</span><span>point-in-time to through-the-cycle</span>
+    <span>massive-api · FRED DGS1 · SOFR</span>
+    <span style="margin-left:auto">Fraunces &amp; Spectral</span>
+  </footer>
+</div>
+
+<script src="tic-data.js"></script>
+<script src="tic-series.js"></script>
+<script src="tic-lib.js"></script>
+<script>
+(function(){
+  "use strict";
+  const F=TIC.fmt,E=TIC.esc,$=(id)=>document.getElementById(id);
+  const cos=TIC.all; let sel=TIC.byTicker("KHC")||cos[0];
+  const accNo=(c)=>"SPEC. "+String(cos.indexOf(c)+1).padStart(3,"0");
+
+  $("h-coll").textContent = cos.length+" specimens";
+  $("h-dates").textContent = cos[0].snaps[1].date+" → "+cos[0].snaps[0].date;
+  $("n-cat").textContent = "select a specimen to draw its record";
+  $("l-ct2").textContent = cos.length+" specimens × "+(TIC.CALIB_FIELDS.length+TIC.SNAP_FIELDS.length*2)+" entries";
+
+  function catalogue(){
+    $("cat").innerHTML = cos.map(c=>{
+      const [a,b]=c.snaps, m=TIC.migration(c), ol=TIC.outlook(a.outlook);
+      return `<article class="card ${c.ticker===sel.ticker?"on":""}" data-tk="${c.ticker}" tabindex="0">
+        <div class="no">${accNo(c)}</div>
+        <div class="tk">${E(c.ticker)}</div>
+        <div class="co">${E(c.name)}</div>
+        <div class="btm">
+          <span class="gr ${TIC.isIG(a.spRating)?"ig":"spec"}">${E(a.spRating)}</span>
+          <span class="mv ${m.dir}">${m.notches?(m.notches>0?"▲ ":"▼ ")+Math.abs(m.notches)+" notch":"held"} ·
+            <span class="${ol.cls}">${ol.raw}</span></span>
+        </div></article>`;
+    }).join("");
+    $("cat").querySelectorAll(".card").forEach(el=>{
+      const pick=()=>{sel=TIC.byTicker(el.dataset.tk);render();
+        document.getElementById("n-rec").scrollIntoView({behavior:"smooth",block:"center"});};
+      el.addEventListener("click",pick);
+      el.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();}});
+    });
+  }
+
+  function stamp(){
+    const [a,b]=sel.snaps, m=TIC.migration(sel), ol=TIC.outlook(a.outlook);
+    const col = TIC.isIG(a.spRating) ? "var(--indigo)" : "var(--oxide)";
+    $("n-rec").textContent = accNo(sel)+" — "+sel.name;
+    $("rh-a").textContent = a.date;
+    $("stamp").innerHTML = `
+      <div class="seal">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Grade ${E(a.spRating)} stamped seal">
+          <circle cx="60" cy="60" r="55" fill="none" stroke="${col}" stroke-width="1.6"/>
+          <circle cx="60" cy="60" r="49" fill="none" stroke="${col}" stroke-width=".7"/>
+          <text x="60" y="72" text-anchor="middle" font-family="Fraunces,serif" font-weight="600"
+            font-size="${String(a.spRating).length>3?26:34}" fill="${col}">${E(a.spRating)}</text>
+          <text x="60" y="30" text-anchor="middle" font-family="Spectral,serif" font-size="7"
+            letter-spacing="1.6" fill="${col}">S &amp; P  SCALE</text>
+          <text x="60" y="94" text-anchor="middle" font-family="Spectral,serif" font-size="7"
+            letter-spacing="1.2" fill="${col}">${E(a.date)}</text>
+        </svg>
+      </div>
+      <div class="about">
+        <h3>${E(sel.name)}</h3>
+        <div class="sub">${E(sel.ticker)} · last quote ${F.usd(sel.quote)} · window ${sel.window} days ·
+          ${TIC.isIG(a.spRating)?"investment grade":"speculative grade"}</div>
+        <div class="mv">Earlier accession ${E(b.date)} graded <b>${E(b.spRating)}</b> —
+          <span class="${m.dir}">${TIC.deltaInfo({rating:true},a.spRating,b.spRating).text}</span>;
+          outlook <span class="${ol.cls}">${ol.sym} ${ol.label}</span></div>
+      </div>`;
+  }
+
+  function record(){
+    const [a,b]=sel.snaps;
+    const key=new Set(["spRating","dd","spPd"]);
+    $("rec-snap").innerHTML = TIC.SNAP_FIELDS.map(f=>{
+      const d=TIC.deltaInfo(f,a[f.key],b[f.key]);
+      const cls=f.rating?(TIC.isIG(a.spRating)?"ig":"spec"):f.flag?TIC.outlook(a.outlook).cls:"";
+      return `<div class="rec-row ${key.has(f.key)?"key":""}">
+        <span class="k">${f.label}${f.key==="rs"?" <em>†</em>":""}</span><span class="fill"></span>
+        <span class="v ${cls}">${f.f(a[f.key])}</span>
+        <span class="p">${f.f(b[f.key])}</span><span class="d ${d.cls}">${d.text}</span></div>`;
+    }).join("");
+
+    $("rec-calib").innerHTML = TIC.CALIB_FIELDS.map(f=>
+      `<div class="rec-row key"><span class="k">${f.label}</span><span class="fill"></span>
+        <span class="v">${f.f(sel[f.key])}</span></div>`).join("")
+      + TIC.HEADER_FIELDS.map(f=>
+      `<div class="rec-row"><span class="k">${f.label}</span><span class="fill"></span>
+        <span class="v">${E(f.f(sel[f.key]))}</span></div>`).join("")
+      + `<div class="rec-row"><span class="k">Accession no.</span><span class="fill"></span>
+          <span class="v">${accNo(sel)}</span></div>`;
+
+    // the margin carries the glosses, so the record itself stays quiet
+    const gl = TIC.CALIB_FIELDS.concat(TIC.SNAP_FIELDS).slice(0,9);
+    $("margin").innerHTML = `<div class="sc m-h">Cataloguer's glosses</div>`
+      + gl.map(f=>`<p class="m-note"><b>${f.label}</b> — ${f.gloss}</p>`).join("")
+      + `<p class="m-note"><b>Outlook</b> — sign of the credit-outlook derivative at the later accession, which can
+          disagree with the realised notch move over the same interval.</p>`;
+  }
+
+  function plates(){
+    $("p-dd").innerHTML=TIC.charts.dd(cos,{w:470});
+    $("p-mig").innerHTML=TIC.charts.migration(cos,{w:470,h:300});
+    $("p-pd").innerHTML=TIC.charts.pd(sel,{w:470});
+    $("p-ae").innerHTML=TIC.charts.ae(sel,{w:470,h:214});
+    $("c-pd").innerHTML=`<b>Plate iii.</b> ${E(sel.ticker)}: FP_PD, SP_PD and EDF on a log axis — three answers to three different questions, which is why decades separate them.`;
+    $("c-ae").innerHTML=`<b>Plate iv.</b> ${E(sel.ticker)}: asset value against market capitalisation at both accessions; the gap is the debt the model places in the barrier.`;
+
+    // plates v and vi are re-measured by the engine; the workbook holds no series
+    const s=TIC.series(sel.ticker);
+    const emSvg=TIC.charts.em(s,{w:470}), pathSvg=TIC.charts.paths(s,{w:470,h:234});
+    const dead=`<div class="plate-empty"><b>Not on file for ${E(sel.ticker)}.</b> The cached capture returned no daily
+      prices, so the engine cannot be re-run offline for this specimen. Re-pull the sample and the plate draws itself.</div>`;
+    $("p-em").innerHTML=emSvg||dead;
+    $("p-paths").innerHTML=pathSvg||dead;
+    $("c-em").innerHTML=emSvg
+      ? `<b>Plate v.</b> EM calibration: σ<sub>A</sub> at each iteration, coming to rest at ${F.pct(s.sigmaA)} after
+         ${s.iterations} iteration${s.iterations===1?"":"s"}. Short by nature — the fixed point arrives quickly.`
+      : `<b>Plate v.</b> EM calibration. Requires the per-day price series.`;
+    $("c-paths").innerHTML=pathSvg
+      ? `<b>Plate vi.</b> ${E(sel.ticker)} across ${s.dates.length} trading days: recovered asset value, equity, and the
+         default point stepping on quarter ends. That vertical clearance, over σ<sub>A</sub>, is DD.`
+      : `<b>Plate vi.</b> Asset, equity and default-point paths. Requires the per-day price series.`;
+  }
+
+  function essay(){
+    const [a,b]=sel.snaps,m=TIC.migration(sel),ol=TIC.outlook(a.outlook);
+    const cov=a.asset/(a.asset-a.marketCap);
+    $("essay").innerHTML = `
+      <h3>On the grading of ${E(sel.ticker)}</h3>
+      <div class="by sc">generated reading · reconciled against the workbook ·
+        <button class="ghost" id="re">write it again</button></div>
+      <p>The specimen holds <b>${F.moneyK(a.asset)}</b> of asset value against a default point of
+      <b>${F.moneyK(a.asset-a.marketCap)}</b>, giving <b>${F.num(cov,2)}×</b> coverage and a clearance of
+      <b>${F.num(a.dd,4)}</b> asset-volatility units. Calibration over ${sel.window} days puts AssetVol at
+      <b>${F.pct(sel.assetVol)}</b> against StockVol of <b>${F.pct(sel.stockVol)}</b>, with drift
+      <b>${F.num(sel.assetRet,4)}</b> and implied life expectancy <b>${F.num(a.mu,3)}</b> years.</p>
+      <p>Between accessions the cycle multiplier went ${a.ccm>b.ccm?"up":"down"} from <b>${F.num(b.ccm,6)}</b> to
+      <b>${F.num(a.ccm,6)}</b>, carrying RS to <b>${F.num(a.rs,4)}</b>. With α at <b>${F.num(a.alpha,6)}</b> the
+      through-the-cycle figure is ${a.alpha>=0.999?"effectively unsmoothed":"blended back toward the S&amp;P central tendency"},
+      and SP_CCM of <b>${F.num(a.spCcm,6)}</b> resolves SP_PD to <b>${F.pct(a.spPd)}</b> — that is the
+      <b>${E(a.spRating)}</b>.</p>
+      <p>${m.dir==="flat"
+        ? "The letter did not move over the interval, which is the ordinary case for a specimen this far from the barrier."
+        : m.dir==="up" ? "The upgrade is a clearance story: the distance widened faster than the barrier rose."
+        : "The downgrade is a volatility story rather than a leverage one; the barrier moved less than the calibrated dispersion."}
+      The recorded outlook is <b>${ol.raw} (${ol.label})</b>.</p>`;
+    document.getElementById("re").addEventListener("click",essay);
+  }
+
+  function ledger(){
+    const [a,b]=sel.snaps;
+    $("l-ct").textContent = accNo(sel);
+    $("l-kv").innerHTML = `<div class="two"><div>`
+      + [["Accession no.",accNo(sel)],["Ticker",sel.ticker],["Company",sel.name],["Last quote",F.usd(sel.quote)],
+         ["As of",sel.asof]].map(([k,v])=>
+        `<div class="rec-row"><span class="k">${E(k)}</span><span class="fill"></span><span class="v">${E(v)}</span></div>`).join("")
+      + `</div><div>`
+      + [["Window",sel.window+" days"],["Later accession",a.date],["Earlier accession",b.date],
+         ["AssetVol",F.pct(sel.assetVol)],["StockVol",F.pct(sel.stockVol)]].map(([k,v])=>
+        `<div class="rec-row"><span class="k">${E(k)}</span><span class="fill"></span><span class="v">${E(v)}</span></div>`).join("")
+      + `</div></div>`;
+
+    const heads=["Specimen","Accession","AssetVol","AssetRet","StockVol"].concat(TIC.SNAP_FIELDS.map(f=>f.label));
+    const rows=cos.flatMap(c=>c.snaps.map((s,i)=>`<tr><td>${E(c.ticker)}</td><td>${E(s.date)}</td>
+      <td>${i?"·":F.pct(c.assetVol)}</td><td>${i?"·":F.num(c.assetRet,4)}</td><td>${i?"·":F.pct(c.stockVol)}</td>
+      ${TIC.SNAP_FIELDS.map(f=>`<td>${f.f(s[f.key])}</td>`).join("")}</tr>`));
+    $("ledger").innerHTML=`<thead><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody>`;
+  }
+
+  function render(){catalogue();stamp();record();plates();essay();ledger();}
+  render();
+})();
+</script>
+</body>
+</html>

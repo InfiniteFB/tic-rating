@@ -1,0 +1,120 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   layout.css — the frame: index rail, masthead, numbered sections.
+   The 12-column field is made visible in the masthead only; elsewhere it
+   governs alignment without being drawn.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.frame {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  min-height: 100vh;
+}
+@media (max-width: 760px) { .frame { grid-template-columns: 1fr; } }
+
+/* ── index rail ─────────────────────────────────────────────────────── */
+.rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--ink);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 0;
+  min-width: 0;
+}
+.rail__mark { font-family: var(--black); font-size: 1.05rem; text-align: center; color: var(--red); line-height: 1; }
+.rail__nav { display: flex; flex-direction: column; gap: 0.1rem; }
+.rail__nav a {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-decoration: none;
+  color: var(--ink-3);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.5rem 0;
+  text-align: center;
+  transition: color var(--fast) var(--ease);
+}
+.rail__nav a:hover, .rail__nav a[aria-current="true"] { color: var(--red); }
+.rail__foot { writing-mode: vertical-rl; font-size: 0.58rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--ink-3); text-align: center; }
+
+@media (max-width: 760px) {
+  .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--ink);
+    flex-direction: row; align-items: center; padding: 0.5rem 1rem; }
+  .rail__nav { flex-direction: row; flex-wrap: wrap; gap: 0.35rem 0.8rem; margin-left: auto; }
+  .rail__nav a { writing-mode: horizontal-tb; padding: 0; }
+  .rail__foot { display: none; }
+}
+
+.body { min-width: 0; }
+
+/* ── masthead ───────────────────────────────────────────────────────── */
+.mast {
+  border-bottom: 1px solid var(--ink);
+  padding: var(--pad) var(--pad) 0;
+  /* the 12-column field, drawn once so the reader sees the system */
+  background-image: repeating-linear-gradient(
+    to right, var(--grid) 0 1px, transparent 1px calc(100% / 12));
+}
+.mast__title {
+  font-family: var(--black);
+  font-size: clamp(2.4rem, 9vw, 7rem);
+  line-height: 0.84;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.mast__title span { color: var(--red); }
+.mast__meta {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  border-top: 1px solid var(--rule);
+}
+.mast__meta > div { grid-column: span 3; padding: 0.7rem 0.8rem 0.8rem 0; }
+@media (max-width: 760px) { .mast__meta > div { grid-column: span 6; } }
+.mast__meta .value { font-size: 0.95rem; font-weight: 500; display: block; margin-top: 0.25rem; }
+.mast__meta .value--hot { color: var(--red); }
+
+/* ── numbered sections ──────────────────────────────────────────────── */
+.section { border-bottom: 1px solid var(--ink); padding: var(--pad); }
+.section__head {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr auto;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+  font-size: var(--t-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.section__no { font-family: var(--black); font-size: 1.05rem; letter-spacing: 0; color: var(--red); }
+.section__note {
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: var(--t-small);
+  color: var(--ink-3);
+  justify-self: end;
+  text-align: right;
+}
+
+/* ── column splits ──────────────────────────────────────────────────── */
+.cols-2 { display: grid; grid-template-columns: 1.55fr 1fr; gap: var(--pad); }
+.cols-2 > * { min-width: 0; }
+@media (max-width: 960px) { .cols-2 { grid-template-columns: 1fr; } }
+
+.foot {
+  padding: var(--pad);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}

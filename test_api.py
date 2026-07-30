@@ -32,8 +32,21 @@ def test_rate_happy_path():
     assert body["intermediate"]["day_inputs"]
 
 
+def _fake_fetch_no_liabilities(name):
+    """Sample with every balance-sheet liability field stripped -> unrateable
+    under both the total_liabilities default and the strict kmv basis."""
+    def _inner(tickers, **kw):
+        sample = json.loads(Path(f"massive_api_raw_samples/{name}.json").read_text())
+        for row in sample["responses"]["balance_sheet"].get("results", []):
+            row.pop("total_liabilities", None)
+            row.pop("debt_current", None)
+            row.pop("long_term_debt_and_capital_lease_obligations", None)
+        return {tickers[0]: sample}
+    return _inner
+
+
 def test_rate_unrateable_is_200_with_reason():
-    with patch("app.pipeline.fetch_all", _fake_fetch("COST")):
+    with patch("app.pipeline.fetch_all", _fake_fetch_no_liabilities("COST")):
         r = client.post("/api/rate", json={"ticker": "COST", "st_debt_fallback": "strict"})
     assert r.status_code == 200
     assert r.json()["result"]["unrateable_reason"]
@@ -48,11 +61,29 @@ def test_rate_not_found_returns_4xx_json():
 
 
 def test_unexpected_error_becomes_500_json_not_html():
-    with patch("app.pipeline.fetch_all", side_effect=RuntimeError("boom")):
+    # Deeper than the fetch layer: fetch failures now fall back to the local
+    # archive, so exercise the global handler via the rating step instead.
+    with patch("app.main.pipeline.rate_ticker", side_effect=RuntimeError("boom")):
         r = client.post("/api/rate", json={"ticker": "KO"})
     assert r.status_code == 500
     assert r.headers["content-type"].startswith("application/json")
     assert "error" in r.json()
+
+
+def test_fetch_failure_falls_back_to_cached_sample():
+    # Expired API key / network down -> newest local archive keeps KO rateable.
+    with patch("app.pipeline.fetch_all", side_effect=RuntimeError("key expired")):
+        r = client.post("/api/rate", json={"ticker": "KO"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["result"]["sp_letter"]
+    assert any("cached sample" in w for w in body["meta"]["warnings"])
+
+
+def test_fetch_failure_without_archive_is_404():
+    with patch("app.pipeline.fetch_all", side_effect=RuntimeError("key expired")):
+        r = client.post("/api/rate", json={"ticker": "ZZZZ"})
+    assert r.status_code == 404
 
 
 def test_explain_endpoint_degrades():

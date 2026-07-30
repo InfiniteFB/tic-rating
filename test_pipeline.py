@@ -103,8 +103,20 @@ def test_rate_ticker_happy_path():
     assert out["result"]["unrateable_reason"] is None
     assert out["intermediate"]["em"]["iterations"] >= 1
 
+def _fake_fetch_all_no_liabilities(sample_name):
+    """Balance sheet stripped of all liability fields -> unrateable under both
+    the total_liabilities default and the strict kmv basis."""
+    def _inner(tickers, **kw):
+        sample = json.loads(Path(f"massive_api_raw_samples/{sample_name}.json").read_text())
+        for row in sample["responses"]["balance_sheet"].get("results", []):
+            row.pop("total_liabilities", None)
+            row.pop("debt_current", None)
+            row.pop("long_term_debt_and_capital_lease_obligations", None)
+        return {tickers[0]: sample}
+    return _inner
+
 def test_rate_ticker_unrateable_returns_reason_not_crash():
-    with patch("app.pipeline.fetch_all", _fake_fetch_all("COST")):
+    with patch("app.pipeline.fetch_all", _fake_fetch_all_no_liabilities("COST")):
         out = pipeline.rate_ticker("COST", days=400, st_debt_fallback="strict",
                                    horizon_days=365.0, fallback_rate=0.045)
     assert out["result"]["unrateable_reason"]

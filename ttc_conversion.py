@@ -50,6 +50,40 @@ _SP_TABLE8: List[Tuple[str, float, float]] = [
     ("CCC/C", 154.8, 0.3359),
 ]
 
+# Fine-grained (notched) S&P scale: (letter, nominal one-year TTC PD as decimal).
+# From the course conversion spreadsheet ("S&P PD" table, 2026-07 lecture).
+# Bucketing rule per the table's own "if PD < next grade" note (and the
+# lecture: "AAA if TTC PD < 0.01%; AAA- if 0.01% <= PD < 0.02%"), i.e. buckets
+# are closed-left / open-right: grade i covers PD_i <= PD < PD_{i+1}.
+# Consequence: sp_ttc_pd()'s clamp floor of 0.0001 (0.01%) lands exactly on the
+# AAA/AAA- boundary and maps to AAA-, matching the instructor's answer key for
+# top-grade names.  (The key itself shows SP_CD exactly 0.02% as AAA-, which
+# under the strict rule would be AA+ -- an artifact of his own 0.02% PD floor;
+# interpolated PDs never hit a nominal anchor exactly, so this is moot here.)
+_SP_FINE_SCALE: List[Tuple[str, float]] = [
+    ("AAA", 0.0000), ("AAA-", 0.0001), ("AA+", 0.0002), ("AA", 0.0004),
+    ("AA-", 0.0005), ("A+", 0.0006), ("A", 0.0007), ("A-", 0.0013),
+    ("BBB+", 0.0018), ("BBB", 0.0023), ("BBB-", 0.0045), ("BB+", 0.0066),
+    ("BB", 0.0088), ("BB-", 0.0206), ("B+", 0.0323), ("B", 0.0441),
+    ("B-", 0.0765), ("CCC+", 0.1090), ("CCC", 0.1414), ("CCC-", 0.1738),
+    ("CC+", 0.2062), ("CC", 0.2386), ("CC-", 0.2710), ("C+", 0.3034),
+    ("C", 0.3359), ("C-", 0.3683), ("D", 0.4007),
+]
+
+
+def sp_letter_fine(ttc_pd: float) -> str:
+    """Map a through-the-cycle PD to the notched S&P letter (course scale).
+
+    Closed-left / open-right buckets ("if PD < next grade"): grade i wins when
+    ``PD_i <= ttc_pd < PD_{i+1}``.  Verified against the instructor's answer
+    key (0.0401% -> AA, 0.0505% -> AA-, 0.0773% -> A, 0.2492% -> BBB) and the
+    lecture's stated AAA / AAA- boundaries.
+    """
+    for i in range(len(_SP_FINE_SCALE) - 1):
+        if ttc_pd < _SP_FINE_SCALE[i + 1][1]:
+            return _SP_FINE_SCALE[i][0]
+    return "D"
+
 
 # --------------------------------------------------------------------------- #
 # Confidence-level functions
@@ -233,18 +267,26 @@ def convert_fh_to_sp(ccm_fh: float, mu: float, pd_fh: float) -> Dict[str, float]
         ``credit_outlook``-- pd_fh - S&P_TTC_PD (paper eq 28): > 0 positive
                              trend, < 0 negative trend
     """
+    # Ultra-safe credits can underflow pd_fh to exactly 0.0, which Phi_inv
+    # rejects; clamp into the open interval (0, 1) required downstream.
+    pd_fh = min(max(pd_fh, 1e-300), 1.0 - 1e-16)
     alpha = cl_fh(ccm_fh)
     ccm_star = solve_ccm_star(ccm_fh)
     rs = sp_riskscore(pd_fh, ccm_star)
     letter = sp_letter(rs)
     ttc_pd = sp_ttc_pd(rs)
+    # Outlook sign, professor's convention (answer workbook 2026-07-27 block):
+    # PIT (first-passage) PD above the TTC anchor -> "+", below -> "-".
+    outlook_sign = "+" if pd_fh > ttc_pd else "-"
     return {
         "ccm_star": ccm_star,
         "alpha": alpha,
         "rs_sp": rs,
         "sp_letter": letter,
+        "sp_letter_fine": sp_letter_fine(ttc_pd),  # notched course scale
         "sp_ttc_pd": ttc_pd,
         "credit_outlook": pd_fh - ttc_pd,  # paper eq 28
+        "outlook": outlook_sign,           # "+" iff pd_fh > sp_ttc_pd (professor)
     }
 
 

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TiC Rating — structural credit ratings for the S&amp;P 500</title>
+<meta name="description" content="Type a ticker and read a Merton/KMV structural credit rating: distance to default, first-passage PD, and the point-in-time to through-the-cycle conversion onto the S&P letter scale. 498 constituents, two snapshots each." />
+<meta name="color-scheme" content="light" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles/tokens.css" />
+<link rel="stylesheet" href="./styles/base.css" />
+<link rel="stylesheet" href="./styles/layout.css" />
+<link rel="stylesheet" href="./styles/components.css" />
+<link rel="stylesheet" href="./styles/candles.css" />
+</head>
+<body>
+<div class="frame">
+
+  <!-- ══════════════════ index rail ══════════════════ -->
+  <aside class="rail">
+    <div class="rail__mark" aria-hidden="true">◪</div>
+    <nav class="rail__nav" aria-label="Sections">
+      <a href="#s-search">Search</a>
+      <a href="#s-verdict">Verdict</a>
+      <a href="#s-quote">Price</a>
+      <a href="#s-entries">Entries</a>
+      <a href="#s-diagnostics">Diagnostics</a>
+      <a href="#s-reading">Reading</a>
+      <a href="#s-index">Index</a>
+      <a href="#s-appendix">Appendix</a>
+    </nav>
+    <div class="rail__foot">KMV / TIC</div>
+  </aside>
+
+  <div class="body">
+    <!-- ══════════════════ masthead ══════════════════ -->
+    <header class="mast">
+      <h1 class="mast__title">TiC<br />Rating<span>.</span></h1>
+      <div class="mast__meta">
+        <div><span class="label">Model</span><span class="value">Merton / KMV structural</span></div>
+        <div><span class="label">Conversion</span><span class="value">Point-in-time → through-the-cycle</span></div>
+        <div><span class="label">Snapshots</span><span class="value" id="m-snapshots">—</span></div>
+        <div><span class="label">Coverage</span><span class="value value--hot" id="m-coverage">—</span></div>
+      </div>
+    </header>
+
+    <div class="boot-error" id="boot-error" hidden></div>
+
+    <!-- ══════════════════ 01 search ══════════════════ -->
+    <section class="section" id="s-search">
+      <h2 class="section__head">
+        <span class="section__no">01</span>
+        <span>Enter a ticker</span>
+        <span class="section__note">press <kbd>/</kbd> from anywhere · ↑↓ to pick · ⏎ to load</span>
+      </h2>
+
+      <div class="search">
+        <div>
+          <label class="label" for="q">Symbol or company</label>
+          <input class="search__field" id="q" type="text" placeholder="KO"
+                 autocomplete="off" spellcheck="false" role="combobox"
+                 aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" />
+        </div>
+        <div class="search__hint">
+          Cached S&amp;P 500 constituents, calibrated over <span id="m-window">—</span>.
+        </div>
+        <ul class="q-list" id="q-list" role="listbox" aria-label="Matching constituents" hidden></ul>
+      </div>
+      <div class="search__status" id="q-status" hidden></div>
+
+      <div>
+        <div class="label" style="margin-top:1.4rem">Common names — largest by market value</div>
+        <div class="chips" id="chips"></div>
+      </div>
+    </section>
+
+    <div id="results" hidden>
+      <!-- ══════════════════ 02 verdict ══════════════════ -->
+      <section class="section" id="s-verdict">
+        <h2 class="section__head">
+          <span class="section__no">02</span>
+          <span>Verdict</span>
+          <span class="section__note" id="subject">—</span>
+        </h2>
+        <div class="verdict" id="verdict"></div>
+        <div class="chain" id="chain"></div>
+      </section>
+
+      <!-- ══════════════════ 03 price ══════════════════ -->
+      <section class="section" id="s-quote">
+        <h2 class="section__head">
+          <span class="section__no">03</span>
+          <span>Price</span>
+          <span class="section__note">daily bars · hover for a readout</span>
+        </h2>
+        <div class="quote__bar">
+          <div class="label">Candlestick, split-adjusted</div>
+          <div class="quote__ranges" id="ranges" role="group" aria-label="Range"></div>
+        </div>
+        <div class="candles__frame" id="candles"></div>
+        <figcaption class="plate" id="candles-cap" style="border:0;padding:0;margin-top:.5rem;font-size:.74rem;color:var(--ink-3)"></figcaption>
+        <p class="note" id="quote-note"></p>
+      </section>
+
+      <!-- ══════════════════ 04 entries ══════════════════ -->
+      <section class="section" id="s-entries">
+        <h2 class="section__head">
+          <span class="section__no">04</span>
+          <span>Every entry</span>
+          <span class="section__note">both snapshots, with the change</span>
+        </h2>
+        <div class="cols-2">
+          <div>
+            <div class="tscroll"><table class="entries" id="t-snap"></table></div>
+            <p class="note"><b>†</b> RS = 100 · TiC. The TiC scale disagrees with the worked example in the
+              course deck, so RS is carried as the practical scale. Asset and MarketCap arrive in thousands of
+              USD and are printed at full magnitude.</p>
+          </div>
+          <div>
+            <div class="tscroll"><table class="entries" id="t-calib"></table></div>
+            <p class="note">Calibration is fitted once per name over the window and shared by both snapshots —
+              the workbook's own structure — so it carries no change column.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════ 05 diagnostics ══════════════════ -->
+      <section class="section" id="s-diagnostics">
+        <h2 class="section__head">
+          <span class="section__no">05</span>
+          <span>Diagnostics</span>
+          <span class="section__note">sector peers, then the name itself</span>
+        </h2>
+        <div class="plates">
+          <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
+          <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
+          <figure class="plate"><div id="p-pd"></div><figcaption id="c-pd"></figcaption></figure>
+          <figure class="plate"><div id="p-ae"></div><figcaption id="c-ae"></figcaption></figure>
+          <figure class="plate"><div id="p-em"></div><figcaption id="c-em"></figcaption></figure>
+          <figure class="plate"><div id="p-paths"></div><figcaption id="c-paths"></figcaption></figure>
+        </div>
+      </section>
+
+      <!-- ══════════════════ 06 reading ══════════════════ -->
+      <section class="section" id="s-reading">
+        <h2 class="section__head">
+          <span class="section__no">06</span>
+          <span>Reading</span>
+          <span class="section__note">assembled from the figures above, not a language model</span>
+        </h2>
+        <div class="reading">
+          <div class="reading__head" id="read-head"></div>
+          <div class="reading__body" id="read-body"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════ 07 index ══════════════════ -->
+    <section class="section" id="s-index">
+      <h2 class="section__head">
+        <span class="section__no">07</span>
+        <span>The index</span>
+        <span class="section__note">click any row · click a header to sort</span>
+      </h2>
+
+      <div class="dist" id="dist" aria-hidden="true"></div>
+      <div class="dist__axis"><span>AAA</span><span>investment grade ⟶ speculative</span><span>D</span></div>
+
+      <div class="filters">
+        <input class="field filters__search" id="reg-q" type="search" placeholder="Filter by symbol or company" aria-label="Filter the index" />
+        <select class="field" id="reg-sector" aria-label="Filter by sector"></select>
+        <div class="filters__count" id="reg-count"></div>
+      </div>
+
+      <div class="register">
+        <table>
+          <thead><tr id="reg-head"></tr></thead>
+          <tbody id="reg-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 08 appendix ══════════════════ -->
+    <section class="section" id="s-appendix">
+      <h2 class="section__head">
+        <span class="section__no">08</span>
+        <span>Appendix</span>
+        <span class="section__note">provenance, failures, and the raw grid</span>
+      </h2>
+
+      <div class="kv" id="app-kv" style="margin-bottom:1.4rem"></div>
+
+      <div class="label" style="margin-bottom:.5rem">Names the model cannot rate</div>
+      <div id="app-failures" style="margin-bottom:1.4rem"></div>
+
+      <div class="label" style="margin-bottom:.5rem">Per-day model inputs, selected name</div>
+      <div class="scroller" style="margin-bottom:1.4rem"><table class="data-table" id="app-table"></table></div>
+
+      <div class="label" style="margin-bottom:.5rem">The whole index, every field, both snapshots</div>
+      <div class="scroller"><table class="data-table" id="app-full"></table></div>
+
+      <p class="note">Probabilities under 1e-3 % print in exponential form rather than rounding to zero; an exact
+        zero is printed as <em>0</em> and plotted at the log-axis floor. Ratings are the course's fine-notched
+        S&amp;P scale, which includes the non-standard <em>AAA-</em> notch, reproduced verbatim so the interface
+        never disagrees with the model.</p>
+    </section>
+
+    <footer class="foot">
+      <span>Merton / KMV structural</span>
+      <span>PIT → TTC</span>
+      <span>massive-api · FRED DGS1 · SOFR</span>
+      <span style="margin-left:auto">Archivo / Archivo Black</span>
+    </footer>
+  </div>
+</div>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

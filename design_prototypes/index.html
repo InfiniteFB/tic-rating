@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KMV / TiC Rating — four style directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,400&family=Archivo:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:oklch(97% .008 90); --ink:oklch(22% .014 60); --ink-2:oklch(44% .012 60); --ink-3:oklch(60% .010 66);
+  --rule:oklch(85% .014 76); --accent:oklch(45% .14 28);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;
+  font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem) clamp(1.2rem,4vw,2.5rem) 5rem}
+h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:400;line-height:1.02;letter-spacing:-.02em;margin:0}
+h1 em{font-style:italic;color:var(--accent)}
+.lede{max-width:60ch;color:var(--ink-2);margin:.9rem 0 0}
+.meta{margin-top:1.4rem;padding-top:.7rem;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;
+  gap:.4rem 1.6rem;font-family:"Archivo",sans-serif;font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3)}
+.list{margin-top:2.6rem;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+a.opt{display:grid;grid-template-columns:4.5rem minmax(0,1fr) auto;gap:0 1.3rem;align-items:baseline;
+  background:var(--paper);padding:1.3rem 1.4rem;text-decoration:none;color:inherit;
+  transition:background .3s cubic-bezier(.16,1,.3,1)}
+a.opt:hover{background:oklch(94.5% .014 86)}
+a.opt .no{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.6rem;color:var(--accent);letter-spacing:-.03em}
+a.opt h2{margin:0 0 .2rem;font-size:1.5rem;font-weight:400;letter-spacing:-.01em}
+a.opt .zh{font-size:.86rem;color:var(--ink-3)}
+a.opt p{margin:.5rem 0 0;color:var(--ink-2);font-size:.94rem;max-width:62ch}
+a.opt .tags{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.3rem .8rem;font-family:"Archivo",sans-serif;
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+a.opt .go{font-family:"Archivo",sans-serif;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);white-space:nowrap}
+@media(max-width:720px){a.opt{grid-template-columns:3rem 1fr}a.opt .go{display:none}}
+.note{margin-top:2.4rem;border-left:2px solid var(--rule);padding-left:1rem;font-size:.9rem;color:var(--ink-2);
+  max-width:72ch}
+.note b{font-weight:600;color:var(--ink)}
+code{font-family:ui-monospace,monospace;font-size:.86em;background:oklch(93% .016 86);padding:.05em .3em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Four style directions for the <em>TiC / KMV</em> rating front end</h1>
+  <p class="lede">Every prototype runs on the same real data extracted from <code>TiC Rating(Prof 更新).xlsx</code>
+  — ten issuers, two snapshots each, every field in the workbook. Pick a direction; the layout and the data layer
+  survive the choice, only the skin changes.</p>
+  <div class="meta">
+    <span>10 issuers</span><span>2 snapshots · 2026-01-02 → 2026-07-27</span>
+    <span>17 entries per snapshot</span><span>light / paper-leaning</span><span>English UI</span>
+  </div>
+
+  <div class="list">
+    <a class="opt" href="01-broadsheet.html">
+      <span class="no">01</span>
+      <span>
+        <h2>Financial Broadsheet <span class="zh">— 财经大报</span></h2>
+        <p>A rating is a published opinion, so it is set like one: nameplate, hairline rules, drop caps, figure
+        plates with captions, a signed opinion column and lettered appendices. No cards, no shadows.</p>
+        <span class="tags"><span>Instrument Serif · Newsreader</span><span>warm paper</span><span>oxblood accent</span>
+        <span>editorial density</span></span>
+      </span>
+      <span class="go">open →</span>
+    </a>
+
+    <a class="opt" href="02-swiss.html">
+      <span class="no">02</span>
+      <span>
+        <h2>Swiss Grid <span class="zh">— 瑞士国际主义网格</span></h2>
+        <p>A visible twelve-column field, one accent spent only where the eye must go, and type doing all the work:
+        extreme scale contrast, flush-left alignment, uppercase micro-labels, a sticky index rail.</p>
+        <span class="tags"><span>Archivo · Archivo Black</span><span>cool white</span><span>vermilion accent</span>
+        <span>maximum discipline</span></span>
+      </span>
+      <span class="go">open →</span>
+    </a>
+
+    <a class="opt" href="03-blueprint.html">
+      <span class="no">03</span>
+      <span>
+        <h2>Drafting Sheet <span class="zh">— 工程图纸</span></h2>
+        <p>The model is a measurement, so the page is a drawing: title block, grid ground, crop marks, a
+        dimensioned clearance to the default barrier, a parts list for the register and a revision table for the
+        two snapshots.</p>
+        <span class="tags"><span>IBM Plex Sans Condensed · Mono</span><span>pale blueprint</span>
+        <span>rust flags</span><span>most technical</span></span>
+      </span>
+      <span class="go">open →</span>
+    </a>
+
+    <a class="opt" href="04-specimen.html">
+      <span class="no">04</span>
+      <span>
+        <h2>Archival Specimen <span class="zh">— 档案标本</span></h2>
+        <p>Each issuer is a specimen sheet in a catalogue: accession number, a stamped grade seal, a
+        leader-dotted record, and a margin reserved for the cataloguer's glosses. The quietest and the most
+        hand-made of the four.</p>
+        <span class="tags"><span>Fraunces · Spectral</span><span>ivory</span><span>botanical green · oxide red</span>
+        <span>most generous whitespace</span></span>
+      </span>
+      <span class="go">open →</span>
+    </a>
+  </div>
+
+  <p class="note"><b>What is shared.</b> <code>tic-data.js</code> is generated from the workbook,
+  <code>tic-series.js</code> from re-running the KMV engine offline over the cached API captures, and
+  <code>tic-lib.js</code> holds the canonical field inventory, the formatters for very small probabilities, and the
+  six SVG chart builders. Each prototype iterates that inventory, so no skin can silently drop a column — and
+  swapping the skin never touches the data layer.</p>
+  <p class="note"><b>Six plates per direction.</b> Four the workbook supports directly — DD dumbbell, rating
+  migration, PD on a log axis, asset versus equity — plus two the engine supplies: EM convergence, and the asset /
+  equity / default-point paths across the 150-day window. Select AMZN to see the empty state: that cached capture
+  returned no daily prices, so those two plates say so instead of faking a curve.</p>
+  <p class="note"><b>What is not decided yet.</b> Interaction beyond selecting an issuer — live ticker entry,
+  methodology knobs, the AI explanation call — is drawn but not wired, and the backend does not yet emit the
+  two-snapshot shape the workbook uses. Both are follow-on work once a direction is chosen.</p>
+</div>
+</body>
+</html>
