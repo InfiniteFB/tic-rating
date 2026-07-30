@@ -46,8 +46,10 @@ dependency beyond two webfonts. Everything it shows was computed offline by
 
 **01 Search** — type a symbol or a company name; `/` focuses the field from
 anywhere, `↑↓` picks, `⏎` loads. Exact symbol matches rank above name matches, so
-`KO` never buries Coca-Cola. Underneath sit the twelve largest constituents by
-market value as quick picks, computed from the data rather than hard-coded.
+`KO` never buries Coca-Cola. An empty field is not an empty state: focusing it
+offers the largest constituents by market value, computed from the data rather
+than hard-coded, so the common names are one keystroke away without a standing
+row of buttons on the page.
 
 **02 Rating** — pick the trading day. The model is evaluated on every day in the
 calibration window, so the date is the reader's, not the build's; the chosen date
@@ -100,14 +102,15 @@ payload. Money stays in the workbook's unit (thousands of USD); probabilities
 below 1e-3 % print in exponential form rather than rounding to zero.
 
 **One calibration per company.** `AssetVol`, `AssetRet` and `StockVol` are fitted
-once over the current window and reused for both snapshots — the course
-workbook's own structure. Re-calibrating on the earlier window instead lets `R_A`
+once over the window and reused for every date — the course workbook's own
+structure, and what makes the date selector honest: moving the date moves A, D
+and E, never the volatility assumption. Re-calibrating on the earlier window instead lets `R_A`
 drift, and since `mu = ln(A/D)/|R_A|`, KO's implied life expectancy came out at
 211 years against the workbook's 6.6 before this was fixed.
 
 | Payload | Size | Gzipped |
 |---|---|---|
-| `data/index.json` — 503 rows, both snapshots | 408 KB | 100 KB |
+| `data/index.json` — 503 rows, latest plus a default comparison | 408 KB | 100 KB |
 | `data/series/{TICKER}.json` — EM history, model paths, the rating re-evaluated on every day in the window, 275 daily bars | 40 KB each | 13 KB each |
 | raw captures (git-ignored, regenerable) | 65 MB | — |
 
