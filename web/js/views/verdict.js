@@ -5,12 +5,12 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { esc, moneyK, num, pct } from "../format.js";
-import { CHAIN, SNAP_FIELDS, deltaInfo, isIG, migration, outlook } from "../fields.js";
+import { CHAIN, SNAP_FIELDS, deltaInfo, isIG, outlook } from "../fields.js";
 
 const KPIS = ["dd", "spPd", "fpPd", "edf", "rs", "mu"];
 const field = (key) => SNAP_FIELDS.find((f) => f.key === key);
 
-export function renderVerdict(mount, row) {
+export function renderVerdict(mount, row, cur, prior) {
   if (!row) {
     mount.innerHTML = "";
     return;
@@ -35,8 +35,10 @@ export function renderVerdict(mount, row) {
     return;
   }
 
-  const [cur, prior] = row.snaps;
-  const move = migration(row);
+  if (!cur) {
+    mount.innerHTML = "";
+    return;
+  }
   const look = outlook(cur.outlook);
   const wedge = cur.asset - cur.marketCap;
   const coverage = wedge ? cur.asset / wedge : NaN;
@@ -57,13 +59,9 @@ export function renderVerdict(mount, row) {
       <div class="verdict__bar"></div>
       <div class="verdict__meta">
         <span>S&amp;P scale · fine notch</span>
-        <span>${esc(cur.date)}</span>
+        <span class="verdict__date">${esc(cur.date)}</span>
         <span>${isIG(cur.spRating) ? "investment grade" : "speculative grade"}</span>
         <span class="${look.cls}">${look.sym} ${look.label} outlook</span>
-      </div>
-      <div class="verdict__prior">Prior snapshot ${esc(prior?.date ?? "—")}:
-        <b>${esc(prior?.spRating ?? "—")}</b> ·
-        <span class="${move.dir}">${deltaInfo({ rating: true }, cur.spRating, prior?.spRating).text}</span>
       </div>
     </div>
     <div class="verdict__kpis">${kpis}</div>
@@ -77,14 +75,13 @@ export function renderVerdict(mount, row) {
     </div>`;
 }
 
-export function renderChain(mount, row) {
-  if (!row?.snaps) {
+export function renderChain(mount, row, cur) {
+  if (!row?.snaps || !cur) {
     mount.innerHTML = "";
     mount.hidden = true;
     return;
   }
   mount.hidden = false;
-  const cur = row.snaps[0];
   mount.innerHTML = CHAIN.map((hop) => `<div>
       <span class="label">${hop.label}</span>
       <span class="chain__v">${esc(hop.f(cur[hop.key]))}</span>

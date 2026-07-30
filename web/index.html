@@ -23,7 +23,8 @@
     <div class="rail__mark" aria-hidden="true">◪</div>
     <nav class="rail__nav" aria-label="Sections">
       <a href="#s-search">Search</a>
-      <a href="#s-verdict">Verdict</a>
+      <a href="#s-verdict">Rating</a>
+      <a href="#s-compare">Compare</a>
       <a href="#s-quote">Price</a>
       <a href="#s-entries">Entries</a>
       <a href="#s-diagnostics">Diagnostics</a>
@@ -37,13 +38,9 @@
   <div class="body">
     <!-- ══════════════════ masthead ══════════════════ -->
     <header class="mast">
-      <h1 class="mast__title">TiC<br />Rating<span>.</span></h1>
-      <div class="mast__meta">
-        <div><span class="label">Model</span><span class="value">Merton / KMV structural</span></div>
-        <div><span class="label">Conversion</span><span class="value">Point-in-time → through-the-cycle</span></div>
-        <div><span class="label">Snapshots</span><span class="value" id="m-snapshots">—</span></div>
-        <div><span class="label">Coverage</span><span class="value value--hot" id="m-coverage">—</span></div>
-      </div>
+      <h1 class="mast__title">TiC Rating<span>.</span></h1>
+      <p class="mast__sub">Merton / KMV structural model · point-in-time converted to through-the-cycle
+        on the S&amp;P scale</p>
     </header>
 
     <div class="boot-error" id="boot-error" hidden></div>
@@ -59,7 +56,8 @@
       <div class="search">
         <div>
           <label class="label" for="q">Symbol or company</label>
-          <input class="search__field" id="q" type="text" placeholder="KO"
+          <input class="search__field" id="q" type="text"
+                 placeholder="AAPL, NVDA, JPM, KO…"
                  autocomplete="off" spellcheck="false" role="combobox"
                  aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" />
         </div>
@@ -69,11 +67,6 @@
         <ul class="q-list" id="q-list" role="listbox" aria-label="Matching constituents" hidden></ul>
       </div>
       <div class="search__status" id="q-status" hidden></div>
-
-      <div>
-        <div class="label" style="margin-top:1.4rem">Common names — largest by market value</div>
-        <div class="chips" id="chips"></div>
-      </div>
     </section>
 
     <div id="results" hidden>
@@ -81,17 +74,29 @@
       <section class="section" id="s-verdict">
         <h2 class="section__head">
           <span class="section__no">02</span>
-          <span>Verdict</span>
+          <span>Rating</span>
           <span class="section__note" id="subject">—</span>
         </h2>
+        <div id="ctl-asof" hidden></div>
         <div class="verdict" id="verdict"></div>
         <div class="chain" id="chain"></div>
+      </section>
+
+      <!-- ══════════════════ 03 compare ══════════════════ -->
+      <section class="section" id="s-compare">
+        <h2 class="section__head">
+          <span class="section__no">03</span>
+          <span>Compare</span>
+          <span class="section__note">pick any earlier trading day</span>
+        </h2>
+        <div id="ctl-compare" hidden></div>
+        <div id="compare"></div>
       </section>
 
       <!-- ══════════════════ 03 price ══════════════════ -->
       <section class="section" id="s-quote">
         <h2 class="section__head">
-          <span class="section__no">03</span>
+          <span class="section__no">04</span>
           <span>Price</span>
           <span class="section__note">daily bars · hover for a readout</span>
         </h2>
@@ -107,9 +112,9 @@
       <!-- ══════════════════ 04 entries ══════════════════ -->
       <section class="section" id="s-entries">
         <h2 class="section__head">
-          <span class="section__no">04</span>
+          <span class="section__no">05</span>
           <span>Every entry</span>
-          <span class="section__note">both snapshots, with the change</span>
+          <span class="section__note">at the two selected dates</span>
         </h2>
         <div class="cols-2">
           <div>
@@ -120,8 +125,8 @@
           </div>
           <div>
             <div class="tscroll"><table class="entries" id="t-calib"></table></div>
-            <p class="note">Calibration is fitted once per name over the window and shared by both snapshots —
-              the workbook's own structure — so it carries no change column.</p>
+            <p class="note">Calibration is fitted once per name over the whole window and shared by every date, so it carries
+              no change column — moving the date moves A, D and E, never the volatility assumption.</p>
           </div>
         </div>
       </section>
@@ -129,7 +134,7 @@
       <!-- ══════════════════ 05 diagnostics ══════════════════ -->
       <section class="section" id="s-diagnostics">
         <h2 class="section__head">
-          <span class="section__no">05</span>
+          <span class="section__no">06</span>
           <span>Diagnostics</span>
           <span class="section__note">sector peers, then the name itself</span>
         </h2>
@@ -146,7 +151,7 @@
       <!-- ══════════════════ 06 reading ══════════════════ -->
       <section class="section" id="s-reading">
         <h2 class="section__head">
-          <span class="section__no">06</span>
+          <span class="section__no">07</span>
           <span>Reading</span>
           <span class="section__note">assembled from the figures above, not a language model</span>
         </h2>
@@ -160,7 +165,7 @@
     <!-- ══════════════════ 07 index ══════════════════ -->
     <section class="section" id="s-index">
       <h2 class="section__head">
-        <span class="section__no">07</span>
+        <span class="section__no">08</span>
         <span>The index</span>
         <span class="section__note">click any row · click a header to sort</span>
       </h2>
@@ -185,7 +190,7 @@
     <!-- ══════════════════ 08 appendix ══════════════════ -->
     <section class="section" id="s-appendix">
       <h2 class="section__head">
-        <span class="section__no">08</span>
+        <span class="section__no">09</span>
         <span>Appendix</span>
         <span class="section__note">provenance, failures, and the raw grid</span>
       </h2>
@@ -198,7 +203,7 @@
       <div class="label" style="margin-bottom:.5rem">Per-day model inputs, selected name</div>
       <div class="scroller" style="margin-bottom:1.4rem"><table class="data-table" id="app-table"></table></div>
 
-      <div class="label" style="margin-bottom:.5rem">The whole index, every field, both snapshots</div>
+      <div class="label" style="margin-bottom:.5rem">The whole index, every field</div>
       <div class="scroller"><table class="data-table" id="app-full"></table></div>
 
       <p class="note">Probabilities under 1e-3 % print in exponential form rather than rounding to zero; an exact

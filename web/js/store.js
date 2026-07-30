@@ -24,7 +24,70 @@ export const state = {
   selected: null,     // the row from index.json
   series: null,       // series for `selected`, or null while loading / absent
   seriesStatus: "idle", // idle | loading | ready | missing
+  // indices into series.dates — which day the rating is read at, and which
+  // earlier day it is measured against. Both are the reader's to choose.
+  asOf: -1,
+  compareAt: -1,
 };
+
+/** how far back the comparison starts, in trading days (≈ six months) */
+const COMPARE_BACK = 125;
+
+/**
+ * The full model output for one trading day, in the same shape as the rows in
+ * index.json — so every view can consume either without a special case.
+ * `asset`, `marketCap` and the paths live in top-level arrays; everything the
+ * rating chain produces lives in `path`.
+ */
+export function snapshotAt(series, i) {
+  if (!series?.dates?.length) return null;
+  const k = Math.max(0, Math.min(series.dates.length - 1, i));
+  const p = series.path ?? {};
+  const at = (key) => (Array.isArray(p[key]) ? p[key][k] : undefined);
+  return {
+    date: series.dates[k],
+    index: k,
+    asset: series.asset?.[k],
+    marketCap: series.equity?.[k],
+    debt: series.debt?.[k],
+    price: at("price"),
+    mu: at("mu"), ccm: at("ccm"), rs: at("rs"), fpPd: at("fpPd"),
+    alpha: at("alpha"), spCcm: at("spCcm"), spPd: at("spPd"),
+    spRating: at("spRating"), dd: at("dd"), edf: at("edf"),
+    outlook: at("outlook"), tic: at("tic"), rsSp: at("rsSp"),
+    creditOutlook: at("creditOutlook"),
+  };
+}
+
+/** the pair the views read: [as-of, comparison]. Falls back to the index row
+ *  while the series is still in flight, so nothing waits on the network. */
+export function snapshots() {
+  const { series, selected, asOf, compareAt } = state;
+  if (series?.path && asOf >= 0) {
+    return [snapshotAt(series, asOf), compareAt >= 0 ? snapshotAt(series, compareAt) : null];
+  }
+  return selected?.snaps ? [selected.snaps[0], selected.snaps[1] ?? null] : [null, null];
+}
+
+export function setAsOf(i) {
+  const n = state.series?.dates?.length ?? 0;
+  if (!n) return;
+  const next = Math.max(0, Math.min(n - 1, Math.round(i)));
+  if (next === state.asOf) return;
+  state.asOf = next;
+  // the comparison can never sit at or after the as-of date
+  if (state.compareAt >= next) state.compareAt = Math.max(0, next - 1);
+  emit("dates");
+}
+
+export function setCompareAt(i) {
+  const n = state.series?.dates?.length ?? 0;
+  if (!n) return;
+  const next = Math.max(0, Math.min(state.asOf - 1 < 0 ? 0 : state.asOf - 1, Math.round(i)));
+  if (next === state.compareAt) return;
+  state.compareAt = next;
+  emit("dates");
+}
 
 /** subscribe to state changes; returns an unsubscribe function */
 export function subscribe(fn) {
@@ -109,6 +172,7 @@ export async function select(ticker) {
   state.selected = row;
   state.series = seriesCache.get(row.ticker) ?? null;
   state.seriesStatus = state.series ? "ready" : row.snaps ? "loading" : "missing";
+  resetDates();
   emit("selected");
 
   if (state.series || !row.snaps) return row;
@@ -120,6 +184,7 @@ export async function select(ticker) {
     if (state.selected?.ticker === row.ticker) {
       state.series = series;
       state.seriesStatus = "ready";
+      resetDates();
       emit("series");
     }
   } catch {
@@ -130,6 +195,13 @@ export async function select(ticker) {
     }
   }
   return row;
+}
+
+/** newest day as-of, ~six months back for the comparison */
+function resetDates() {
+  const n = state.series?.dates?.length ?? 0;
+  state.asOf = n ? n - 1 : -1;
+  state.compareAt = n ? Math.max(0, n - 1 - COMPARE_BACK) : -1;
 }
 
 function fetchSeries(ticker) {

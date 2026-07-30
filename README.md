@@ -5,8 +5,10 @@ it is computed from market equity and balance-sheet debt with a Merton/KMV
 structural model, then converted from a point-in-time probability of default to a
 through-the-cycle letter on the S&P scale.
 
-498 of the 503 S&P 500 constituents are pre-computed and cached, each at two
-snapshot dates, with every intermediate quantity the model produces.
+498 of the 503 S&P 500 constituents are pre-computed and cached — the rating
+re-evaluated on every trading day in the calibration window, with every
+intermediate quantity the model produces. Pick any date; compare against any
+earlier one.
 
 ```bash
 python3 -m http.server 8141 --directory web     # the dashboard, no build step
@@ -47,31 +49,38 @@ anywhere, `↑↓` picks, `⏎` loads. Exact symbol matches rank above name matc
 `KO` never buries Coca-Cola. Underneath sit the twelve largest constituents by
 market value as quick picks, computed from the data rather than hard-coded.
 
-**02 Verdict** — the letter, six figures that justify it with their change since
-the prior snapshot, one sentence of context, and the full conversion chain
+**02 Rating** — pick the trading day. The model is evaluated on every day in the
+calibration window, so the date is the reader's, not the build's; the chosen date
+is the loudest thing in the control because it is what changes the answer. Below
+it: the letter, six figures with their change, and the conversion chain
 `CCM → RS → FP_PD → α → SP_CCM → SP_PD → letter`.
 
-**03 Price** — interactive daily candlesticks over 1M / 3M / 6M / all. Hollow
+**03 Compare** — pick any earlier trading day and see what moved: both letters,
+the notch distance, and whether the move came from the asset value or from the
+barrier. The calibration is shared across dates, so a change here is a change in
+A, D and E — never in the volatility assumption.
+
+**04 Price** — interactive daily candlesticks over 1M / 3M / 6M / all. Hollow
 bodies closed up, solid bodies closed down, volume beneath; hover or drag for a
 per-day OHLC readout. These are raw split-adjusted bars, while the model
 calibrates on dividend-adjusted closes — different series, and the caption says so.
 
-**04 Entries** — every field the model emits, at both snapshots, with the change
+**05 Entries** — every field the model emits, at the two selected dates, with the change
 and a direction that knows which way is good news. The table iterates the field
 inventory in `js/fields.js`, so it is complete by construction.
 
-**05 Diagnostics** — six plates: distance-to-default dumbbells and rating
+**06 Diagnostics** — six plates: distance-to-default dumbbells and rating
 migration across a sector peer set of similar size, the three probability
 measures on a log axis, asset against equity, EM convergence, and the model's own
 asset / equity / default-point paths.
 
-**06 Reading** — plain language assembled in the browser from the figures already
+**07 Reading** — plain language assembled in the browser from the figures already
 on screen. Not a language-model call, and it introduces no number the tables do not show.
 
-**07 Index** — all 503 constituents: filter, sort any column, click through. The
+**08 Index** — all 503 constituents: filter, sort any column, click through. The
 strip above is the rating distribution across the 27 notches.
 
-**08 Appendix** — provenance, per-day model inputs, the whole grid, and the names
+**09 Appendix** — provenance, per-day model inputs, the whole grid, and the names
 the model could not rate with the reason for each.
 
 ## The data pipeline
@@ -99,7 +108,7 @@ drift, and since `mu = ln(A/D)/|R_A|`, KO's implied life expectancy came out at
 | Payload | Size | Gzipped |
 |---|---|---|
 | `data/index.json` — 503 rows, both snapshots | 408 KB | 100 KB |
-| `data/series/{TICKER}.json` — EM history, paths, 275 daily bars | 19 KB each | 5.6 KB each |
+| `data/series/{TICKER}.json` — EM history, model paths, the rating re-evaluated on every day in the window, 275 daily bars | 40 KB each | 13 KB each |
 | raw captures (git-ignored, regenerable) | 65 MB | — |
 
 The index loads once; series load lazily on selection and are cached for the

@@ -6,16 +6,16 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { esc, moneyK, num, pct } from "../format.js";
-import { migration, outlook } from "../fields.js";
+import { notches, outlook } from "../fields.js";
 
-export function renderReading(headMount, bodyMount, row) {
-  if (!row?.snaps) {
+export function renderReading(headMount, bodyMount, row, cur, prior) {
+  if (!row?.snaps || !cur) {
     headMount.textContent = "";
     bodyMount.innerHTML = "";
     return;
   }
-  const [cur, prior] = row.snaps;
-  const move = migration(row);
+  const n = prior ? notches(cur.spRating, prior.spRating) : 0;
+  const move = { known: Boolean(prior), dir: n > 0 ? "up" : n < 0 ? "down" : "flat" };
   const look = outlook(cur.outlook);
   const wedge = cur.asset - cur.marketCap;
   const coverage = wedge ? cur.asset / wedge : NaN;
@@ -23,9 +23,9 @@ export function renderReading(headMount, bodyMount, row) {
   headMount.innerHTML = `${esc(row.ticker)}<br>prints<br>${esc(cur.spRating)}`;
 
   const lead = !move.known
-    ? "Only one snapshot resolves for this name, so there is no migration to read."
+    ? "No comparison date is selected, so there is no migration to read."
     : move.dir === "flat"
-      ? "Six months of market noise, and the letter held."
+      ? "Across the selected span the letter held."
       : move.dir === "up"
         ? "The upgrade is a clearance story, not an earnings story."
         : "The downgrade is priced in volatility, not in leverage.";
@@ -42,13 +42,14 @@ export function renderReading(headMount, bodyMount, row) {
     <b>${pct(row.stockVol)}</b>, with drift <b>${num(row.assetRet, 4)}</b> and implied life expectancy
     <b>${num(cur.mu, 3)}</b> years.</p>
     <p>${prior
-      ? `Between snapshots the cycle multiplier went ${cur.ccm > prior.ccm ? "up" : "down"} from
+      ? `Between the two dates the cycle multiplier went ${cur.ccm > prior.ccm ? "up" : "down"} from
          <b>${num(prior.ccm, 6)}</b> to <b>${num(cur.ccm, 6)}</b>, carrying RS to <b>${num(cur.rs, 4)}</b>.`
       : `The cycle multiplier stands at <b>${num(cur.ccm, 6)}</b>, with RS at <b>${num(cur.rs, 4)}</b>.`}
     With α at <b>${num(cur.alpha, 6)}</b> the through-the-cycle figure is ${alphaClause}, and SP_CCM of
     <b>${num(cur.spCcm, 6)}</b> resolves SP_PD to <b>${pct(cur.spPd)}</b> — that is the
     <b>${esc(cur.spRating)}</b>.</p>
     <p>The recorded outlook is <b>${look.raw} (${look.label})</b>, which is the sign of the credit-outlook
-    derivative at this snapshot. It can disagree with the realised notch move over the same six months, and
-    across the index it frequently does — the two are different statements, one about level and one about slope.</p>`;
+    derivative on the rating date itself, not a comparison with any earlier day. It can disagree with the notch
+    move over the selected span, and across the index it frequently does — one is a statement about level, the
+    other about slope.</p>`;
 }

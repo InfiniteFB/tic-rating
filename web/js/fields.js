@@ -71,12 +71,18 @@ export function ratingIdx(letter) {
 
 export const isIG = (letter) => ratingIdx(letter) <= IG_EDGE;
 
+/** notch move between two letters; positive = upgrade (better letter, lower index) */
+export function notches(cur, prior) {
+  if (!cur || !prior) return 0;
+  return ratingIdx(prior) - ratingIdx(cur);
+}
+
 /** notch move between the two snapshots; positive = upgrade */
 export function migration(row) {
   const [cur, prior] = row.snaps ?? [];
   if (!cur?.spRating || !prior?.spRating) return { notches: 0, dir: "flat", known: false };
-  const notches = ratingIdx(prior.spRating) - ratingIdx(cur.spRating);
-  return { notches, dir: notches > 0 ? "up" : notches < 0 ? "down" : "flat", known: true };
+  const n = notches(cur.spRating, prior.spRating);
+  return { notches: n, dir: n > 0 ? "up" : n < 0 ? "down" : "flat", known: true };
 }
 
 export function outlook(sign) {

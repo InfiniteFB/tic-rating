@@ -445,6 +445,16 @@ def derive_stage(
         index.append(row)
         rated += 1
 
+        # Every trading day in the window, evaluated against the one calibration.
+        # Costs ~5 ms per name, and it is what lets the front end offer a date
+        # selector and an arbitrary A-vs-B comparison instead of two dates
+        # someone chose once. Fields that can be read off the arrays already in
+        # this file (asset, equity, debt) are not repeated here.
+        walk = [_snapshot(_metrics_at(engine, days, i), days[i], shares) for i in range(len(days))]
+        path = {key: [w[key] for w in walk] for key in
+                ("spRating", "dd", "spPd", "fpPd", "edf", "rs", "ccm", "mu",
+                 "alpha", "spCcm", "outlook", "tic", "rsSp", "creditOutlook", "price")}
+
         series_dir.joinpath(f"{ticker}.json").write_text(
             json.dumps(
                 {
@@ -458,6 +468,8 @@ def derive_stage(
                     "equity": [_sig(d.equity / 1e3, 6) for d in bundle.days],
                     "asset": [_sig(a / 1e3, 6) for a in engine.assets],
                     "debt": [_sig(d.debt / 1e3, 6) for d in bundle.days],
+                    # the rating re-evaluated on every one of those days
+                    "path": path,
                     # daily bars for the candlestick view (split-adjusted, raw)
                     "ohlc": _ohlc(sample),
                 },

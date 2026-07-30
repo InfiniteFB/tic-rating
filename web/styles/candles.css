@@ -61,16 +61,18 @@ svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cu
 
 .search__field {
   font-family: var(--black);
-  font-size: clamp(1.5rem, 4vw, 2.4rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  padding: 0.35rem 0.5rem;
+  padding: 0.3rem 0.4rem;
   border: 0;
   border-bottom: 2px solid var(--ink);
   background: transparent;
   width: 100%;
+  max-width: 26rem;
 }
-.search__field::placeholder { color: var(--paper-3); }
+/* grey enough to read as an example, never mistakable for a value */
+.search__field::placeholder { color: var(--ink-3); opacity: 0.75; font-weight: 400; }
 .search__hint { font-size: var(--t-small); color: var(--ink-3); padding-bottom: 0.5rem; }
 .search__hint kbd {
   font-family: var(--sans); font-size: 0.68rem; border: 1px solid var(--rule);

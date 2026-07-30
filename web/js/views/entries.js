@@ -9,13 +9,12 @@ import { CALIB_FIELDS, HEADER_FIELDS, SNAP_FIELDS, deltaInfo, isIG, outlook } fr
 
 const KEY_ROWS = new Set(["spRating", "dd", "spPd"]);
 
-export function renderEntries(snapMount, calibMount, row) {
-  if (!row?.snaps) {
+export function renderEntries(snapMount, calibMount, row, cur, prior) {
+  if (!row?.snaps || !cur) {
     snapMount.innerHTML = "";
     calibMount.innerHTML = "";
     return;
   }
-  const [cur, prior] = row.snaps;
 
   const body = SNAP_FIELDS.map((f) => {
     const delta = deltaInfo(f, cur[f.key], prior?.[f.key]);
@@ -33,9 +32,9 @@ export function renderEntries(snapMount, calibMount, row) {
 
   snapMount.innerHTML = `
     <thead><tr>
-      <th>Snapshot entry</th>
+      <th>Model entry</th>
       <th>${esc(cur.date)}</th>
-      <th>${esc(prior?.date ?? "prior")}</th>
+      <th>${esc(prior?.date ?? "—")}</th>
       <th>Change</th>
     </tr></thead>
     <tbody>${body}</tbody>`;

@@ -8,8 +8,10 @@
    two views that need it.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { load, select, state, subscribe } from "./store.js";
+import { load, select, setAsOf, setCompareAt, snapshots, state, subscribe } from "./store.js";
 import { mountSearch } from "./views/search.js";
+import { mountDateControl } from "./views/dates.js";
+import { renderCompare } from "./views/compare.js";
 import { renderVerdict, renderChain } from "./views/verdict.js";
 import { mountQuote } from "./views/quote.js";
 import { renderEntries } from "./views/entries.js";
@@ -35,10 +37,7 @@ async function boot() {
     return;
   }
 
-  // masthead facts, straight from the payload rather than hard-coded
   const generated = state.summary?.generated_for ?? {};
-  $("m-snapshots").textContent = `${generated.prior ?? "—"} → ${generated.current ?? "—"}`;
-  $("m-coverage").textContent = `${state.summary?.rated ?? state.index.length} rated / ${state.index.length}`;
   $("m-window").textContent = generated.window ? `${generated.window} trading days` : "—";
 
   const quote = mountQuote($("s-quote"));
@@ -46,18 +45,38 @@ async function boot() {
   mountSearch($("s-search"), { onPick: goto });
   renderFullTable($("app-full"));
 
+  const asOfCtl = mountDateControl($("ctl-asof"), { kind: "asof", onChange: setAsOf });
+  const cmpCtl = mountDateControl($("ctl-compare"), { kind: "compare", onChange: setCompareAt });
+
+  /** everything that depends on which two days are selected */
+  function paintDated() {
+    const [cur, prior] = snapshots();
+    renderVerdict($("verdict"), state.selected, cur, prior);
+    renderChain($("chain"), state.selected, cur);
+    renderEntries($("t-snap"), $("t-calib"), state.selected, cur, prior);
+    renderCompare($("compare"), state.selected, cur, prior);
+    renderReading($("read-head"), $("read-body"), state.selected, cur, prior);
+
+    const dated = Boolean(state.series?.path);
+    $("s-compare").hidden = !state.selected?.snaps;
+    asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1);
+    cmpCtl.update(state.series, state.compareAt, Math.max(0, state.asOf - 1));
+    $("ctl-asof").hidden = !dated;
+    $("ctl-compare").hidden = !dated;
+  }
+
   subscribe((s, reason) => {
     if (reason === "selected") {
       document.title = `${s.selected.ticker} — ${s.selected.snaps ? s.selected.snaps[0].spRating : "not rateable"} · TiC Rating`;
       $("subject").textContent = `${s.selected.ticker} · ${s.selected.name}`;
       $("results").hidden = false;
-
-      renderVerdict($("verdict"), s.selected);
-      renderChain($("chain"), s.selected);
-      renderEntries($("t-snap"), $("t-calib"), s.selected);
-      renderReading($("read-head"), $("read-body"), s.selected);
       register.paint();
     }
+    if (reason === "dates") {
+      paintDated();
+      return;   // the price and diagnostics views do not depend on the date pair
+    }
+    paintDated();
     // the series arrives after the index views are already on screen
     quote.update(s.selected, s.series, s.seriesStatus);
     renderDiagnostics($("s-diagnostics"), s.selected, s.series, s.seriesStatus);

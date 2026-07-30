@@ -1,8 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   views/search.js — the way in: type a symbol, or take one of the common
-   names underneath. The chips are the largest constituents by market value,
-   computed from the data rather than hard-coded, so they stay true after a
-   re-fetch.
+   views/search.js — the way in.
+
+   An empty field is not an empty state: focusing it offers the largest
+   constituents by market value, so the common names are one keystroke away
+   without a permanent row of buttons taking up the page. They are computed
+   from the data, so they stay true after a re-fetch.
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { esc } from "../format.js";
@@ -12,25 +14,16 @@ import { largest, search, state } from "../store.js";
 export function mountSearch(root, { onPick }) {
   const input = root.querySelector("#q");
   const listbox = root.querySelector("#q-list");
-  const chips = root.querySelector("#chips");
   const status = root.querySelector("#q-status");
 
   let hits = [];
   let cursor = -1;
 
-  /* ── common names ─────────────────────────────────────────────────── */
-  chips.innerHTML = largest(12)
-    .map(
-      (row) => `<button class="chip" data-tk="${esc(row.ticker)}" type="button">
-        <span class="chip__tk">${esc(row.ticker)}</span>
-        <span class="chip__grade ${isIG(row.snaps[0].spRating) ? "" : "spec"}">${esc(row.snaps[0].spRating)}</span>
-      </button>`
-    )
-    .join("");
-  chips.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-tk]");
-    if (button) commit(button.dataset.tk);
-  });
+  /** what to offer for the current input: matches, or the common names */
+  function candidates() {
+    const q = input.value.trim();
+    return q ? search(q, 8) : largest(8);
+  }
 
   /* ── suggestions ──────────────────────────────────────────────────── */
   function closeList() {
@@ -42,7 +35,10 @@ export function mountSearch(root, { onPick }) {
 
   function paint() {
     if (!hits.length) return closeList();
-    listbox.innerHTML = hits
+    const heading = input.value.trim()
+      ? ""
+      : `<li class="q-list__head" role="presentation">Largest by market value</li>`;
+    listbox.innerHTML = heading + hits
       .map((row, i) => {
         const grade = row.snaps ? row.snaps[0].spRating : "n/a";
         const cls = row.snaps && !isIG(grade) ? "spec" : row.snaps ? "" : "flat";
@@ -56,6 +52,12 @@ export function mountSearch(root, { onPick }) {
     listbox.hidden = false;
     input.setAttribute("aria-expanded", "true");
     input.setAttribute("aria-activedescendant", cursor >= 0 ? `q-opt-${cursor}` : "");
+  }
+
+  function offer() {
+    hits = candidates();
+    cursor = -1;
+    paint();
   }
 
   function commit(ticker) {
@@ -73,14 +75,17 @@ export function mountSearch(root, { onPick }) {
   }
 
   input.addEventListener("input", () => {
-    hits = search(input.value, 8);
-    cursor = hits.length ? 0 : -1;
+    hits = candidates();
+    cursor = input.value.trim() && hits.length ? 0 : -1;
     status.hidden = true;
     paint();
   });
 
+  input.addEventListener("focus", offer);
+
   input.addEventListener("keydown", (event) => {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      if (!hits.length) offer();
       if (!hits.length) return;
       event.preventDefault();
       cursor = (cursor + (event.key === "ArrowDown" ? 1 : -1) + hits.length) % hits.length;
