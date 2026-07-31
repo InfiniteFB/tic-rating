@@ -17,7 +17,7 @@ python3 devserve.py                             # the site on :8143, no build st
 python3 -m uvicorn app.main:app --port 8137     # optional: the live single-ticker API
 ```
 
-Two pages. `/` is the **dashboard**: search, a watchlist that starts as the
+Three pages. `/` is the **dashboard**: search, a watchlist that starts as the
 course workbook's ten names and is then yours to edit, one pair of dates every
 figure obeys (sliders share one fixed axis, so neither thumb ever jumps because
 the other moved), four figures — the list's DD, its migration, a decade of its
@@ -26,6 +26,17 @@ universe table underneath. `/t.html#TICKER` is **one company**: rating with a
 date slider, ten years of rating history with the window knob, the workings,
 price candles (daily to 1Y, weekly to Max), single-name diagnostics, a plain
 reading, a side-by-side of up to four companies, and that name's appendix.
+`/method.html` is **the method**: nine sections from "why compute a rating at
+all" to the letter, every formula the engine's own form, every figure drawn
+from the site's cached output — Prof. Yimin Yang's TiC framework, taught with
+real data.
+
+Every number on the company page can explain itself: each row of the workings
+table and each hop of the conversion chain carries a red **+** that opens the
+general formula with that day's values substituted, and links into the method
+page section that teaches it. The formulas live in one module
+(`js/derivations.js`), so the taught form and the worked instance can never
+drift apart. Dragging the date slider live-updates the substituted numbers.
 
 Deep price history comes from Yahoo's chart API (key-less; its adjclose matches
 Massive's dividend-adjusted close to 0.0001% on the overlap), fundamentals and
@@ -38,14 +49,19 @@ so a 2017 market cap uses 2017's float, not today's.
 web/                     the site — static, dependency-free, ES modules
   index.html               the dashboard: search, watchlist, dates, index
   t.html                   one company: rating, workings, price, diagnostics
-  styles/                  tokens → base → layout → components → candles
+  method.html              the method, taught with the site's own data
+  styles/                  tokens → base → layout → components → candles → method
   js/
     dashboard.js           bootstrap for the dashboard
     ticker.js              bootstrap for a company page
+    method.js              bootstrap for the method page
     store.js               the only module that knows where data comes from
     fields.js              canonical inventory of every model field + the S&P scale
+    formula.js             HTML formula primitives — serif math, no dependencies
+    derivations.js         every field's formula, general and with the day's numbers
     format.js              money in thousands, probabilities down to 1e-27
     charts.js              six analytic plates, as SVG strings
+    methodCharts.js        the method page's figures (payoff, g-curve, barrier, …)
     candles.js             interactive candlestick (crosshair, readout, ranges)
     views/                 one module per section, each handed its mount points
   data/                    generated payload (index + per-ticker series)

@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   method.css — article typography for the method page only.
+   Everything structural (frame, rail, sections) comes from layout.css;
+   everything chart-coloured from components.css. This file is the measure,
+   the formula blocks, and the pull-quotes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.method__prose { max-width: 76ch; font-size: 0.95rem; line-height: 1.75; color: var(--ink-2); }
+.method__prose p { margin: 0 0 0.95rem; }
+.method__prose p:last-child { margin-bottom: 0; }
+.method__prose b { color: var(--ink); font-weight: 600; }
+.method__prose a { color: var(--red); text-decoration: none; font-weight: 600; }
+.method__prose a:hover { text-decoration: underline; }
+.method__prose q { font-style: italic; color: var(--ink); quotes: "“" "”"; }
+.method__prose .src { font-size: var(--t-micro); color: var(--ink-3); letter-spacing: 0.08em; white-space: nowrap; }
+
+/* a displayed formula — the general form, engine-faithful */
+.method__fx {
+  margin: 1.1rem 0; padding: 0.9rem 1.2rem;
+  background: var(--paper-2); border-left: 3px solid var(--ink);
+  overflow-x: auto; max-width: 76ch;
+}
+.method__fx + .method__fx { margin-top: -0.5rem; }
+.method__fx .fx { font-size: 1.08rem; }
+.method__fx .fx-cap {
+  display: block; margin-top: 0.35rem;
+  font-family: var(--sans); font-size: var(--t-micro);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+}
+
+/* figures sit at prose measure, captions as on the company page */
+.method .plate { max-width: 700px; margin: 1.4rem 0 0; }
+
+/* the worked chain borrowed from the company page needs its own room */
+.method .chain { max-width: 76ch; }
+
+/* a claim the text hangs on — one per section at most */
+.method__pull {
+  margin: 1.3rem 0; padding: 0.2rem 0 0.2rem 1.1rem;
+  border-left: 3px solid var(--red);
+  font-size: 1.02rem; line-height: 1.6; color: var(--ink);
+  max-width: 66ch;
+}
+.method__pull .src { display: block; margin-top: 0.25rem; font-size: var(--t-micro);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }

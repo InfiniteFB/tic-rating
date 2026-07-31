@@ -36,6 +36,18 @@
         "web"
       ],
       "port": 8143
+    },
+    {
+      "name": "web-b",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "devserve.py",
+        "--port",
+        "8144",
+        "--directory",
+        "web"
+      ],
+      "port": 8144
     }
   ]
 }

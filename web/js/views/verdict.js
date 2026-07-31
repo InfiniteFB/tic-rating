@@ -10,6 +10,7 @@
 
 import { esc, moneyK, num, pct, usd } from "../format.js";
 import { CHAIN, FINE_SCALE, SNAP_FIELDS, deltaInfo, isIG, outlook } from "../fields.js";
+import { DERIVATIONS, renderDerivation } from "../derivations.js";
 
 const field = (key) => SNAP_FIELDS.find((f) => f.key === key);
 
@@ -168,15 +169,49 @@ function installDismiss() {
   });
 }
 
+/* Every hop is a button: opening one shows how that number is derived,
+   with the selected day's values substituted. The open hop survives
+   repaints, so dragging the date updates the substitution in place. */
+let chainLast = null;
+let chainOpen = null;
+
 export function renderChain(mount, row, cur) {
+  chainLast = { mount, row, cur };
+  wireChain(mount);
   if (!row?.snaps || !cur) {
     mount.innerHTML = "";
     mount.hidden = true;
     return;
   }
   mount.hidden = false;
-  mount.innerHTML = CHAIN.map((hop) => `<div>
+  mount.innerHTML = CHAIN.map((hop) => `<div class="chain__hop" data-how="${hop.key}"
+      role="button" tabindex="0" aria-expanded="${chainOpen === hop.key}"
+      aria-label="${hop.label} — show the derivation">
       <span class="label">${hop.label}</span>
       <span class="chain__v">${esc(hop.f(cur[hop.key]))}</span>
-    </div>`).join("");
+    </div>`).join("")
+    + (chainOpen && DERIVATIONS[chainOpen]
+      ? `<div class="chain__derive">${renderDerivation(chainOpen, { ...row, ...cur })}</div>`
+      : "");
+}
+
+function toggleHop(key) {
+  chainOpen = chainOpen === key ? null : key;
+  if (chainLast) renderChain(chainLast.mount, chainLast.row, chainLast.cur);
+}
+
+function wireChain(mount) {
+  if (mount.dataset.howWired) return;
+  mount.dataset.howWired = "1";
+  mount.addEventListener("click", (e) => {
+    const hop = e.target.closest(".chain__hop");
+    if (hop) toggleHop(hop.dataset.how);
+  });
+  mount.addEventListener("keydown", (e) => {
+    const hop = e.target.closest(".chain__hop");
+    if (hop && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      toggleHop(hop.dataset.how);
+    }
+  });
 }

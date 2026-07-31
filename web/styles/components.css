@@ -652,3 +652,63 @@ table.reg td, table.reg thead th { padding: 0.52rem 0.9rem; }
 .mstat b { font-family: var(--black); font-size: 1.02rem; letter-spacing: -0.01em; }
 .mstat span { font-size: var(--t-micro); letter-spacing: 0.14em; text-transform: uppercase; color: oklch(72% 0.01 255); }
 @media (max-width: 860px) { .mast__stats { margin-left: 0; width: 100%; } .mstat { flex: 1; min-width: 0; } }
+
+
+/* ── formulas ──────────────────────────────────────────────────────────
+   Serif against the site's grotesque, so mathematics reads as mathematics.
+   General symbols are italic ink; numbers substituted from the model output
+   are the neutral data blue; the value the row itself shows is bold ink. */
+.fx {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.04rem; line-height: 1.75;
+  display: inline-block; max-width: 100%;
+}
+.fx i { font-style: italic; }
+.fx sub, .fx sup { font-size: 0.62em; }
+.fx-n { font-style: normal; font-weight: 600; color: var(--blue); }
+.fx-r { font-style: normal; font-weight: 700; color: var(--ink); }
+.fx-fr {
+  display: inline-flex; flex-direction: column; align-items: center;
+  vertical-align: middle; margin: 0 0.15em; line-height: 1.25;
+}
+.fx-fr > span:first-child { padding: 0 0.3em 0.08em; border-bottom: 1px solid currentColor; }
+.fx-fr > span:last-child { padding: 0.08em 0.3em 0; }
+.fx-sqrt { display: inline-flex; align-items: stretch; vertical-align: middle; margin: 0 0.1em; }
+.fx-rad { align-self: flex-end; line-height: 1.15; }
+.fx-sq { border-top: 1px solid currentColor; padding: 0.06em 0.25em 0 0.12em; }
+
+/* ── how? — the derivation fold on the workings table and the chain ──── */
+.how {
+  appearance: none; border: 0; background: none; cursor: pointer;
+  color: var(--red); font: 700 0.95rem var(--sans);
+  padding: 0 0.1rem; margin-left: 0.4rem; line-height: 1;
+  vertical-align: 1px;
+}
+.how:hover { transform: scale(1.25); }
+.how:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* max-width pins the spanned cell to the columns the table already has, so a
+   long note wraps instead of stretching every row above it */
+tr.derive > td { padding: 0; border-bottom: 1px solid var(--rule); text-align: left; max-width: 1px; }
+.derive__panel {
+  background: var(--paper-2); padding: 0.9rem 1rem 1rem;
+  border-left: 3px solid var(--red); text-align: left;
+  white-space: normal;   /* .entries td sets nowrap; prose must wrap */
+}
+.derive__panel .fx { font-size: 0.98rem; }
+.derive__general { overflow-x: auto; }
+.derive__plug { margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px dashed var(--rule); overflow-x: auto; }
+.derive__plug > .label { display: block; margin-bottom: 0.15rem; }
+.derive__note {
+  margin: 0.6rem 0 0; font-size: var(--t-small); color: var(--ink-2);
+  max-width: 74ch; line-height: 1.55;
+}
+.derive__link { color: var(--red); text-decoration: none; font-weight: 600; white-space: nowrap; margin-left: 0.35rem; }
+.derive__link:hover { text-decoration: underline; }
+
+.chain__hop { cursor: pointer; }
+.chain__hop:hover { background: var(--paper-2); }
+.chain__hop[aria-expanded="true"] { background: var(--paper-2); box-shadow: inset 0 -3px 0 var(--red); }
+.chain > div:last-child.chain__hop:hover { background: var(--red); }
+.chain__derive { flex: 1 1 100%; border-top: 1px solid var(--ink); }
+.chain__derive .derive__panel { border-left: 0; background: var(--paper); }
