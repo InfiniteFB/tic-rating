@@ -1,0 +1,16 @@
+{
+  "ticker": "BA",
+  "name": "Boeing Company",
+  "date": "2026-07-30",
+  "letter": "BBB",
+  "fact_sheet": "TICKER: BA   NAME: Boeing Company   SECTOR: Industrials\nRATING DATE: 2026-07-30   CALIBRATION WINDOW: 150 trading days\n\nTHE MARK\n  letter (fine S&P scale)   BBB   [investment grade]\n  outlook                   negative\n  through-the-cycle PD      SP_PD 0.3178%\n\nTHE FIGURES A READER CHECKS FIRST\n  close (2026-07-30)       $220.90   (+3.22% on the day)\n  equity / market cap       $174.64B\n  risk-free 1y (FRED DGS1)  4.040%\n  distance-to-default (DD)  4.347 standard deviations\n  RS_SP (Table 8 is read with this, not RS)   12.0270\n\nTHE BALANCE SHEET AS THE MODEL SEES IT\n  calibrated asset value    $328.58B\n  equity                    $174.64B\n  implied debt wedge        $153.94B\n  asset coverage            2.13×\n\nTHE CALIBRATION\n  asset volatility          17.75%   (equity volatility observed: 34.86%)\n  asset return              5.056%\n  point-in-time EDF         6.91e-04%\n\nTHE CONVERSION CHAIN (point-in-time → through-the-cycle)\n  CCM 0.864439 → RS 6.0611 → FP_PD 0.0149% → Alpha 0.988420 → SP_CCM 0.908897 → SP_PD 0.3178% → BBB\n\nAGAINST THE PRIOR CALIBRATION (2025-12-22)\n  letter                    BBB+ → BBB  [downgraded]\n  DD                        4.796 → 4.347\n  SP_PD                     0.2088% → 0.3178%\n  equity                    $164.78B → $174.64B\n  asset volatility          15.50% → 17.75%\n\nMANDATORY TALKING POINTS\n  - ALPHA CLIPPED: alpha is 0.988420, below 1. The point-in-time to through-the-cycle mapping is being scaled back here rather than passed through untouched.",
+  "sections": {
+    "THE MARK": "The model assigns Boeing Company BBB on the fine S&P scale, with a negative outlook, as at 2026-07-30. The distance-to-default is 4.347 standard deviations, the figure that most directly drives the mark.",
+    "THE BALANCE SHEET": "Calibrated assets are $328.58B against equity of $174.64B, leaving an implied debt wedge of $153.94B. Asset coverage is 2.13×. The calibration produces asset volatility of 17.75%, against observed equity volatility of 34.86%. Equity therefore sits 4.347 standard deviations above the default point.",
+    "THE CHAIN": "The point-in-time EDF is 6.91e-04%, which passes through CCM at 0.864439 to FP_PD of 0.0149%. That produces RS of 6.0611; RS is a diagnostic scale, while RS_SP of 12.0270 is the score read with Table 8. Alpha is 0.988420, below 1, so the point-in-time to through-the-cycle mapping is scaled back rather than passed through untouched. The chain reaches SP_CCM of 0.908897 and SP_PD of 0.3178%, landing on BBB.",
+    "THE CAVEAT": "Alpha is clipped at 0.988420: the mapping is scaled back rather than passed through untouched. Against the 2025-12-22 calibration, the letter moved from BBB+ to BBB, DD from 4.796 to 4.347, SP_PD from 0.2088% to 0.3178%, equity from $164.78B to $174.64B, and asset volatility from 15.50% to 17.75%. This model sees market prices and a balance-sheet default point only, so it is blind to qualitative factors. It is calibrated on 150 trading days ending on the rating date, 2026-07-30."
+  },
+  "model": "gpt-5.6-luna",
+  "error": null,
+  "seconds": 7.4
+}

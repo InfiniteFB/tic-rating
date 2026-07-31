@@ -4,7 +4,8 @@ Two interchangeable provider channels, selected by ``LLM_PROVIDER``:
 
 - ``openai``: OpenAI's Chat Completions API via the official ``openai``
   SDK -- configured by ``OPENAI_API_KEY`` / ``OPENAI_BASE_URL`` /
-  ``OPENAI_MODEL`` (defaults: the official endpoint, ``gpt-5.6-luna``).
+  ``OPENAI_MODEL`` (defaults: the official endpoint, ``gpt-5.6-luna``) and
+  ``OPENAI_REASONING_EFFORT``.
 - ``anthropic`` (default): any Anthropic-Messages-compatible endpoint via
   the official ``anthropic`` SDK -- configured by ``LLM_API_KEY`` /
   ``LLM_BASE_URL`` / ``LLM_MODEL`` (defaults: MiniMax's compatibility
@@ -32,7 +33,14 @@ DEFAULT_ANTHROPIC_BASE_URL = "https://api.minimaxi.com/anthropic"
 DEFAULT_ANTHROPIC_MODEL = "MiniMax-M3"
 DEFAULT_OPENAI_MODEL = "gpt-5.6-luna"
 
-MAX_TOKENS = 1200
+# Reasoning models bill their thinking against this budget, so it has to cover
+# the reasoning *and* the visible answer -- at 1200 a hard prompt spends the
+# whole allowance thinking and returns nothing at all.
+DEFAULT_MAX_TOKENS = 4000
+# "low" is the right default for narration: the facts arrive pre-computed, so
+# extended deliberation only starves the answer. Set to "default" to send no
+# reasoning_effort at all and inherit the model's own choice.
+DEFAULT_REASONING_EFFORT = "low"
 
 _client: anthropic.Anthropic | None = None
 _openai_client: openai.OpenAI | None = None
@@ -55,6 +63,19 @@ def _model() -> str:
     if _provider() == "openai":
         return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
     return os.environ.get("LLM_MODEL") or DEFAULT_ANTHROPIC_MODEL
+
+
+def _max_tokens() -> int:
+    try:
+        return int(os.environ.get("LLM_MAX_TOKENS") or DEFAULT_MAX_TOKENS)
+    except ValueError:
+        return DEFAULT_MAX_TOKENS
+
+
+def _reasoning_effort() -> str | None:
+    """Effort level for the OpenAI channel; None means send no such field."""
+    effort = (os.environ.get("OPENAI_REASONING_EFFORT") or DEFAULT_REASONING_EFFORT).strip()
+    return None if effort.lower() in ("", "default", "none") else effort
 
 
 def _get_client() -> anthropic.Anthropic:
@@ -229,7 +250,7 @@ def _user_messages(text: str) -> list[dict[str, Any]]:
 def _chat_anthropic(system: str, user: str) -> str:
     message = _get_client().messages.create(
         model=_model(),
-        max_tokens=MAX_TOKENS,
+        max_tokens=_max_tokens(),
         system=system,
         messages=_user_messages(user),
     )
@@ -238,15 +259,30 @@ def _chat_anthropic(system: str, user: str) -> str:
 
 def _chat_openai(system: str, user: str) -> str:
     # GPT-5-era models only accept max_completion_tokens, not max_tokens.
+    kwargs: dict[str, Any] = {}
+    if effort := _reasoning_effort():
+        kwargs["reasoning_effort"] = effort
     completion = _get_openai_client().chat.completions.create(
         model=_model(),
-        max_completion_tokens=MAX_TOKENS,
+        max_completion_tokens=_max_tokens(),
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
+        **kwargs,
     )
-    return completion.choices[0].message.content or ""
+    choice = completion.choices[0]
+    text = choice.message.content or ""
+    if not text and getattr(choice, "finish_reason", None) == "length":
+        # A reasoning model can spend the entire budget thinking and return an
+        # empty answer. Say so loudly -- silently handing back "" reads
+        # downstream as a model that had nothing to say.
+        raise RuntimeError(
+            f"{_model()} exhausted its {_max_tokens()}-token budget on reasoning "
+            "and returned no text; raise LLM_MAX_TOKENS or lower "
+            "OPENAI_REASONING_EFFORT"
+        )
+    return text
 
 
 def _chat(system: str, user: str) -> str:
