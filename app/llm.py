@@ -1,12 +1,21 @@
 """LLM narration for the KMV rating dashboard.
 
-Talks to MiniMax's Anthropic-Messages-compatible endpoint (via the official
-``anthropic`` SDK) to turn a rated payload (see ``app.pipeline.rate_ticker``)
+Two interchangeable provider channels, selected by ``LLM_PROVIDER``:
+
+- ``openai``: OpenAI's Chat Completions API via the official ``openai``
+  SDK -- configured by ``OPENAI_API_KEY`` / ``OPENAI_BASE_URL`` /
+  ``OPENAI_MODEL`` (defaults: the official endpoint, ``gpt-5.6-luna``).
+- ``anthropic`` (default): any Anthropic-Messages-compatible endpoint via
+  the official ``anthropic`` SDK -- configured by ``LLM_API_KEY`` /
+  ``LLM_BASE_URL`` / ``LLM_MODEL`` (defaults: MiniMax's compatibility
+  endpoint, ``MiniMax-M3``).
+
+Either channel turns a rated payload (see ``app.pipeline.rate_ticker``)
 into two plain-English sections: a methodology explainer and a per-ticker
-result analysis. Every public function degrades gracefully -- network or API
-failures never raise, they just come back as an "error" field with empty
-text -- since this is a narration add-on, not a computation the dashboard
-depends on.
+result analysis. Every public function degrades gracefully -- network or
+API failures never raise, they just come back as an "error" field with
+empty text -- since this is a narration add-on, not a computation the
+dashboard depends on.
 """
 
 from __future__ import annotations
@@ -16,11 +25,22 @@ import re
 from typing import Any
 
 import anthropic
+import openai
 
-DEFAULT_BASE_URL = "https://api.minimaxi.com/anthropic"
-DEFAULT_MODEL = "MiniMax-M3"
+DEFAULT_PROVIDER = "anthropic"
+DEFAULT_ANTHROPIC_BASE_URL = "https://api.minimaxi.com/anthropic"
+DEFAULT_ANTHROPIC_MODEL = "MiniMax-M3"
+DEFAULT_OPENAI_MODEL = "gpt-5.6-luna"
+
+MAX_TOKENS = 1200
 
 _client: anthropic.Anthropic | None = None
+_openai_client: openai.OpenAI | None = None
+
+
+def _provider() -> str:
+    """The configured channel name, lowercased; validated at dispatch time."""
+    return (os.environ.get("LLM_PROVIDER") or DEFAULT_PROVIDER).strip().lower()
 
 
 def _api_key() -> str | None:
@@ -28,11 +48,13 @@ def _api_key() -> str | None:
 
 
 def _base_url() -> str:
-    return os.environ.get("LLM_BASE_URL") or DEFAULT_BASE_URL
+    return os.environ.get("LLM_BASE_URL") or DEFAULT_ANTHROPIC_BASE_URL
 
 
 def _model() -> str:
-    return os.environ.get("LLM_MODEL") or DEFAULT_MODEL
+    if _provider() == "openai":
+        return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
+    return os.environ.get("LLM_MODEL") or DEFAULT_ANTHROPIC_MODEL
 
 
 def _get_client() -> anthropic.Anthropic:
@@ -45,6 +67,23 @@ def _get_client() -> anthropic.Anthropic:
     if _client is None:
         _client = anthropic.Anthropic(api_key=_api_key(), base_url=_base_url())
     return _client
+
+
+def _get_openai_client() -> openai.OpenAI:
+    """Construct (and cache) the OpenAI SDK client.
+
+    Same patch-point contract as ``_get_client``: tests replace this to
+    avoid the real SDK and network. A missing ``OPENAI_API_KEY`` makes the
+    constructor raise, which the callers' catch-all turns into an "error"
+    field rather than a crash.
+    """
+    global _openai_client
+    if _openai_client is None:
+        _openai_client = openai.OpenAI(
+            api_key=os.environ.get("OPENAI_API_KEY"),
+            base_url=os.environ.get("OPENAI_BASE_URL") or None,
+        )
+    return _openai_client
 
 
 def _get(d: Any, *keys: str, default: Any = None) -> Any:
@@ -187,14 +226,38 @@ def _user_messages(text: str) -> list[dict[str, Any]]:
     return [{"role": "user", "content": [{"type": "text", "text": text}]}]
 
 
-def _chat(system: str, user: str) -> str:
+def _chat_anthropic(system: str, user: str) -> str:
     message = _get_client().messages.create(
         model=_model(),
-        max_tokens=1200,
+        max_tokens=MAX_TOKENS,
         system=system,
         messages=_user_messages(user),
     )
     return _extract_text(message)
+
+
+def _chat_openai(system: str, user: str) -> str:
+    # GPT-5-era models only accept max_completion_tokens, not max_tokens.
+    completion = _get_openai_client().chat.completions.create(
+        model=_model(),
+        max_completion_tokens=MAX_TOKENS,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+    )
+    return completion.choices[0].message.content or ""
+
+
+def _chat(system: str, user: str) -> str:
+    provider = _provider()
+    if provider == "openai":
+        return _chat_openai(system, user)
+    if provider == "anthropic":
+        return _chat_anthropic(system, user)
+    raise ValueError(
+        f"unknown LLM_PROVIDER {provider!r}; use 'openai' or 'anthropic'"
+    )
 
 
 _CALIBER_RE = re.compile(r"###\s*CALIBER EXPLANATION\s*", re.IGNORECASE)
@@ -258,14 +321,28 @@ def explain(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def health() -> dict[str, Any]:
-    """Probe the LLM endpoint with a minimal request. Never raises."""
+    """Probe the configured LLM endpoint with a minimal request. Never raises."""
+    provider = _provider()
     try:
-        _get_client().messages.create(
-            model=_model(),
-            max_tokens=4,
-            system="ping",
-            messages=_user_messages("ping"),
-        )
+        if provider == "openai":
+            # Reasoning models may spend the whole budget thinking; 16 tokens
+            # keeps the probe cheap while leaving room for a non-empty reply.
+            _get_openai_client().chat.completions.create(
+                model=_model(),
+                max_completion_tokens=16,
+                messages=[{"role": "user", "content": "ping"}],
+            )
+        elif provider == "anthropic":
+            _get_client().messages.create(
+                model=_model(),
+                max_tokens=4,
+                system="ping",
+                messages=_user_messages("ping"),
+            )
+        else:
+            raise ValueError(
+                f"unknown LLM_PROVIDER {provider!r}; use 'openai' or 'anthropic'"
+            )
         return {"reachable": True, "detail": "ok"}
     except Exception as exc:  # noqa: BLE001 - health probe must never crash the caller
         return {"reachable": False, "detail": str(exc)}

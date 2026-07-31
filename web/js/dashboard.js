@@ -35,7 +35,8 @@ async function boot() {
   const generated = state.summary?.generated_for ?? {};
   $("m-window").textContent = generated.window ? `${generated.window} trading days` : "—";
   $("m-coverage").textContent =
-    `${state.summary?.rated ?? state.index.length} of ${state.index.length} rated`;
+    `${state.summary?.rated ?? state.index.length} / ${state.index.length}`;
+  $("m-asof").textContent = generated.current ?? "—";
 
   const watchlist = mountWatchlist($("s-watchlist"), { onChange: () => repaint() });
   const dates = mountDashDates($("ctl-dates"), { onChange: () => repaint() });
@@ -96,7 +97,7 @@ async function boot() {
     const weights = new Map(rows.map((r) => [r.ticker, r.snaps?.[0]?.marketCap ?? 1]));
     multi.update(blocks, { earlier, later }, weights);
     $("c-multi").innerHTML = `<b>Fig 03</b> A decade of letters, weekly. Click a symbol to colour or grey
-      its line; the dashed line is the list's market-value-weighted average; the band is the selected span.`;
+      its line; the dashed line is the market-value-weighted average (weights move with each week's market cap); the thin rules mark the selected pair of dates.`;
 
     scatter.update(state.index, new Set(watchlist.list));
     $("c-scatter").innerHTML = `<b>Fig 04</b> Market value across (log), rating down. Hover a dot for the

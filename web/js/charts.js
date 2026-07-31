@@ -156,10 +156,16 @@ export function chartAE(row, opt = {}) {
     s += `<line class="ch-grid" x1="${o.padL - 10}" y1="${y(v)}" x2="${o.w - o.padR}" y2="${y(v)}"/>`
       + `<text class="ch-tick" x="${o.padL - 14}" y="${y(v) + 3}" text-anchor="end">${moneyK(v)}</text>`;
   }
-  snaps.slice().reverse().forEach((sn, i) => {   // prior first: left → right in time
-    const gx = o.padL + 24 + i * (groupW + 46);
-    s += `<rect class="ch-bar-a" x="${gx}" y="${y(sn.asset)}" width="${bw}" height="${base - y(sn.asset)}"/>`
-      + `<rect class="ch-bar-e" x="${gx + bw + gap}" y="${y(sn.marketCap)}" width="${bw}" height="${base - y(sn.marketCap)}"/>`
+  // groups centred in the frame, whatever their count
+  const ordered = snaps.slice().reverse();   // prior first: left → right in time
+  const plot = o.w - o.padL - o.padR;
+  const slot = plot / ordered.length;
+  ordered.forEach((sn, i) => {
+    const gx = o.padL + slot * i + (slot - groupW) / 2;
+    s += `<rect class="ch-bar-a" x="${gx}" y="${y(sn.asset)}" width="${bw}" height="${base - y(sn.asset)}">
+        <title>${esc(sn.date)} · Asset ${moneyK(sn.asset)}</title></rect>`
+      + `<rect class="ch-bar-e" x="${gx + bw + gap}" y="${y(sn.marketCap)}" width="${bw}" height="${base - y(sn.marketCap)}">
+        <title>${esc(sn.date)} · MarketCap ${moneyK(sn.marketCap)}</title></rect>`
       + `<text class="ch-val" x="${gx + groupW + 6}" y="${(y(sn.asset) + y(sn.marketCap)) / 2 + 3}">${moneyK(sn.asset - sn.marketCap)}</text>`
       + `<text class="ch-tick" x="${gx + groupW / 2}" y="${base + 14}" text-anchor="middle">${esc(sn.date)}</text>`;
   });

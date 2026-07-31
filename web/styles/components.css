@@ -501,11 +501,13 @@ table.wl { width: 100%; min-width: 46rem; border-collapse: collapse; font-size: 
   font-weight: 700; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; cursor: default; }
 .mh__chip.is-hot { background: var(--red); border-color: var(--red); color: var(--paper); }
 .mh__svg { display: block; width: 100%; height: auto; }
-.mh__line { fill: none; stroke: var(--ink-3); stroke-width: 1.1; opacity: 0.55;
+.mh__line { fill: none; stroke: var(--ink-3); stroke-width: 1.1; opacity: 0.26;
   transition: opacity var(--fast) var(--ease), stroke var(--fast) var(--ease); }
 .mh__line.is-hot { stroke: var(--red); stroke-width: 2; opacity: 1; }
 .mh__line.is-dim { opacity: 0.14; }
-.mh__span { fill: var(--red); opacity: 0.06; }
+.mh__mark { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 2 3; }
+.mh__chip--avg { cursor: pointer; }
+.mh__chip--avg[aria-pressed="false"] { opacity: 0.4; }
 
 /* the universe table earns its full width: the company name breathes, the
    sector fills what used to be dead space, and rows get real padding */
@@ -536,3 +538,44 @@ table.reg td, table.reg thead th { padding: 0.52rem 0.9rem; }
 .mh__chip[aria-pressed="true"] { font-weight: 700; }
 .mh__chip--avg { border-style: dashed; color: var(--ink-2); cursor: default; }
 .mh__avg { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 7 4; opacity: 0.85; }
+
+.ddc { display: block; width: 100%; height: auto; cursor: crosshair; }
+.ddc__line { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+
+
+/* 3) captions align: every plate is a column, its caption pinned to the foot */
+.plate { display: flex; flex-direction: column; }
+/* a fixed caption box: one- and two-line captions occupy the same slab, so
+   neighbouring plates' captions start on the same line and hover readouts
+   never reflow the grid */
+.plate figcaption { margin-top: auto; padding-top: 0.5rem; height: 3.9rem; overflow: hidden; }
+
+/* 7) the date control stacks its label above the date */
+.dctl__stack { display: flex; flex-direction: column; gap: 0.15rem; }
+
+/* 9) the masthead line wraps to two measured lines instead of one long one */
+.mast__sub { max-width: 96ch; }
+
+
+/* ── the dashboard masthead earns a brand ──────────────────────────────
+   One red block, a heavier title, and the three numbers that describe the
+   build — presence without abandoning the one-accent rule. */
+.mast--hero { align-items: center; gap: 1rem 1.4rem; border-bottom: 3px solid var(--red); padding-bottom: 1rem; }
+.mast__brand {
+  width: 3.2rem; height: 3.2rem; flex: 0 0 auto;
+  background: var(--red); color: var(--paper);
+  display: grid; place-items: center;
+  font-size: 1.7rem; line-height: 1;
+  box-shadow: 4px 4px 0 var(--paper-3);
+}
+.mast--hero .mast__title { font-size: clamp(1.5rem, 3.2vw, 2.3rem); }
+.mast__id { min-width: 0; }
+.mast__stats { margin-left: auto; display: flex; gap: 1px; }
+.mstat {
+  background: var(--ink); color: var(--paper);
+  padding: 0.5rem 0.9rem; display: flex; flex-direction: column; gap: 0.1rem;
+  min-width: 6.2rem;
+}
+.mstat b { font-family: var(--black); font-size: 1.02rem; letter-spacing: -0.01em; }
+.mstat span { font-size: var(--t-micro); letter-spacing: 0.14em; text-transform: uppercase; color: oklch(72% 0.01 255); }
+@media (max-width: 860px) { .mast__stats { margin-left: 0; width: 100%; } .mstat { flex: 1; min-width: 0; } }

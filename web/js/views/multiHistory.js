@@ -40,9 +40,15 @@ export function mountMultiHistory(mount) {
   let entries = [];
   let span = null;
   let weights = new Map();
+  let showAvg = true;
   const coloured = new Map();   // ticker → colour index, only for active lines
 
   legend.addEventListener("click", (event) => {
+    if (event.target.closest(".mh__chip--avg")) {
+      showAvg = !showAvg;
+      paint();
+      return;
+    }
     const chip = event.target.closest("[data-tk]");
     if (!chip) return;
     const tk = chip.dataset.tk;
@@ -93,9 +99,11 @@ export function mountMultiHistory(mount) {
       grid += `<line class="ch-grid" x1="${px}" y1="${PAD.t}" x2="${px}" y2="${H - PAD.b}"/>
         <text class="ch-tick" x="${px + 3}" y="${H - PAD.b + 14}">${year}</text>`;
     }
+    // the selected span reads as two thin rules rather than a colour wash
     if (span?.earlier && span?.later) {
-      grid += `<rect class="mh__span" x="${x(span.earlier)}" y="${PAD.t}"
-        width="${Math.max(2, x(span.later) - x(span.earlier))}" height="${H - PAD.t - PAD.b}"/>`;
+      for (const iso of [span.earlier, span.later]) {
+        grid += `<line class="mh__mark" x1="${x(iso)}" y1="${PAD.t}" x2="${x(iso)}" y2="${H - PAD.b}"/>`;
+      }
     }
 
     // grey lines first so colour always sits on top
@@ -116,12 +124,12 @@ export function mountMultiHistory(mount) {
       .join("");
 
     // the list's own cycle: market-value-weighted mean notch, per week
-    const avg = weightedAverage(usable, weights);
+    const avg = showAvg ? weightedAverage(usable, weights) : [];
     let avgPath = "";
     if (avg.length > 1) {
       avgPath = `<path class="mh__avg" d="${avg
         .map((p, i) => `${i ? "L" : "M"} ${x(p.date).toFixed(1)} ${y(p.notch).toFixed(1)}`)
-        .join(" ")}"><title>Weighted average (by latest market value)</title></path>`;
+        .join(" ")}"><title>Weighted average — weights are each week\u2019s market value</title></path>`;
     }
 
     frame.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="mh__svg" role="img"
@@ -135,7 +143,8 @@ export function mountMultiHistory(mount) {
           aria-pressed="${ci != null}" role="listitem">${esc(e.ticker)}</button>`;
       })
       .join("")
-      + `<span class="mh__chip mh__chip--avg" role="listitem">━ ━ weighted avg</span>`;
+      + `<button type="button" class="mh__chip mh__chip--avg" aria-pressed="${showAvg}"
+           role="listitem">━ ━ weighted avg</button>`;
   }
 
   return {
@@ -150,7 +159,8 @@ export function mountMultiHistory(mount) {
   };
 }
 
-/** mean notch index per date, weighted by each name's (latest) market value */
+/** mean notch index per date, weighted by each name's market value on that date
+ *  (falls back to the latest value only when a block predates the new payload) */
 function weightedAverage(usable, weights) {
   const axis = usable.reduce((best, e) => (e.block.dates.length > best.length ? e.block.dates : best), []);
   const out = [];
@@ -163,7 +173,7 @@ function weightedAverage(usable, weights) {
       let k = b.dates.length - 1;
       while (k >= 0 && b.dates[k] > day) k -= 1;
       if (k < 0) continue;
-      const w = weights.get(e.ticker) ?? 1;
+      const w = b.marketCap?.[k] ?? weights.get(e.ticker) ?? 1;
       mass += w;
       sum += w * ratingIdx(b.spRating[k]);
     }

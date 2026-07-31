@@ -31,9 +31,11 @@ export function mountDateControl(mount, { kind, onChange }) {
   mount.className = `dctl ${isAsOf ? "dctl--asof" : "dctl--compare"}`;
   mount.innerHTML = `
     <div class="dctl__row">
-      <span class="dctl__lead">${isAsOf ? "Rating as of" : "Compared with"}</span>
-      <output class="dctl__date" aria-live="polite"></output>
-      <span class="dctl__grade"></span>
+      <div class="dctl__stack">
+        <span class="dctl__lead">${isAsOf ? "Rating as of" : "Compared with"}</span>
+        <span><output class="dctl__date" aria-live="polite"></output>
+        <span class="dctl__grade"></span></span>
+      </div>
       <div class="dctl__presets" role="group" aria-label="${isAsOf ? "Jump back" : "Comparison distance"}"></div>
     </div>
     <input class="dctl__slider" type="range" min="0" max="0" step="1"

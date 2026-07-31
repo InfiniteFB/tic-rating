@@ -7,7 +7,7 @@
    the answer, so it belongs next to the picture it changes.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { esc, num, shortDate } from "../format.js";
+import { esc, num, pct, shortDate } from "../format.js";
 import { SCALE, isIG, ratingIdx } from "../fields.js";
 
 const W = 960;
@@ -138,7 +138,7 @@ export function mountHistory(root, _opts = {}) {
       dot.setAttribute("cy", py);
       readout.innerHTML = `<b>${esc(shortDate(b.dates[i]))}</b> ·
         <span class="${isIG(b.spRating[i]) ? "" : "spec"}">${esc(b.spRating[i])}</span>
-        · DD ${num(b.dd[i], 2)}`;
+        ${b.spPd?.[i] != null ? `· SP_PD ${pct(b.spPd[i])}` : ""} · DD ${num(b.dd[i], 2)}`;
     };
     svg.addEventListener("pointermove", move);
     svg.addEventListener("pointerleave", () => {

@@ -79,7 +79,7 @@ svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cu
   padding: 0.05rem 0.3rem; margin: 0 0.1rem;
 }
 
-#q-list {
+#q-list, .q-list {
   position: absolute;
   top: 100%;
   left: 0;
@@ -93,7 +93,7 @@ svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cu
   max-height: 17rem;
   overflow: auto;
 }
-#q-list li {
+:is(#q-list, .q-list) li {
   display: grid;
   grid-template-columns: 4.5rem 1fr auto;
   gap: 0.6rem;
@@ -102,9 +102,9 @@ svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cu
   cursor: pointer;
   border-bottom: 1px solid var(--rule);
 }
-#q-list li:last-child { border-bottom: 0; }
-#q-list li[aria-selected="true"] { background: var(--ink); color: var(--paper); }
-#q-list li[aria-selected="true"] :is(.q-opt__name, .q-opt__grade) { color: var(--paper); }
+:is(#q-list, .q-list) li:last-child { border-bottom: 0; }
+:is(#q-list, .q-list) li[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+:is(#q-list, .q-list) li[aria-selected="true"] :is(.q-opt__name, .q-opt__grade) { color: var(--paper); }
 .q-opt__tk { font-weight: 700; }
 .q-opt__name { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .q-opt__grade { font-weight: 700; }

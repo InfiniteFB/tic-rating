@@ -39,7 +39,7 @@ export const SNAP_FIELDS = [
   { key: "spRating", label: "SP_Rating", gloss: "letter grade, fine notch", f: (v) => v ?? DASH, rating: true },
   { key: "dd", label: "DD", gloss: "distance to default, σ units", f: (v) => num(v, 4), better: "up" },
   { key: "edf", label: "EDF", gloss: "expected default frequency, Merton closed form", f: pct, better: "down" },
-  { key: "outlook", label: "Outlook", gloss: "sign of the credit-outlook derivative", f: (v) => v ?? DASH, flag: true },
+  { key: "outlook", label: "Outlook", gloss: "sign of the credit-outlook derivative", f: (v) => outlookWord(v), flag: true },
 ];
 
 /* ── the conversion chain the verdict draws, in order ─────────────────── */
@@ -83,6 +83,12 @@ export function migration(row) {
   if (!cur?.spRating || !prior?.spRating) return { notches: 0, dir: "flat", known: false };
   const n = notches(cur.spRating, prior.spRating);
   return { notches: n, dir: n > 0 ? "up" : n < 0 ? "down" : "flat", known: true };
+}
+
+/** "+"/"-" rendered as a word — a bare minus reads as missing data */
+export function outlookWord(sign) {
+  const o = outlook(sign);
+  return o.raw === DASH ? DASH : `${o.sym} ${o.label}`;
 }
 
 export function outlook(sign) {

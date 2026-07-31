@@ -552,6 +552,10 @@ def _derive_one(job: tuple[str, str, int, str]) -> tuple[str, dict[str, Any] | N
                 "dates": [days[i].date for i, _ in fits],
                 "spRating": [s["spRating"] for _, s in fits],
                 "dd": [s["dd"] for _, s in fits],
+                # the PD the letter is actually a bucket of, and the weight a
+                # time-varying weighted average needs
+                "spPd": [s["spPd"] for _, s in fits],
+                "marketCap": [s["marketCap"] for _, s in fits],
             }
     series_out["history"] = history
 

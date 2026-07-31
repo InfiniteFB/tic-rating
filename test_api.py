@@ -17,7 +17,8 @@ def _fake_fetch(name):
 def test_health_ok():
     fake_client = MagicMock()
     fake_client.messages.create.side_effect = Exception("no endpoint")
-    with patch("app.llm._get_client", return_value=fake_client):
+    with patch("app.llm._provider", return_value="anthropic"), \
+         patch("app.llm._get_client", return_value=fake_client):
         r = client.get("/api/health")
     assert r.status_code == 200
     assert "massive_key" in r.json() and "llm" in r.json()
@@ -89,7 +90,8 @@ def test_fetch_failure_without_archive_is_404():
 def test_explain_endpoint_degrades():
     fake_client = MagicMock()
     fake_client.messages.create.side_effect = Exception("no endpoint")
-    with patch("app.llm._get_client", return_value=fake_client):
+    with patch("app.llm._provider", return_value="anthropic"), \
+         patch("app.llm._get_client", return_value=fake_client):
         r = client.post("/api/explain", json={"ticker": "KO", "result": {"sp_letter": "AAA"},
                                               "intermediate": {"metrics": {}}})
     assert r.status_code == 200
