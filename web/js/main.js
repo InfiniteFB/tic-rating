@@ -57,12 +57,13 @@ async function boot() {
     renderCompare($("compare"), state.selected, cur, prior);
     renderReading($("read-head"), $("read-body"), state.selected, cur, prior);
 
-    const dated = Boolean(state.series?.path);
     $("s-compare").hidden = !state.selected?.snaps;
-    asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1);
-    cmpCtl.update(state.series, state.compareAt, Math.max(0, state.asOf - 1));
-    $("ctl-asof").hidden = !dated;
-    $("ctl-compare").hidden = !dated;
+    // while the daily path is still loading the controls hold their place,
+    // showing the dates the index already carries
+    asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1,
+      cur ? { date: cur.date, letter: cur.spRating } : null);
+    cmpCtl.update(state.series, state.compareAt, Math.max(0, state.asOf - 1),
+      prior ? { date: prior.date, letter: prior.spRating } : null);
   }
 
   subscribe((s, reason) => {

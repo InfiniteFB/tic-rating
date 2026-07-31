@@ -71,12 +71,26 @@ export function mountDateControl(mount, { kind, onChange }) {
      * @param {number} value    selected index
      * @param {number} ceiling  highest index this control may take
      */
-    update(series, value, ceiling) {
+    update(series, value, ceiling, fallback) {
       dates = series?.dates ?? [];
       letters = series?.path?.spRating ?? [];
       const usable = dates.length > 1;
-      mount.hidden = !usable;
-      if (!usable) return;
+
+      // While the series is in flight the control stays in place, showing the
+      // date it already knows. Hiding it instead would make the whole section
+      // jump the moment the fetch lands.
+      mount.hidden = !usable && !fallback?.date;
+      mount.classList.toggle("is-waiting", !usable);
+      slider.disabled = !usable;
+      for (const button of presets.querySelectorAll("[data-back]")) button.disabled = !usable;
+      if (!usable) {
+        dateOut.textContent = fallback?.date ?? "—";
+        gradeOut.textContent = fallback?.letter ?? "";
+        gradeOut.className = `dctl__grade${fallback?.letter && !isIG(fallback.letter) ? " spec" : ""}`;
+        fromOut.textContent = "";
+        toOut.textContent = "loading the daily path…";
+        return;
+      }
 
       const max = Math.max(0, Math.min(ceiling ?? dates.length - 1, dates.length - 1));
       slider.max = String(max);

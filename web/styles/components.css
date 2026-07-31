@@ -311,3 +311,7 @@ svg .ch-fill-a { fill: var(--ink); fill-opacity: 0.05; stroke: none; }
   color: var(--ink-3); padding: 0.45rem 0.7rem 0.3rem; border-bottom: 1px solid var(--rule);
   cursor: default;
 }
+
+/* the control before its daily path lands: present, but plainly not yet yours */
+.dctl.is-waiting { opacity: 0.55; }
+.dctl.is-waiting .dctl__slider { cursor: default; }

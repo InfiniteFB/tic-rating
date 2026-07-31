@@ -31,11 +31,11 @@
       "runtimeArgs": [
         "-m",
         "http.server",
-        "8141",
+        "8142",
         "--directory",
         "web"
       ],
-      "port": 8141
+      "port": 8142
     }
   ]
 }
