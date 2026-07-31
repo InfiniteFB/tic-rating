@@ -52,7 +52,8 @@ from rating_inputs import build_inputs
 
 WIKI_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 DEFAULT_OUT = Path("sp500_cache")
-DEFAULT_DAYS = 400          # calendar days of price history to request
+DEFAULT_DAYS = 760          # calendar days requested; the feed caps at ~501 bars (2 years)
+DEFAULT_QUARTERS = 16       # every priced day needs a quarter at or before it
 DEFAULT_WINDOW = 150        # trading days the engine calibrates on (matches the workbook)
 DEFAULT_PRIOR = "2026-01-02"  # the workbook's earlier snapshot date
 DEFAULT_WORKERS = 8
@@ -148,6 +149,7 @@ def fetch_stage(
     min_interval: float = 0.0,
     force: bool = False,
     retries: int = 3,
+    quarters: int = DEFAULT_QUARTERS,
 ) -> dict[str, str]:
     api_key = os.environ.get("MASSIVE_API_KEY", "").strip()
     if not api_key:
@@ -202,7 +204,7 @@ def fetch_stage(
         ticker = entry["ticker"]
 
         def attempt() -> dict[str, Any]:
-            _summary, raw = massive.fetch_ticker(ticker, client(), iso_start, iso_end)
+            _summary, raw = massive.fetch_ticker(ticker, client(), iso_start, iso_end, quarters)
             return raw
 
         # A clean capture has no per-endpoint errors and non-empty prices.
@@ -406,11 +408,21 @@ def derive_stage(
             reasons[reason] = reasons.get(reason, 0) + 1
             index.append(row)
 
-        # One calibration per company, on the window ending at the current
-        # cutoff — the workbook's structure. Both snapshots reuse it.
+        # A calibration for every evaluated day, each fitted on the `window`
+        # trading days ending at that day. The newest day's fit is exactly the
+        # workbook's single calibration, so the reconciliation still holds where
+        # it was measured — but every earlier day now carries the volatility
+        # that was observable *then*, instead of one borrowed from the future.
         bundle = build_inputs(_truncated(sample, cutoff_now), window=window)
         if bundle.unrateable_reason:
             fail(bundle.unrateable_reason)
+            continue
+        # A name with less history than the window cannot be calibrated on the
+        # window we claim to use. Rating it on whatever is there would put the
+        # index and the rolling series into disagreement — MRSH, listed in
+        # January, is the live example.
+        if len(bundle.days) < window:
+            fail(f"fewer than {window} priced days available")
             continue
         try:
             engine = rate_company(bundle.days)
@@ -420,6 +432,9 @@ def derive_stage(
 
         days = bundle.days
         shares = bundle.shares or None
+        # every priced day the capture carries, so the roll can start as early
+        # as the data allows rather than at the last window
+        all_days = build_inputs(_truncated(sample, cutoff_now), window=None).days
         # the prior snapshot is the last day at or before the prior cutoff
         prior_idx = next((i for i in range(len(days) - 1, -1, -1) if days[i].date <= prior), None)
         try:
@@ -445,15 +460,37 @@ def derive_stage(
         index.append(row)
         rated += 1
 
-        # Every trading day in the window, evaluated against the one calibration.
-        # Costs ~5 ms per name, and it is what lets the front end offer a date
-        # selector and an arbitrary A-vs-B comparison instead of two dates
-        # someone chose once. Fields that can be read off the arrays already in
-        # this file (asset, equity, debt) are not repeated here.
-        walk = [_snapshot(_metrics_at(engine, days, i), days[i], shares) for i in range(len(days))]
+        # Roll the window back one day at a time. ~5 ms per day, so a whole
+        # company costs about two seconds — cheap enough to buy a real history
+        # instead of a re-reading of today's calibration.
+        walk, wdates, wasset, wequity, wdebt, wsigma, wret, wsige = [], [], [], [], [], [], [], []
+        for cut in all_days:
+            if cut.date > cutoff_now:
+                break
+            b = build_inputs(_truncated(sample, cut.date), window=window)
+            if b.unrateable_reason or len(b.days) < window:
+                continue                      # not enough history yet at this day
+            try:
+                eng = rate_company(b.days)
+                snap = _snapshot(_metrics_at(eng, b.days, len(b.days) - 1), b.days[-1], b.shares or None)
+            except Exception:
+                continue                      # one bad day must not lose the series
+            walk.append(snap)
+            wdates.append(b.days[-1].date)
+            wasset.append(_sig(eng.asset_latest / 1e3, 6))
+            wequity.append(_sig(b.days[-1].equity / 1e3, 6))
+            wdebt.append(_sig(b.days[-1].debt / 1e3, 6))
+            wsigma.append(_sig(eng.sigma_a))
+            wret.append(_sig(eng.r_a))
+            wsige.append(_sig(eng.sigma_e))
+
         path = {key: [w[key] for w in walk] for key in
                 ("spRating", "dd", "spPd", "fpPd", "edf", "rs", "ccm", "mu",
-                 "alpha", "spCcm", "outlook", "tic", "rsSp", "creditOutlook", "price")}
+                 "alpha", "spCcm", "outlook", "price")}
+        # the calibration is now a series of its own, not a constant
+        path["assetVol"] = wsigma
+        path["assetRet"] = wret
+        path["stockVol"] = wsige
 
         series_dir.joinpath(f"{ticker}.json").write_text(
             json.dumps(
@@ -464,10 +501,10 @@ def derive_stage(
                     "sigmaE": _sig(getattr(engine, "sigma_e", None)),
                     "rA": _sig(getattr(engine, "r_a", None)),
                     "sigmaHistory": [_sig(v) for v in engine.sigma_history],
-                    "dates": [d.date for d in bundle.days],
-                    "equity": [_sig(d.equity / 1e3, 6) for d in bundle.days],
-                    "asset": [_sig(a / 1e3, 6) for a in engine.assets],
-                    "debt": [_sig(d.debt / 1e3, 6) for d in bundle.days],
+                    "dates": wdates,
+                    "equity": wequity,
+                    "asset": wasset,
+                    "debt": wdebt,
                     # the rating re-evaluated on every one of those days
                     "path": path,
                     # daily bars for the candlestick view (split-adjusted, raw)

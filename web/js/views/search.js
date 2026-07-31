@@ -116,5 +116,12 @@ export function mountSearch(root, { onPick }) {
     }
   });
 
-  return { focus: () => input.focus() };
+  return {
+    focus: () => input.focus(),
+    /** the ticker page shows the name it is already on, in full ink */
+    setValue(symbol) {
+      input.value = symbol ?? "";
+      closeList();
+    },
+  };
 }

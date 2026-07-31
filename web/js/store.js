@@ -54,8 +54,7 @@ export function snapshotAt(series, i) {
     mu: at("mu"), ccm: at("ccm"), rs: at("rs"), fpPd: at("fpPd"),
     alpha: at("alpha"), spCcm: at("spCcm"), spPd: at("spPd"),
     spRating: at("spRating"), dd: at("dd"), edf: at("edf"),
-    outlook: at("outlook"), tic: at("tic"), rsSp: at("rsSp"),
-    creditOutlook: at("creditOutlook"),
+    outlook: at("outlook"),
   };
 }
 
@@ -67,6 +66,42 @@ export function snapshots() {
     return [snapshotAt(series, asOf), compareAt >= 0 ? snapshotAt(series, compareAt) : null];
   }
   return selected?.snaps ? [selected.snaps[0], selected.snaps[1] ?? null] : [null, null];
+}
+
+/** the cached per-ticker series, fetched once and shared by every view */
+export const seriesOf = (ticker) => fetchSeries(ticker);
+
+/** index of the last day at or before `iso`, or null when the series starts later */
+export function indexOfDate(series, iso) {
+  const dates = series?.dates;
+  if (!dates?.length || !iso) return null;
+  for (let i = dates.length - 1; i >= 0; i -= 1) if (dates[i] <= iso) return i;
+  return null;
+}
+
+/**
+ * The peer cohort evaluated at two calendar dates rather than at the two dates
+ * the build happened to freeze. Series are fetched once and cached, so dragging
+ * a date redraws from memory. Peers whose history starts after the requested
+ * day are dropped rather than drawn at the wrong date.
+ */
+export async function peerSnapshots(cohort, isoA, isoB) {
+  const loaded = await Promise.all(
+    cohort.map((row) => fetchSeries(row.ticker).then((s) => [row, s]).catch(() => [row, null]))
+  );
+  const out = [];
+  for (const [row, series] of loaded) {
+    if (!series?.path) continue;
+    const ia = indexOfDate(series, isoA);
+    const ib = indexOfDate(series, isoB);
+    if (ia === null) continue;
+    out.push({
+      ticker: row.ticker,
+      name: row.name,
+      snaps: [snapshotAt(series, ia), ib === null ? null : snapshotAt(series, ib)],
+    });
+  }
+  return out;
 }
 
 export function setAsOf(i) {
@@ -205,11 +240,16 @@ function resetDates() {
 }
 
 function fetchSeries(ticker) {
+  if (seriesCache.has(ticker)) return Promise.resolve(seriesCache.get(ticker));
   if (inflight.has(ticker)) return inflight.get(ticker);
   const p = fetch(`${DATA}/series/${encodeURIComponent(ticker)}.json`)
     .then((r) => {
       if (!r.ok) throw new Error(`series/${ticker} → HTTP ${r.status}`);
       return r.json();
+    })
+    .then((series) => {
+      seriesCache.set(ticker, series);   // peers reuse this, so dragging a date is free
+      return series;
     })
     .finally(() => inflight.delete(ticker));
   inflight.set(ticker, p);

@@ -107,3 +107,75 @@ export function renderFullTable(mount) {
   mount.innerHTML = `<thead><tr>${heads.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
     <tbody>${rows.join("")}</tbody>`;
 }
+
+
+/**
+ * The company page's appendix. Deliberately narrower than the dashboard's:
+ * where this name's numbers came from, and the per-day inputs the engine ran
+ * on. Index-wide provenance — how many constituents failed, and why — belongs
+ * on the dashboard, not on a page about one company.
+ */
+export function renderTickerAppendix(root, row, series) {
+  if (!row) return;
+  const generated = state.summary?.generated_for ?? {};
+  const pairs = [
+    ["Ticker", row.ticker],
+    ["Company", row.name],
+    ["Sector", row.sector ?? "—"],
+    ["Window", generated.window ? `${generated.window} trading days` : "—"],
+    ["Last quote", usd(row.quote)],
+    ["Monetary unit", "USD thousands"],
+    ["Risk-free", "FRED DGS1, per day"],
+    ["Source", "massive-api, cached"],
+  ];
+  if (series) {
+    pairs.push(["EM iterations", `${series.iterations}${series.converged ? "" : " (cap)"}`]);
+    pairs.push(["Calibrated \u03c3_A", pct(series.sigmaA)]);
+    pairs.push(["Trading days", series.dates?.length ?? "—"]);
+    pairs.push(["Daily bars", series.ohlc ? series.ohlc.dates.length : "—"]);
+  }
+
+  const inputs = !row.snaps
+    ? `<p class="note" style="border:0;padding:0">${esc(row.unrateable_reason ?? "Not rateable.")}</p>`
+    : !series?.dates
+      ? `<div class="is-loading">loading per-day inputs\u2026</div>`
+      : perDayTable(series);
+
+  root.innerHTML = `
+    <h2 class="section__head">
+      <span class="section__no">07</span><span>Appendix</span>
+      <span class="section__note">provenance and the per-day inputs for ${esc(row.ticker)}</span>
+    </h2>
+    <div class="kv">${pairs
+      .map(([k, v]) => `<div><span class="label">${esc(k)}</span><span class="kv__v">${esc(v)}</span></div>`)
+      .join("")}</div>
+    <details class="fold" style="margin-top:1.2rem">
+      <summary>Per-day model inputs<span class="fold__ct">${
+        series?.dates ? `${series.dates.length} rows` : ""
+      }</span></summary>
+      <div class="tscroll" style="max-height:24rem;overflow:auto">${inputs}</div>
+    </details>
+    <p class="note">Asset value is the EM-recovered V_A; the default point is the quarter's debt carried
+      forward to each trading day, which is why it steps rather than drifts.</p>`;
+}
+
+function perDayTable(series) {
+  const rows = [];
+  for (let i = series.dates.length - 1; i >= 0; i--) {
+    const bar = series.ohlc && series.ohlc.dates[i] === series.dates[i] ? i : null;
+    rows.push(`<tr>
+      <td>${esc(shortDate(series.dates[i]))}</td>
+      <td>${num(series.asset[i] / 1e6, 2)}</td>
+      <td>${num(series.equity[i] / 1e6, 2)}</td>
+      <td>${num(series.debt[i] / 1e6, 2)}</td>
+      <td>${num((series.asset[i] - series.debt[i]) / series.debt[i], 3)}</td>
+      <td>${series.path?.dd ? num(series.path.dd[i], 3) : "\u2014"}</td>
+      <td>${series.path?.spRating ? esc(series.path.spRating[i]) : "\u2014"}</td>
+      <td>${bar === null ? "\u2014" : usd(series.ohlc.c[bar])}</td>
+    </tr>`);
+  }
+  return `<table class="entries"><thead><tr>
+      <th>Date</th><th>Asset $M</th><th>Equity $M</th><th>Default point $M</th>
+      <th>A/D \u2212 1</th><th>DD</th><th>Rating</th><th>Close</th>
+    </tr></thead><tbody>${rows.join("")}</tbody></table>`;
+}

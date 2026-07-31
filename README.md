@@ -5,23 +5,30 @@ it is computed from market equity and balance-sheet debt with a Merton/KMV
 structural model, then converted from a point-in-time probability of default to a
 through-the-cycle letter on the S&P scale.
 
-498 of the 503 S&P 500 constituents are pre-computed and cached — the rating
-re-evaluated on every trading day in the calibration window, with every
-intermediate quantity the model produces. Pick any date; compare against any
-earlier one.
+498 of the 503 S&P 500 constituents are pre-computed and cached. The rating is
+recomputed for **every trading day**, each on its own trailing calibration
+window — so an earlier date shows the rating that was observable then, not
+today's volatility read backwards. Pick any date; compare against any earlier one.
 
 ```bash
-python3 -m http.server 8141 --directory web     # the dashboard, no build step
+python3 devserve.py                             # the dashboard on :8143, no build step
 python3 -m uvicorn app.main:app --port 8137     # optional: the live single-ticker API
 ```
+
+Two pages: `/` is the dashboard — search, a watchlist you own, one pair of dates
+every figure obeys, and the whole index. `/t.html#TICKER` is one company, and
+carries only that company's workings.
 
 ## What is in here
 
 ```
-web/                     the dashboard — static, dependency-free, ES modules
-  index.html               section order and mount points, nothing else
+web/                     the site — static, dependency-free, ES modules
+  index.html               the dashboard: search, watchlist, dates, index
+  t.html                   one company: rating, workings, price, diagnostics
   styles/                  tokens → base → layout → components → candles
   js/
+    dashboard.js           bootstrap for the dashboard
+    ticker.js              bootstrap for a company page
     store.js               the only module that knows where data comes from
     fields.js              canonical inventory of every model field + the S&P scale
     format.js              money in thousands, probabilities down to 1e-27
@@ -42,48 +49,34 @@ The front end is a **static site**: no framework, no bundler, no runtime
 dependency beyond two webfonts. Everything it shows was computed offline by
 `sp500_cache.py` and written to `web/data/`.
 
-## The dashboard
+## The two pages
 
-**01 Search** — type a symbol or a company name; `/` focuses the field from
-anywhere, `↑↓` picks, `⏎` loads. Exact symbol matches rank above name matches, so
-`KO` never buries Coca-Cola. An empty field is not an empty state: focusing it
-offers the largest constituents by market value, computed from the data rather
-than hard-coded, so the common names are one keystroke away without a standing
-row of buttons on the page.
+**The dashboard** (`/`). A search field; a watchlist that starts as the course
+workbook's ten names but belongs to the reader — add any constituent, drop any
+row, and the choice survives a reload; one pair of dates that every figure on the
+page obeys; and the whole index underneath, filterable and sortable. Every ticker
+and company name is a link to its own page.
 
-**02 Rating** — pick the trading day. The model is evaluated on every day in the
-calibration window, so the date is the reader's, not the build's; the chosen date
-is the loudest thing in the control because it is what changes the answer. Below
-it: the letter, six figures with their change, and the conversion chain
-`CCM → RS → FP_PD → α → SP_CCM → SP_PD → letter`.
+**A company page** (`/t.html#TICKER`). Only this name's material, and the
+calculation leads:
 
-**03 Compare** — pick any earlier trading day and see what moved: both letters,
-the notch distance, and whether the move came from the asset value or from the
-barrier. The calibration is shared across dates, so a change here is a change in
-A, D and E — never in the volatility assumption.
-
-**04 Price** — interactive daily candlesticks over 1M / 3M / 6M / all. Hollow
-bodies closed up, solid bodies closed down, volume beneath; hover or drag for a
-per-day OHLC readout. These are raw split-adjusted bars, while the model
-calibrates on dividend-adjusted closes — different series, and the caption says so.
-
-**05 Entries** — every field the model emits, at the two selected dates, with the change
-and a direction that knows which way is good news. The table iterates the field
-inventory in `js/fields.js`, so it is complete by construction.
-
-**06 Diagnostics** — six plates: distance-to-default dumbbells and rating
-migration across a sector peer set of similar size, the three probability
-measures on a log axis, asset against equity, EM convergence, and the model's own
-asset / equity / default-point paths.
-
-**07 Reading** — plain language assembled in the browser from the figures already
-on screen. Not a language-model call, and it introduces no number the tables do not show.
-
-**08 Index** — all 503 constituents: filter, sort any column, click through. The
-strip above is the rating distribution across the 27 notches.
-
-**09 Appendix** — provenance, per-day model inputs, the whole grid, and the names
-the model could not rate with the reason for each.
+1. **Rating** — pick the trading day. The letter, six figures with their change,
+   and the date set in the accent because it is what changes the answer.
+2. **Workings** — the conversion chain `CCM → RS → FP_PD → α → SP_CCM → SP_PD →
+   letter`, then every field the model emits at both selected dates. The table
+   iterates the inventory in `js/fields.js`, so it is complete by construction.
+3. **Price** — interactive daily candlesticks over 1M / 3M / 6M / all. Hollow
+   bodies closed up, solid closed down, volume beneath, per-day OHLC on hover.
+   Raw split-adjusted bars, while the model calibrates on dividend-adjusted
+   closes — different series, and the caption says so.
+4. **Diagnostics** — six plates, all drawn at the two selected dates: DD and
+   rating migration across a sector peer set, the three probability measures on a
+   log axis, asset against equity, EM convergence, and the model's own paths.
+5. **Reading** — plain language assembled in the browser from the figures above.
+6. **Compare** — any earlier trading day: both letters, the notch distance, and
+   whether the move came from asset value or from the barrier.
+7. **Appendix** — this company's provenance and its per-day model inputs.
+   Index-wide provenance lives on the dashboard, not here.
 
 ## The data pipeline
 
@@ -101,17 +94,28 @@ failure mode under concurrency (22% of tickers needed one on the last full run).
 payload. Money stays in the workbook's unit (thousands of USD); probabilities
 below 1e-3 % print in exponential form rather than rounding to zero.
 
-**One calibration per company.** `AssetVol`, `AssetRet` and `StockVol` are fitted
-once over the window and reused for every date — the course workbook's own
-structure, and what makes the date selector honest: moving the date moves A, D
-and E, never the volatility assumption. Re-calibrating on the earlier window instead lets `R_A`
-drift, and since `mu = ln(A/D)/|R_A|`, KO's implied life expectancy came out at
-211 years against the workbook's 6.6 before this was fixed.
+**A calibration for every day.** Each evaluated day is fitted on the `window`
+trading days ending at that day, so `AssetVol`, `AssetRet` and `StockVol` are
+series rather than constants. The newest day's fit is exactly the single
+calibration the course workbook uses, which is where the reconciliation below was
+measured — but an earlier date now carries the volatility that was observable
+then, instead of one borrowed from the future.
+
+The alternative, sharing today's calibration across every date, was tried first
+and is subtly wrong in both directions: it reads a future volatility backwards,
+and if you instead re-fit only the earlier window in isolation, `R_A` drifts
+enough that `mu = ln(A/D)/|R_A|` blows up — KO's implied life expectancy came out
+at 211 years against the workbook's 6.6.
+
+**Two years is the ceiling.** The price feed on this subscription returns the
+last ~501 trading days and refuses a purely historical window outright (`HTTP
+403`), so a longer history is not a matter of asking for more. With a 150-day
+calibration window that leaves ~352 days of rated history per name.
 
 | Payload | Size | Gzipped |
 |---|---|---|
 | `data/index.json` — 503 rows, latest plus a default comparison | 408 KB | 100 KB |
-| `data/series/{TICKER}.json` — EM history, model paths, the rating re-evaluated on every day in the window, 275 daily bars | 40 KB each | 13 KB each |
+| `data/series/{TICKER}.json` — the rating re-evaluated on every trading day with its own calibration, plus 501 daily bars | 86 KB each | 29 KB each |
 | raw captures (git-ignored, regenerable) | 65 MB | — |
 
 The index loads once; series load lazily on selection and are cached for the
@@ -143,7 +147,7 @@ known and deliberate:
   Refreshing it means re-running the pipeline; the site has no server.
 - **`AAA-` is not a real S&P notch.** It is what the course's fine-notched scale
   emits, reproduced verbatim so the interface never disagrees with the model.
-- **Five constituents cannot be rated** — newly listed or spun-off entities with
+- **Six constituents cannot be rated** — newly listed or spun-off entities with
   no quarterly balance sheet under their current symbol. They are listed with
   their reason rather than hidden.
 

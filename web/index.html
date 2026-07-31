@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TiC Rating — structural credit ratings for the S&amp;P 500</title>
-<meta name="description" content="Type a ticker and read a Merton/KMV structural credit rating: distance to default, first-passage PD, and the point-in-time to through-the-cycle conversion onto the S&P letter scale. 498 constituents, two snapshots each." />
+<meta name="description" content="A dashboard over Merton/KMV structural credit ratings for the S&P 500: keep a watchlist, pick any two trading days, and see distance to default and rating migration redraw against them." />
 <meta name="color-scheme" content="light" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,41 +18,33 @@
 <body>
 <div class="frame">
 
-  <!-- ══════════════════ index rail ══════════════════ -->
   <aside class="rail">
     <div class="rail__mark" aria-hidden="true">◪</div>
     <nav class="rail__nav" aria-label="Sections">
       <a href="#s-search">Search</a>
-      <a href="#s-verdict">Rating</a>
-      <a href="#s-compare">Compare</a>
-      <a href="#s-quote">Price</a>
-      <a href="#s-entries">Entries</a>
-      <a href="#s-diagnostics">Diagnostics</a>
-      <a href="#s-reading">Reading</a>
+      <a href="#s-watchlist">Watchlist</a>
+      <a href="#s-plates">Figures</a>
       <a href="#s-index">Index</a>
-      <a href="#s-appendix">Appendix</a>
     </nav>
     <div class="rail__foot">KMV / TIC</div>
   </aside>
 
   <div class="body">
-    <!-- ══════════════════ masthead ══════════════════ -->
     <header class="mast">
       <h1 class="mast__title">TiC Rating<span>.</span></h1>
       <p class="mast__sub">Merton / KMV structural model · point-in-time converted to through-the-cycle
-        on the S&amp;P scale</p>
+        on the S&amp;P scale · <span id="m-coverage">—</span></p>
     </header>
 
     <div class="boot-error" id="boot-error" hidden></div>
 
-    <!-- ══════════════════ 01 search ══════════════════ -->
+    <!-- ══════════════════ search ══════════════════ -->
     <section class="section" id="s-search">
       <h2 class="section__head">
         <span class="section__no">01</span>
-        <span>Enter a ticker</span>
-        <span class="section__note">press <kbd>/</kbd> from anywhere · ↑↓ to pick · ⏎ to load</span>
+        <span>Find a company</span>
+        <span class="section__note">press <kbd>/</kbd> from anywhere · ↑↓ to pick · ⏎ to open</span>
       </h2>
-
       <div class="search">
         <div>
           <label class="label" for="q">Symbol or company</label>
@@ -63,153 +55,81 @@
         </div>
         <div class="search__hint">
           Cached S&amp;P 500 constituents, calibrated over <span id="m-window">—</span>.
+          Opening a name adds it to the watchlist.
         </div>
         <ul class="q-list" id="q-list" role="listbox" aria-label="Matching constituents" hidden></ul>
       </div>
       <div class="search__status" id="q-status" hidden></div>
     </section>
 
-    <div id="results" hidden>
-      <!-- ══════════════════ 02 verdict ══════════════════ -->
-      <section class="section" id="s-verdict">
-        <h2 class="section__head">
-          <span class="section__no">02</span>
-          <span>Rating</span>
-          <span class="section__note" id="subject">—</span>
-        </h2>
-        <div id="ctl-asof" hidden></div>
-        <div class="verdict" id="verdict"></div>
-        <div class="chain" id="chain"></div>
-      </section>
+    <!-- ══════════════════ dates ══════════════════ -->
+    <section class="section" id="s-dates">
+      <h2 class="section__head">
+        <span class="section__no">02</span>
+        <span>Dates</span>
+        <span class="section__note">every figure below obeys this pair</span>
+      </h2>
+      <div id="ctl-dates"></div>
+    </section>
 
-      <!-- ══════════════════ 03 compare ══════════════════ -->
-      <section class="section" id="s-compare">
-        <h2 class="section__head">
-          <span class="section__no">03</span>
-          <span>Compare</span>
-          <span class="section__note">pick any earlier trading day</span>
-        </h2>
-        <div id="ctl-compare" hidden></div>
-        <div id="compare"></div>
-      </section>
-
-      <!-- ══════════════════ 03 price ══════════════════ -->
-      <section class="section" id="s-quote">
-        <h2 class="section__head">
-          <span class="section__no">04</span>
-          <span>Price</span>
-          <span class="section__note">daily bars · hover for a readout</span>
-        </h2>
-        <div class="quote__bar">
-          <div class="label">Candlestick, split-adjusted</div>
-          <div class="quote__ranges" id="ranges" role="group" aria-label="Range"></div>
+    <!-- ══════════════════ watchlist ══════════════════ -->
+    <section class="section" id="s-watchlist">
+      <h2 class="section__head">
+        <span class="section__no">03</span>
+        <span>Watchlist</span>
+        <span class="section__note" id="wl-dates">—</span>
+      </h2>
+      <div class="wl__bar">
+        <span class="label" id="wl-count">—</span>
+        <div class="wl__actions">
+          <button class="btn" type="button" id="wl-add">Add a name</button>
+          <button class="btn" type="button" id="wl-reset">Reset to the default ten</button>
         </div>
-        <div class="candles__frame" id="candles"></div>
-        <figcaption class="plate" id="candles-cap" style="border:0;padding:0;margin-top:.5rem;font-size:.74rem;color:var(--ink-3)"></figcaption>
-        <p class="note" id="quote-note"></p>
-      </section>
+      </div>
+      <div class="tscroll">
+        <table class="wl">
+          <thead><tr>
+            <th>Name</th><th>Company</th><th>Rating</th><th>Earlier</th><th>Move</th>
+            <th>DD</th><th>SP_PD</th><th>MarketCap</th><th><span class="sr-only">Remove</span></th>
+          </tr></thead>
+          <tbody id="wl-body"></tbody>
+        </table>
+      </div>
+      <div class="dist" id="wl-dist" aria-hidden="true"></div>
+    </section>
 
-      <!-- ══════════════════ 04 entries ══════════════════ -->
-      <section class="section" id="s-entries">
-        <h2 class="section__head">
-          <span class="section__no">05</span>
-          <span>Every entry</span>
-          <span class="section__note">at the two selected dates</span>
-        </h2>
-        <div class="cols-2">
-          <div>
-            <div class="tscroll"><table class="entries" id="t-snap"></table></div>
-            <p class="note"><b>†</b> RS = 100 · TiC. The TiC scale disagrees with the worked example in the
-              course deck, so RS is carried as the practical scale. Asset and MarketCap arrive in thousands of
-              USD and are printed at full magnitude.</p>
-          </div>
-          <div>
-            <div class="tscroll"><table class="entries" id="t-calib"></table></div>
-            <p class="note">Calibration is fitted once per name over the whole window and shared by every date, so it carries
-              no change column — moving the date moves A, D and E, never the volatility assumption.</p>
-          </div>
-        </div>
-      </section>
+    <!-- ══════════════════ figures ══════════════════ -->
+    <section class="section" id="s-plates">
+      <h2 class="section__head">
+        <span class="section__no">04</span>
+        <span>Figures</span>
+        <span class="section__note">redrawn whenever the dates change</span>
+      </h2>
+      <div class="plates">
+        <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
+        <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
+      </div>
+    </section>
 
-      <!-- ══════════════════ 05 diagnostics ══════════════════ -->
-      <section class="section" id="s-diagnostics">
-        <h2 class="section__head">
-          <span class="section__no">06</span>
-          <span>Diagnostics</span>
-          <span class="section__note">sector peers, then the name itself</span>
-        </h2>
-        <div class="plates">
-          <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
-          <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
-          <figure class="plate"><div id="p-pd"></div><figcaption id="c-pd"></figcaption></figure>
-          <figure class="plate"><div id="p-ae"></div><figcaption id="c-ae"></figcaption></figure>
-          <figure class="plate"><div id="p-em"></div><figcaption id="c-em"></figcaption></figure>
-          <figure class="plate"><div id="p-paths"></div><figcaption id="c-paths"></figcaption></figure>
-        </div>
-      </section>
-
-      <!-- ══════════════════ 06 reading ══════════════════ -->
-      <section class="section" id="s-reading">
-        <h2 class="section__head">
-          <span class="section__no">07</span>
-          <span>Reading</span>
-          <span class="section__note">assembled from the figures above, not a language model</span>
-        </h2>
-        <div class="reading">
-          <div class="reading__head" id="read-head"></div>
-          <div class="reading__body" id="read-body"></div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ══════════════════ 07 index ══════════════════ -->
+    <!-- ══════════════════ the index ══════════════════ -->
     <section class="section" id="s-index">
       <h2 class="section__head">
-        <span class="section__no">08</span>
+        <span class="section__no">05</span>
         <span>The index</span>
-        <span class="section__note">click any row · click a header to sort</span>
+        <span class="section__note">filter, sort, open</span>
       </h2>
-
-      <div class="dist" id="dist" aria-hidden="true"></div>
-      <div class="dist__axis"><span>AAA</span><span>investment grade ⟶ speculative</span><span>D</span></div>
-
-      <div class="filters">
-        <input class="field filters__search" id="reg-q" type="search" placeholder="Filter by symbol or company" aria-label="Filter the index" />
-        <select class="field" id="reg-sector" aria-label="Filter by sector"></select>
-        <div class="filters__count" id="reg-count"></div>
+      <div class="reg__bar">
+        <input class="field" id="reg-q" type="search" placeholder="Filter by symbol or company" />
+        <select class="field" id="reg-sector" aria-label="Sector"></select>
+        <span class="label" id="reg-count">—</span>
       </div>
-
-      <div class="register">
-        <table>
+      <div class="dist" id="dist" aria-hidden="true"></div>
+      <div class="tscroll">
+        <table class="reg">
           <thead><tr id="reg-head"></tr></thead>
           <tbody id="reg-body"></tbody>
         </table>
       </div>
-    </section>
-
-    <!-- ══════════════════ 08 appendix ══════════════════ -->
-    <section class="section" id="s-appendix">
-      <h2 class="section__head">
-        <span class="section__no">09</span>
-        <span>Appendix</span>
-        <span class="section__note">provenance, failures, and the raw grid</span>
-      </h2>
-
-      <div class="kv" id="app-kv" style="margin-bottom:1.4rem"></div>
-
-      <div class="label" style="margin-bottom:.5rem">Names the model cannot rate</div>
-      <div id="app-failures" style="margin-bottom:1.4rem"></div>
-
-      <div class="label" style="margin-bottom:.5rem">Per-day model inputs, selected name</div>
-      <div class="scroller" style="margin-bottom:1.4rem"><table class="data-table" id="app-table"></table></div>
-
-      <div class="label" style="margin-bottom:.5rem">The whole index, every field</div>
-      <div class="scroller"><table class="data-table" id="app-full"></table></div>
-
-      <p class="note">Probabilities under 1e-3 % print in exponential form rather than rounding to zero; an exact
-        zero is printed as <em>0</em> and plotted at the log-axis floor. Ratings are the course's fine-notched
-        S&amp;P scale, which includes the non-standard <em>AAA-</em> notch, reproduced verbatim so the interface
-        never disagrees with the model.</p>
     </section>
 
     <footer class="foot">
@@ -221,6 +141,6 @@
   </div>
 </div>
 
-<script type="module" src="./js/main.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
 </body>
 </html>

@@ -72,7 +72,7 @@ svg.candles { display: block; width: 100%; height: auto; touch-action: pan-y; cu
   max-width: 26rem;
 }
 /* grey enough to read as an example, never mistakable for a value */
-.search__field::placeholder { color: var(--ink-3); opacity: 0.75; font-weight: 400; }
+.search__field::placeholder { color: var(--ink-3); opacity: 0.38; font-weight: 400; }
 .search__hint { font-size: var(--t-small); color: var(--ink-3); padding-bottom: 0.5rem; }
 .search__hint kbd {
   font-family: var(--sans); font-size: 0.68rem; border: 1px solid var(--rule);

@@ -98,8 +98,8 @@ export function mountRegister(root, { onPick }) {
         if (!r.snaps) {
           return `<tr data-tk="${esc(r.ticker)}" class="is-unrateable" aria-selected="${r.ticker === selected}">
             <td class="register__no">${i + 1}</td>
-            <td class="register__tk">${esc(r.ticker)}</td>
-            <td class="register__name">${esc(r.name)}</td>
+            <td class="register__tk"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.ticker)}</a></td>
+            <td class="register__name"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.name)}</a></td>
             <td colspan="${COLUMNS.length - 3}">${esc(r.unrateable_reason)}</td></tr>`;
         }
         const [cur, prior] = r.snaps;
@@ -107,8 +107,8 @@ export function mountRegister(root, { onPick }) {
         const look = outlook(cur.outlook);
         return `<tr data-tk="${esc(r.ticker)}" aria-selected="${r.ticker === selected}">
           <td class="register__no">${i + 1}</td>
-          <td class="register__tk">${esc(r.ticker)}</td>
-          <td class="register__name">${esc(r.name)}</td>
+          <td class="register__tk"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.ticker)}</a></td>
+          <td class="register__name"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.name)}</a></td>
           <td class="register__grade ${isIG(cur.spRating) ? "" : "spec"}">${esc(cur.spRating)}</td>
           <td class="flat">${esc(prior?.spRating ?? "—")}</td>
           <td class="${m.dir}">${m.notches ? `${m.notches > 0 ? "↑ " : "↓ "}${Math.abs(m.notches)}` : "—"}</td>

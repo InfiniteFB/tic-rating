@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TiC Rating — company</title>
+<meta name="description" content="How one S&P 500 constituent arrives at its Merton/KMV structural credit rating: the calibration, the conversion chain, every model entry, and the diagnostics behind the letter." />
+<meta name="color-scheme" content="light" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles/tokens.css" />
+<link rel="stylesheet" href="./styles/base.css" />
+<link rel="stylesheet" href="./styles/layout.css" />
+<link rel="stylesheet" href="./styles/components.css" />
+<link rel="stylesheet" href="./styles/candles.css" />
+</head>
+<body>
+<div class="frame">
+
+  <!-- ══════════════════ index rail ══════════════════ -->
+  <aside class="rail">
+    <a class="rail__mark" href="./" aria-label="Back to the dashboard">◪</a>
+    <nav class="rail__nav" aria-label="Sections">
+      <a href="./">Dashboard</a>
+      <a href="#s-rating">Rating</a>
+      <a href="#s-workings">Workings</a>
+      <a href="#s-quote">Price</a>
+      <a href="#s-diagnostics">Diagnostics</a>
+      <a href="#s-reading">Reading</a>
+      <a href="#s-compare">Compare</a>
+      <a href="#s-appendix">Appendix</a>
+    </nav>
+    <div class="rail__foot">KMV / TIC</div>
+  </aside>
+
+  <div class="body">
+    <!-- ══════════════════ identity ══════════════════ -->
+    <header class="section ident" id="s-search">
+      <div class="ident__search">
+        <label class="label" for="q">Symbol or company</label>
+        <div class="search">
+          <div>
+            <input class="search__field is-current" id="q" type="text"
+                   placeholder="AAPL, NVDA, JPM, KO…"
+                   autocomplete="off" spellcheck="false" role="combobox"
+                   aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" />
+          </div>
+          <ul class="q-list" id="q-list" role="listbox" aria-label="Matching constituents" hidden></ul>
+        </div>
+        <div class="search__hint">
+          press <kbd>/</kbd> to search · calibrated over <span id="m-window">—</span>
+        </div>
+        <div class="search__status" id="q-status" hidden></div>
+      </div>
+      <div class="ident__who">
+        <div class="ident__ticker" id="id-ticker">—</div>
+        <div class="ident__name" id="id-name">—</div>
+        <div class="ident__sector" id="id-sector"></div>
+      </div>
+    </header>
+
+    <div class="boot-error" id="boot-error" hidden></div>
+
+    <div id="results" hidden>
+      <!-- ══════════════════ 01 rating ══════════════════ -->
+      <section class="section" id="s-rating">
+        <h2 class="section__head">
+          <span class="section__no">01</span>
+          <span>Rating</span>
+          <span class="section__note">pick the trading day</span>
+        </h2>
+        <div id="ctl-asof" hidden></div>
+        <div class="verdict" id="verdict"></div>
+      </section>
+
+      <!-- ══════════════════ 02 workings ══════════════════ -->
+      <section class="section" id="s-workings">
+        <h2 class="section__head">
+          <span class="section__no">02</span>
+          <span>Workings</span>
+          <span class="section__note">how the letter is arrived at</span>
+        </h2>
+        <div class="label" style="margin-bottom:.5rem">Conversion chain — point-in-time to through-the-cycle</div>
+        <div class="chain" id="chain"></div>
+        <div class="cols-2" style="margin-top:1.4rem">
+          <div>
+            <div class="tscroll"><table class="entries" id="t-snap"></table></div>
+            <p class="note"><b>†</b> RS = 100 · TiC. The TiC scale disagrees with the worked example in the
+              course deck, so RS is carried as the practical scale. Asset and MarketCap arrive in thousands of
+              USD and are printed at full magnitude.</p>
+          </div>
+          <div>
+            <div class="tscroll"><table class="entries" id="t-calib"></table></div>
+            <p class="note">Calibration is fitted once over the window and shared by every date, so it carries
+              no change column — moving the date moves A, D and E, never the volatility assumption.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════ 03 price ══════════════════ -->
+      <section class="section" id="s-quote">
+        <h2 class="section__head">
+          <span class="section__no">03</span>
+          <span>Price</span>
+          <span class="section__note">daily bars · hover for a readout</span>
+        </h2>
+        <div class="quote__bar">
+          <div class="label">Candlestick, split-adjusted</div>
+          <div class="quote__ranges" id="ranges" role="group" aria-label="Range"></div>
+        </div>
+        <div class="candles__frame" id="candles"></div>
+        <figcaption class="plate" id="candles-cap" style="border:0;padding:0;margin-top:.5rem;font-size:.74rem;color:var(--ink-3)"></figcaption>
+        <p class="note" id="quote-note"></p>
+      </section>
+
+      <!-- ══════════════════ 04 diagnostics ══════════════════ -->
+      <section class="section" id="s-diagnostics">
+        <h2 class="section__head">
+          <span class="section__no">04</span>
+          <span>Diagnostics</span>
+          <span class="section__note">drawn at the two selected dates</span>
+        </h2>
+        <div class="plates">
+          <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
+          <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
+          <figure class="plate"><div id="p-pd"></div><figcaption id="c-pd"></figcaption></figure>
+          <figure class="plate"><div id="p-ae"></div><figcaption id="c-ae"></figcaption></figure>
+          <figure class="plate"><div id="p-em"></div><figcaption id="c-em"></figcaption></figure>
+          <figure class="plate"><div id="p-paths"></div><figcaption id="c-paths"></figcaption></figure>
+        </div>
+      </section>
+
+      <!-- ══════════════════ 05 reading ══════════════════ -->
+      <section class="section" id="s-reading">
+        <h2 class="section__head">
+          <span class="section__no">05</span>
+          <span>Reading</span>
+          <span class="section__note">assembled from the figures above, not a language model</span>
+        </h2>
+        <div class="reading">
+          <div class="reading__head" id="read-head"></div>
+          <div class="reading__body" id="read-body"></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════ 06 compare ══════════════════ -->
+      <section class="section" id="s-compare">
+        <h2 class="section__head">
+          <span class="section__no">06</span>
+          <span>Compare</span>
+          <span class="section__note">against any earlier trading day</span>
+        </h2>
+        <div id="ctl-compare" hidden></div>
+        <div id="compare"></div>
+      </section>
+
+      <!-- ══════════════════ 07 appendix ══════════════════ -->
+      <section class="section" id="s-appendix"></section>
+    </div>
+
+    <footer class="foot">
+      <span>Merton / KMV structural</span>
+      <span>PIT → TTC</span>
+      <span>massive-api · FRED DGS1 · SOFR</span>
+      <span style="margin-left:auto"><a href="./">All 503 constituents →</a></span>
+    </footer>
+  </div>
+</div>
+
+<script type="module" src="./js/ticker.js"></script>
+</body>
+</html>

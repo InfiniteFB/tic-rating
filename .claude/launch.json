@@ -29,13 +29,13 @@
       "name": "web",
       "runtimeExecutable": "python3",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8142",
+        "devserve.py",
+        "--port",
+        "8143",
         "--directory",
         "web"
       ],
-      "port": 8142
+      "port": 8143
     }
   ]
 }

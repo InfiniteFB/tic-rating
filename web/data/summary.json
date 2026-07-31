@@ -5,13 +5,12 @@
   "window": 150
  },
  "constituents": 503,
- "rated": 498,
- "unrateable": 5,
+ "rated": 497,
+ "unrateable": 6,
  "reasons": {
-  "no quarter reports total_liabilities": 5
+  "no quarter reports total_liabilities": 5,
+  "fewer than 150 priced days available": 1
  },
- "without_prior_snapshot": 1,
- "without_prior_tickers": [
-  "MRSH"
- ]
+ "without_prior_snapshot": 0,
+ "without_prior_tickers": []
 }

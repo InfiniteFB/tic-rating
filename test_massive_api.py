@@ -193,15 +193,18 @@ def derive_dividend_adjusted_prices(prices: Any, dividends: Any) -> list[dict[st
 
 
 def endpoint_paths(
-    ticker: str, start_date: str, end_date: str
+    ticker: str, start_date: str, end_date: str, quarters: int = 8
 ) -> dict[str, tuple[str, dict[str, Any]]]:
+    """Endpoint + params per data source. ``quarters`` sets how far the balance
+    sheet reaches back: every priced day needs a quarter at or before it, so a
+    longer price window needs more of them."""
     return {
         "balance_sheet": (
             "/stocks/financials/v1/balance-sheets",
             {
                 "tickers": ticker,
                 "timeframe": "quarterly",
-                "limit": 8,
+                "limit": quarters,
                 "sort": "period_end.desc",
             },
         ),
@@ -284,9 +287,9 @@ def build_summary(
 
 
 def fetch_ticker(
-    ticker: str, client: MassiveClient, start_date: str, end_date: str
+    ticker: str, client: MassiveClient, start_date: str, end_date: str, quarters: int = 8
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    requests = endpoint_paths(ticker, start_date, end_date)
+    requests = endpoint_paths(ticker, start_date, end_date, quarters)
     payloads: dict[str, Any] = {}
     errors: dict[str, str] = {}
     for name, (endpoint, params) in requests.items():

@@ -17,18 +17,27 @@ function plate(mount, capMount, svg, caption, fallback) {
   capMount.innerHTML = caption;
 }
 
-export function renderDiagnostics(root, row, series, status) {
+/**
+ * @param cur/prior  the snapshot pair the reader selected, not the pair the
+ *                   build froze — every plate is drawn at those two dates
+ * @param peerRows   cohort already evaluated at the same two dates
+ */
+export function renderDiagnostics(root, row, series, status, cur, prior, peerRows) {
   if (!row) return;
-  const cohort = peers(row, 12);
+  const cohort = peerRows ?? peers(row, 12);
   const sector = esc(row.sector ?? "the index");
   const tk = esc(row.ticker);
+  // the charts read `snaps`, so hand them a view of this row at the chosen dates
+  const dated = cur ? { ...row, snaps: [cur, prior] } : row;
+  const dateA = esc(prior?.date ?? "the earlier date");
+  const dateB = esc(cur?.date ?? "the later date");
 
   plate(
     root.querySelector("#p-dd"),
     root.querySelector("#c-dd"),
     chartDD(cohort),
-    `<b>Fig 01</b> Distance to default across ${cohort.length} ${sector} names of similar size.
-     Hollow marker is the prior snapshot; red means the name moved toward the barrier.`,
+    `<b>Fig 01</b> Distance to default across ${cohort.length} ${sector} names of similar size,
+     at <b>${dateA}</b> (hollow) and <b>${dateB}</b> (filled). Red means the name moved toward the barrier.`,
     empty(tk, "No peer set with a computed DD.")
   );
 
@@ -36,27 +45,27 @@ export function renderDiagnostics(root, row, series, status) {
     root.querySelector("#p-mig"),
     root.querySelector("#c-mig"),
     chartMigration(cohort),
-    `<b>Fig 02</b> Rating migration for the same peer set, on notch position.
-     The dashed rule is the investment-grade boundary.`,
-    empty(tk, "Peers do not carry a rating at both snapshots.")
+    `<b>Fig 02</b> Rating migration for the same peer set between <b>${dateA}</b> and <b>${dateB}</b>,
+     on notch position. The dashed rule is the investment-grade boundary.`,
+    empty(tk, "Peers do not carry a rating at both selected dates.")
   );
 
   plate(
     root.querySelector("#p-pd"),
     root.querySelector("#c-pd"),
-    chartPD(row),
-    `<b>Fig 03</b> ${tk}: FP_PD, SP_PD and EDF on a log axis. The three answer different
-     questions, so decades of separation are expected rather than an error.`,
-    empty(tk, "No probability measures on this snapshot.")
+    chartPD(dated),
+    `<b>Fig 03</b> ${tk}: FP_PD, SP_PD and EDF on a log axis at <b>${dateB}</b>, hollow at <b>${dateA}</b>.
+     The three answer different questions, so decades of separation are expected rather than an error.`,
+    empty(tk, "No probability measures at the selected date.")
   );
 
   plate(
     root.querySelector("#p-ae"),
     root.querySelector("#c-ae"),
-    chartAE(row),
-    `<b>Fig 04</b> ${tk}: asset value against market capitalisation at both snapshots.
+    chartAE(dated),
+    `<b>Fig 04</b> ${tk}: asset value against market capitalisation at <b>${dateA}</b> and <b>${dateB}</b>.
      The gap is the debt the model places in the barrier.`,
-    empty(tk, "No asset or equity value on this snapshot.")
+    empty(tk, "No asset or equity value at the selected date.")
   );
 
   const loading = status === "loading";

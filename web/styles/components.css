@@ -57,7 +57,7 @@
 
 /* distribution strip: 27 notches, height = count. Not decoration — it is
    the only view that shows where the whole index sits at once. */
-.dist { display: flex; align-items: flex-end; gap: 1px; height: 2.6rem; margin-bottom: 0.9rem; }
+.dist { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1px; height: 2.6rem; margin-bottom: 1.6rem; }
 .dist__bar { flex: 1 1 0; background: var(--paper-3); position: relative; cursor: default; }
 .dist__bar--ig { background: var(--ink-3); }
 .dist__bar--spec { background: var(--red); }
@@ -69,11 +69,17 @@
 .verdict { display: grid; grid-template-columns: repeat(12, 1fr); }
 @media (max-width: 760px) { .verdict { grid-template-columns: 1fr; } }
 
-.verdict__mark { grid-column: 1 / span 5; padding-bottom: 1rem; }
+.verdict__mark {
+  grid-column: 1 / span 5;
+  /* the letter block used to sit at the top of a tall row, leaving a hole
+     under it; centring it against the KPI grid closes that gap */
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0.4rem 0 1rem;
+}
 @media (max-width: 760px) { .verdict__mark { grid-column: auto; } }
 .verdict__letter {
   font-family: var(--black);
-  font-size: clamp(3rem, 8vw, 5.6rem);
+  font-size: clamp(3.6rem, 11vw, 8rem);
   line-height: 0.8;
   letter-spacing: -0.055em;
   margin-left: -0.055em;
@@ -315,3 +321,81 @@ svg .ch-fill-a { fill: var(--ink); fill-opacity: 0.05; stroke: none; }
 /* the control before its daily path lands: present, but plainly not yet yours */
 .dctl.is-waiting { opacity: 0.55; }
 .dctl.is-waiting .dctl__slider { cursor: default; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   company page identity — the field you type in on the left, who you are
+   looking at on the right. The code is the largest thing on the row because
+   it is the answer to "where am I".
+   ═══════════════════════════════════════════════════════════════════════ */
+.ident {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem var(--pad);
+}
+@media (max-width: 720px) {
+  .ident { grid-template-columns: 1fr; }
+  .ident__who { text-align: left; }
+}
+.ident__search { min-width: 0; }
+.ident__who { text-align: right; min-width: 0; }
+.ident__ticker {
+  font-family: var(--black);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+.ident__name { font-size: var(--t-lead); font-weight: 500; margin-top: 0.15rem; }
+.ident__sector {
+  font-size: var(--t-micro); letter-spacing: var(--track-label);
+  text-transform: uppercase; color: var(--ink-3); margin-top: 0.2rem;
+}
+/* on a company page the field already holds the answer, so it reads as ink */
+.search__field.is-current { color: var(--ink); }
+
+/* ── dashboard: the shared pair of dates ────────────────────────────── */
+.dpair { border: 1px solid var(--ink); padding: 0.85rem 1rem 0.9rem; }
+.dpair__row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem 0.9rem; }
+.dpair__row + .dctl__slider { margin-bottom: 0.9rem; }
+
+/* ── dashboard: the watchlist ───────────────────────────────────────── */
+.wl__bar { display: flex; align-items: center; gap: var(--gap); margin-bottom: 0.7rem; }
+.wl__actions { margin-left: auto; display: flex; gap: 0.4rem; }
+table.wl { width: 100%; min-width: 46rem; border-collapse: collapse; font-size: var(--t-body); }
+.wl thead th {
+  text-align: right; font-weight: 600; font-size: var(--t-micro);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  padding: 0 0.55rem 0.5rem; border-bottom: 1px solid var(--ink);
+}
+.wl thead th:nth-child(-n+2) { text-align: left; }
+.wl td, .wl th[scope="row"] { text-align: right; padding: 0.5rem 0.55rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.wl th[scope="row"], .wl td:nth-child(2) { text-align: left; }
+.wl tbody tr:hover { background: var(--paper-2); }
+.wl__tk { font-weight: 700; }
+.wl__name { color: var(--ink-2); max-width: 20ch; overflow: hidden; text-overflow: ellipsis; }
+.wl__name a, .wl__tk { text-decoration: none; }
+.wl__name a:hover, .wl__tk:hover { text-decoration: underline; }
+.wl__grade { font-weight: 700; }
+.wl__grade.spec { color: var(--red); }
+.wl__delta { display: block; font-size: var(--t-micro); font-weight: 400; }
+.wl__drop button {
+  border: 0; background: none; color: var(--ink-3); cursor: pointer;
+  font-size: 1rem; line-height: 1; padding: 0 0.2rem;
+}
+.wl__drop button:hover { color: var(--red); }
+.wl__empty { text-align: left; color: var(--ink-3); padding: 1rem 0.55rem; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.fold { border-top: 1px solid var(--rule); }
+.fold > summary {
+  list-style: none; cursor: pointer; padding: 0.6rem 0;
+  display: flex; align-items: baseline; gap: 0.6rem; font-size: var(--t-body); font-weight: 600;
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary::before { content: "+"; color: var(--red); font-weight: 700; }
+.fold[open] > summary::before { content: "−"; }
+.fold__ct { margin-left: auto; font-weight: 400; color: var(--ink-3); font-size: var(--t-small); }
