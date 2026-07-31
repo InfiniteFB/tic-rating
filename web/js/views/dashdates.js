@@ -13,6 +13,7 @@ import { esc } from "../format.js";
 import { seriesOf } from "../store.js";
 
 const BACK = [
+  { label: "Today", days: 0 },
   { label: "1M", days: 21 },
   { label: "6M", days: 125 },
   { label: "1Y", days: 250 },

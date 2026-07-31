@@ -584,6 +584,26 @@ def _derive_one(job: tuple[str, str, int, str]) -> tuple[str, dict[str, Any] | N
     for s in snaps:
         s.pop("_engine", None)
 
+    # ── the filings behind the default point, verbatim — provenance ──
+    q_shares = {str(r.get("period_end", ""))[:10]: r.get("basic_shares_outstanding")
+                for r in _rows(sample.get("responses", {}).get("income_statement"))}
+    series_out["quarters"] = [
+        {
+            "periodEnd": str(r.get("period_end", ""))[:10],
+            "filed": str(r.get("filing_date", ""))[:10] or None,
+            "debtCurrent": _sig((r.get("debt_current") or 0) / 1e3, 6) if r.get("debt_current") is not None else None,
+            "longTermDebt": _sig((r.get("long_term_debt_and_capital_lease_obligations") or 0) / 1e3, 6)
+                if r.get("long_term_debt_and_capital_lease_obligations") is not None else None,
+            "totalLiabilities": _sig((r.get("total_liabilities") or 0) / 1e3, 6)
+                if r.get("total_liabilities") is not None else None,
+            "totalCurrentLiabilities": _sig((r.get("total_current_liabilities") or 0) / 1e3, 6)
+                if r.get("total_current_liabilities") is not None else None,
+            "shares": q_shares.get(str(r.get("period_end", ""))[:10]),
+        }
+        for r in sorted(_rows(sample.get("responses", {}).get("balance_sheet")),
+                        key=lambda r: str(r.get("period_end", "")))
+    ]
+
     # ── price bars: daily tail plus a weekly series for the long view ──
     yahoo = sample.get("yahoo")
     if yahoo and yahoo.get("date"):

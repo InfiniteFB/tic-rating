@@ -34,8 +34,9 @@
   <div class="body">
     <header class="mast">
       <h1 class="mast__title">TiC Rating<span>.</span></h1>
-      <p class="mast__sub">Dashboard · Merton / KMV structural model, point-in-time converted to
-        through-the-cycle on the S&amp;P scale · <span id="m-coverage">—</span></p>
+      <p class="mast__sub">Dashboard · TiC is an upgrade of the KMV structural model: the point-in-time
+        default probability is converted to a through-the-cycle letter, so short-run market volatility stops
+        whipsawing the rating. Proposed and developed by Prof. Yimin Yang. · <span id="m-coverage">—</span></p>
     </header>
 
     <div class="boot-error" id="boot-error" hidden></div>
@@ -108,8 +109,10 @@
         <span class="section__note">redrawn whenever the dates change</span>
       </h2>
       <div class="plates">
-        <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
-        <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
+        <figure class="plate"><div class="plate__bar"><span class="plate__title">Distance to default</span></div>
+          <div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
+        <figure class="plate"><div class="plate__bar"><span class="plate__title">Rating migration</span></div>
+          <div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
         <figure class="plate plate--wide"><div id="p-multi"></div><figcaption id="c-multi"></figcaption></figure>
         <figure class="plate plate--wide"><div id="p-scatter"></div><figcaption id="c-scatter"></figcaption></figure>
       </div>

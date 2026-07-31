@@ -6,14 +6,53 @@
    picture of one.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { esc } from "../format.js";
+import { esc, moneyK, num, pct } from "../format.js";
 import { SCALE, isIG, ratingIdx } from "../fields.js";
 
 const W = 960;
 const H = 380;
 const PAD = { l: 44, r: 16, t: 16, b: 30 };
 
-export function renderScatter(mount, rows, highlight = new Set()) {
+export function mountScatter(mount, { title = "Rating vs market value" } = {}) {
+  mount.innerHTML = `
+    <div class="plate__bar">
+      <span class="plate__title">${esc(title)}</span>
+      <div class="dctl__presets" role="group" aria-label="Scope">
+        <button type="button" class="dctl__preset" data-scope="all" aria-pressed="true">S&amp;P 500</button>
+        <button type="button" class="dctl__preset" data-scope="watchlist" aria-pressed="false">Watchlist</button>
+      </div>
+    </div>
+    <div class="sc__frame"></div>`;
+  const frame = mount.querySelector(".sc__frame");
+  let rows = [];
+  let highlight = new Set();
+  let scope = "all";
+
+  mount.querySelector("[aria-label='Scope']").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-scope]");
+    if (!button) return;
+    scope = button.dataset.scope;
+    for (const b of mount.querySelectorAll("[data-scope]")) {
+      b.setAttribute("aria-pressed", String(b.dataset.scope === scope));
+    }
+    paint();
+  });
+
+  function paint() {
+    const pool = scope === "watchlist" ? rows.filter((r) => highlight.has(r.ticker)) : rows;
+    draw(frame, pool, highlight);
+  }
+
+  return {
+    update(nextRows, nextHighlight) {
+      rows = nextRows;
+      highlight = nextHighlight;
+      paint();
+    },
+  };
+}
+
+function draw(mount, rows, highlight) {
   const rated = rows.filter((r) => r.snaps?.[0]?.marketCap > 0);
   if (rated.length < 3) {
     mount.innerHTML = `<div class="plate__empty"><b>Nothing to plot.</b></div>`;
@@ -59,10 +98,17 @@ export function renderScatter(mount, rows, highlight = new Set()) {
       seen.set(bucket, n + 1);
       const jitter = ((n % 5) - 2) * 2.4;
       const hot = highlight.has(r.ticker);
+      const snap = r.snaps[0];
+      const tip = [
+        `${r.ticker} — ${r.legalName ?? r.name}`,
+        `${snap.spRating} (${isIG(snap.spRating) ? "investment grade" : "speculative"})`,
+        `DD ${num(snap.dd, 2)} · SP_PD ${pct(snap.spPd)}`,
+        `MarketCap ${moneyK(snap.marketCap)} · FP_PD ${pct(snap.fpPd)}`,
+      ].join("\n");
       return `<a href="./t.html#${encodeURIComponent(r.ticker)}">
-        <circle class="sc-dot ${hot ? "is-hot" : ""} ${isIG(r.snaps[0].spRating) ? "" : "spec"}"
+        <circle class="sc-dot ${hot ? "is-hot" : ""} ${isIG(snap.spRating) ? "" : "spec"}"
           cx="${x(cap)}" cy="${(y(g) + jitter).toFixed(1)}" r="${hot ? 5 : 3.2}">
-          <title>${esc(r.ticker)} — ${esc(r.name)} · ${esc(r.snaps[0].spRating)}</title>
+          <title>${esc(tip)}</title>
         </circle></a>`;
     })
     .join("");

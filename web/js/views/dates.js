@@ -13,6 +13,7 @@ import { isIG } from "../fields.js";
 
 /** presets in trading days back from the newest bar */
 const BACK = [
+  { label: "Today", days: 0 },
   { label: "1M", days: 21 },
   { label: "3M", days: 63 },
   { label: "6M", days: 125 },

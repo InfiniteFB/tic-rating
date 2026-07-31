@@ -14,11 +14,11 @@ const W = 960;
 const H = 300;
 const PAD = { l: 44, r: 14, t: 14, b: 26 };
 
-export function mountHistory(root, { onWindowChange }) {
+export function mountHistory(root, _opts = {}) {
   root.innerHTML = `
     <div class="hist__bar">
       <div class="hist__knob" role="group" aria-label="Calibration window"></div>
-      <span class="hist__note">calibration window, trading days — the one assumption this page lets you move</span>
+      <span class="hist__note">calibration window, trading days — changes this chart only — the rating above stays on the 150-day build</span>
       <output class="hist__readout" aria-live="polite"></output>
     </div>
     <div class="hist__frame"></div>
@@ -38,7 +38,6 @@ export function mountHistory(root, { onWindowChange }) {
     if (!button || button.disabled) return;
     chosen = Number(button.dataset.w);
     paint();
-    onWindowChange?.(chosen);
   });
 
   function paint() {

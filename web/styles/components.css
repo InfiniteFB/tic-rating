@@ -424,10 +424,21 @@ table.wl { width: 100%; min-width: 46rem; border-collapse: collapse; font-size: 
 
 /* ── the rating-scale reference card ────────────────────────────────── */
 .verdict__letterrow { position: relative; display: flex; align-items: flex-start; gap: 0.5rem; }
+/* the letter itself is always ink — the reference card, the tables and the
+   charts carry the speculative colour; the headline does not shout */
+.verdict__letter, .verdict__letter.spec { color: var(--ink); }
+.verdict__tk {
+  font-family: var(--black);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);   /* the search field's size */
+  letter-spacing: -0.02em;
+  margin-bottom: 0.2rem;
+}
 .verdict__why {
-  border: 1px solid var(--rule); background: none; color: var(--ink-3);
-  font: inherit; font-size: 0.8rem; line-height: 1; padding: 0.22rem 0.4rem;
-  cursor: pointer; margin-top: 0.4rem;
+  border: 1px solid var(--ink-3); border-radius: 50%;
+  width: 1.35rem; height: 1.35rem; display: inline-grid; place-items: center;
+  background: none; color: var(--ink-3);
+  font-family: var(--sans); font-size: 0.72rem; font-weight: 700; line-height: 1;
+  cursor: pointer; margin-top: 0.5rem; padding: 0;
 }
 .verdict__why:hover, .verdict__why[aria-expanded="true"] { color: var(--red); border-color: var(--red); }
 .scalecard {
@@ -503,3 +514,25 @@ table.reg td, table.reg thead th { padding: 0.52rem 0.9rem; }
 .register__sector { color: var(--ink-3); white-space: nowrap; }
 .reg__bar { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.7rem; flex-wrap: wrap; }
 .reg__bar .field { max-width: 18rem; }
+
+/* appendix: three labelled provenance blocks before the raw tables */
+.appx { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--pad); margin-bottom: 1.2rem; }
+.appx__block { border-top: 2px solid var(--ink); padding-top: 0.5rem; min-width: 0; }
+.appx__title { font-size: var(--t-micro); letter-spacing: var(--track-label); text-transform: uppercase;
+  font-weight: 700; margin-bottom: 0.5rem; }
+.appx .kv { grid-template-columns: 1fr; border-top: 0; }
+.appx .kv > div { display: flex; justify-content: space-between; gap: 0.8rem; align-items: baseline;
+  border-right: 0; border-bottom: 1px solid var(--paper-3); padding: 0.3rem 0; }
+.appx .kv__v { font-weight: 600; text-align: right; }
+
+/* plate titles: every chart states what it is before the caption explains it */
+.plate__bar { display: flex; align-items: baseline; gap: 0.8rem; margin-bottom: 0.45rem; flex-wrap: wrap; }
+.plate__title { font-size: var(--t-micro); letter-spacing: var(--track-label);
+  text-transform: uppercase; font-weight: 700; }
+.plate__hint { font-size: var(--t-micro); letter-spacing: 0.06em; color: var(--ink-3); }
+.plate__bar .dctl__presets { margin-left: auto; }
+
+.mh__line.is-coloured { opacity: 0.95; stroke-width: 1.9; }
+.mh__chip[aria-pressed="true"] { font-weight: 700; }
+.mh__chip--avg { border-style: dashed; color: var(--ink-2); cursor: default; }
+.mh__avg { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 7 4; opacity: 0.85; }

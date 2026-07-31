@@ -113,10 +113,11 @@ export function renderVerdict(mount, row, cur, prior, series) {
 
   mount.innerHTML = `
     <div class="verdict__mark">
+      <div class="verdict__tk">${esc(row.ticker)}</div>
       <div class="verdict__letterrow">
-        <div class="verdict__letter ${isIG(cur.spRating) ? "" : "spec"}">${esc(cur.spRating)}</div>
+        <div class="verdict__letter">${esc(cur.spRating)}</div>
         <button class="verdict__why" type="button" aria-expanded="false"
-          aria-label="Show the rating scale">ⓘ</button>
+          aria-label="Show the rating scale">i</button>
         ${scaleCard(cur.spRating, cur.spPd)}
       </div>
       <div class="verdict__bar"></div>
@@ -136,25 +137,34 @@ export function renderVerdict(mount, row, cur, prior, series) {
       <b>${num(cur.dd, 3)}</b> standard deviations of clearance to the default barrier.</p>
     </div>`;
 
-  // the reference card opens on hover or on click, and click pins it
+  // the reference card toggles on click and stays; a click anywhere else
+  // dismisses it — hover-only popovers die the moment the pointer travels
   const why = mount.querySelector(".verdict__why");
   const card = mount.querySelector(".scalecard");
-  let pinned = false;
-  const show = (on) => {
-    const open = on || pinned;
+  why.addEventListener("click", () => {
+    const open = !card.classList.contains("is-open");
     card.classList.toggle("is-open", open);
     why.setAttribute("aria-expanded", String(open));
     if (open) {
-      // centre the highlighted row inside the card's own scroll, never the page's
       const here = card.querySelector(".is-here");
       if (here) card.scrollTop = Math.max(0, here.offsetTop - card.clientHeight / 2);
     }
-  };
-  why.addEventListener("mouseenter", () => show(true));
-  why.addEventListener("mouseleave", () => show(false));
-  why.addEventListener("click", () => {
-    pinned = !pinned;
-    show(pinned);
+  });
+  installDismiss();
+}
+
+/** one document-level listener for every card this page will ever render —
+ *  re-registering per repaint would leak a handler on each date drag */
+let dismissInstalled = false;
+function installDismiss() {
+  if (dismissInstalled) return;
+  dismissInstalled = true;
+  document.addEventListener("click", (event) => {
+    if (event.target.closest(".scalecard, .verdict__why")) return;
+    for (const open of document.querySelectorAll(".scalecard.is-open")) {
+      open.classList.remove("is-open");
+      open.parentElement?.querySelector(".verdict__why")?.setAttribute("aria-expanded", "false");
+    }
   });
 }
 

@@ -11,7 +11,7 @@ import { mountSearch } from "./views/search.js";
 import { mountWatchlist } from "./views/watchlist.js";
 import { mountDashDates } from "./views/dashdates.js";
 import { mountRegister } from "./views/register.js";
-import { renderScatter } from "./views/scatter.js";
+import { mountScatter } from "./views/scatter.js";
 import { mountMultiHistory } from "./views/multiHistory.js";
 import { chartDD, chartMigration } from "./charts.js";
 import { esc } from "./format.js";
@@ -40,6 +40,7 @@ async function boot() {
   const watchlist = mountWatchlist($("s-watchlist"), { onChange: () => repaint() });
   const dates = mountDashDates($("ctl-dates"), { onChange: () => repaint() });
   const multi = mountMultiHistory($("p-multi"));
+  const scatter = mountScatter($("p-scatter"));
   const register = mountRegister($("s-universe"), { onPick: open });
   register.paint();
   mountSearch($("s-search"), {
@@ -92,13 +93,14 @@ async function boot() {
     $("c-mig").innerHTML = `<b>Fig 02</b> Where each name's letter sat on those two days.
       The dashed rule is the investment-grade boundary.`;
 
-    multi.update(blocks, { earlier, later });
-    $("c-multi").innerHTML = `<b>Fig 03</b> A decade of letters for every name on the list, weekly.
-      Hover a symbol to pull its line forward; the shaded band is the selected span.`;
+    const weights = new Map(rows.map((r) => [r.ticker, r.snaps?.[0]?.marketCap ?? 1]));
+    multi.update(blocks, { earlier, later }, weights);
+    $("c-multi").innerHTML = `<b>Fig 03</b> A decade of letters, weekly. Click a symbol to colour or grey
+      its line; the dashed line is the list's market-value-weighted average; the band is the selected span.`;
 
-    renderScatter($("p-scatter"), state.index, new Set(watchlist.list));
-    $("c-scatter").innerHTML = `<b>Fig 04</b> The whole universe: market value across (log),
-      rating down. Filled accent dots are the watchlist; every dot opens its page.`;
+    scatter.update(state.index, new Set(watchlist.list));
+    $("c-scatter").innerHTML = `<b>Fig 04</b> Market value across (log), rating down. Hover a dot for the
+      name and its key figures; click to open its page. The toggle narrows the field to the watchlist.`;
   }
 
   await repaint();

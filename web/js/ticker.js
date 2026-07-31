@@ -45,29 +45,14 @@ async function boot() {
   const compare = mountPeersCompare($("compare"));
   const asOfCtl = mountDateControl($("ctl-asof"), { kind: "asof", onChange: setAsOf });
 
-  // the methodology knob: at the default window the whole page is daily; at
-  // another window only the weekly history and the latest-day snapshot exist,
-  // so the date slider steps aside rather than pretending
-  const history = mountHistory($("history"), { onWindowChange: (w) => paintDated(w) });
+  // the methodology knob lives inside the history section and repaints only
+  // that chart — the verdict above always reads the default (150-day) build,
+  // so moving the knob never silently rewrites the headline figures
+  const history = mountHistory($("history"), {});
 
-  function paintDated(windowChoice = null) {
+  function paintDated() {
     const row = state.selected;
-    const defaultWindow = state.series?.window ?? 150;
-    const w = windowChoice ?? history.window ?? defaultWindow;
-    const offDefault = state.series && w !== defaultWindow;
-
-    let cur;
-    let prior;
-    if (offDefault) {
-      cur = { ...state.series.latest?.[String(w)], rate: state.series.rate?.at(-1) };
-      const h = state.series.history?.[String(w)];
-      const back = h && h.dates.length > 31 ? h.dates.length - 1 - 30 : null; // ~30 weeks ≈ one 150d window
-      prior = back != null
-        ? { date: h.dates[back], spRating: h.spRating[back], dd: h.dd[back] }
-        : null;
-    } else {
-      [cur, prior] = snapshots();
-    }
+    const [cur, prior] = snapshots();
 
     renderVerdict($("verdict"), row, cur, prior, state.series);
     renderChain($("chain"), row, cur);
@@ -75,17 +60,9 @@ async function boot() {
     renderReading($("read-head"), $("read-body"), row, cur, prior);
     renderDiagnostics($("s-diagnostics"), row, state.series, state.seriesStatus, cur, prior);
 
-    asOfCtl.update(offDefault ? null : state.series, state.asOf,
-      state.series?.dates?.length - 1,
+    asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1,
       cur ? { date: cur.date, letter: cur.spRating } : null);
     $("ctl-asof").hidden = !row?.snaps;
-    if (offDefault) {
-      $("ctl-asof").querySelector(".dctl__scale") ?.replaceChildren(
-        Object.assign(document.createElement("span"), {
-          className: "dctl__from",
-          textContent: `daily detail is computed at the ${defaultWindow}-day window — at ${w} days the rating is weekly, latest day shown`,
-        }));
-    }
   }
 
   subscribe((s, reason) => {

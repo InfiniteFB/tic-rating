@@ -4,7 +4,7 @@
    hides its failures is not a research tool.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { esc, num, pct, shortDate, usd } from "../format.js";
+import { esc, moneyK, num, pct, shares, shortDate, usd } from "../format.js";
 import { SNAP_FIELDS } from "../fields.js";
 import { state, unrateable } from "../store.js";
 
@@ -110,56 +110,108 @@ export function renderFullTable(mount) {
 
 
 /**
- * The company page's appendix. Deliberately narrower than the dashboard's:
- * where this name's numbers came from, and the per-day inputs the engine ran
- * on. Index-wide provenance — how many constituents failed, and why — belongs
- * on the dashboard, not on a page about one company.
+ * The company page's appendix — the provenance chain, in reading order:
+ * who this is, where every number came from, what the calibration settled on,
+ * then the raw filings the default point is built from, and finally the
+ * per-day inputs the engine actually consumed. Nothing on the page above
+ * should be untraceable from here.
  */
 export function renderTickerAppendix(root, row, series) {
   if (!row) return;
   const generated = state.summary?.generated_for ?? {};
-  const pairs = [
-    ["Ticker", row.ticker],
-    ["Company", row.name],
-    ["Sector", row.sector ?? "—"],
-    ["Window", generated.window ? `${generated.window} trading days` : "—"],
-    ["Last quote", usd(row.quote)],
-    ["Monetary unit", "USD thousands"],
-    ["Risk-free", "FRED DGS1, per day"],
-    ["Source", "massive-api, cached"],
-  ];
-  if (series) {
-    pairs.push(["EM iterations", `${series.iterations}${series.converged ? "" : " (cap)"}`]);
-    pairs.push(["Calibrated \u03c3_A", pct(series.sigmaA)]);
-    pairs.push(["Trading days", series.dates?.length ?? "—"]);
-    pairs.push(["Daily bars", series.ohlc ? series.ohlc.dates.length : "—"]);
-  }
 
-  const inputs = !row.snaps
+  const block = (title, pairs) => `
+    <div class="appx__block">
+      <div class="appx__title">${esc(title)}</div>
+      <div class="kv">${pairs
+        .map(([k, v]) => `<div><span class="label">${esc(k)}</span><span class="kv__v">${esc(v)}</span></div>`)
+        .join("")}</div>
+    </div>`;
+
+  const identity = block("Identity", [
+    ["Ticker", row.ticker],
+    ["Company", row.legalName ?? row.name],
+    ["Sector", row.sector ?? "—"],
+    ["Last quote", usd(row.quote)],
+  ]);
+
+  const sources = block("Sources", [
+    ["Prices, deep", series?.priceSource ?? "yahoo 10y"],
+    ["Prices, recent", "massive-api aggregates"],
+    ["Balance sheet", "massive-api, quarterly"],
+    ["Share counts", "income statements, quarterly"],
+    ["Risk-free", "FRED DGS1, per day"],
+    ["Monetary unit", "USD thousands, as filed"],
+  ]);
+
+  const calibration = block("Calibration — the rating date's own fit", [
+    ["Window", generated.window ? `${generated.window} trading days` : "—"],
+    ["σ_A", series ? pct(series.sigmaA) : "—"],
+    ["σ_E", series ? pct(series.sigmaE) : "—"],
+    ["R_A", series ? num(series.rA, 4) : "—"],
+    ["EM iterations", series ? `${series.iterations}${series.converged ? "" : " (cap)"}` : "—"],
+    ["Rated days", series?.dates?.length ?? "—"],
+  ]);
+
+  const quarters = !row.snaps
     ? `<p class="note" style="border:0;padding:0">${esc(row.unrateable_reason ?? "Not rateable.")}</p>`
+    : quartersTable(series);
+  const inputs = !row.snaps
+    ? ""
     : !series?.dates
       ? `<div class="is-loading">loading per-day inputs\u2026</div>`
       : perDayTable(series);
 
   root.innerHTML = `
     <h2 class="section__head">
-      <span class="section__no">07</span><span>Appendix</span>
-      <span class="section__note">provenance and the per-day inputs for ${esc(row.ticker)}</span>
+      <span class="section__no">08</span><span>Appendix</span>
+      <span class="section__note">the provenance chain for ${esc(row.ticker)}</span>
     </h2>
-    <div class="kv">${pairs
-      .map(([k, v]) => `<div><span class="label">${esc(k)}</span><span class="kv__v">${esc(v)}</span></div>`)
-      .join("")}</div>
-    <details class="fold" style="margin-top:1.2rem">
+    <div class="appx">${identity}${sources}${calibration}</div>
+    <details class="fold" open>
+      <summary>Quarterly filings — what the default point is built from<span class="fold__ct">${
+        series?.quarters ? `${series.quarters.length} quarters` : ""
+      }</span></summary>
+      <div class="tscroll" style="max-height:24rem;overflow:auto">${quarters}</div>
+      <p class="note">Straight off the filings, in thousands of USD. The default point on any day is the most
+        recent quarter's short-term debt plus long-term debt (strict handling: a quarter missing a component is
+        skipped); shares are the quarter's basic count, which is why a 2017 market cap uses 2017's float.</p>
+    </details>
+    <details class="fold">
       <summary>Per-day model inputs<span class="fold__ct">${
         series?.dates ? `${series.dates.length} rows` : ""
       }</span></summary>
       <div class="tscroll" style="max-height:24rem;overflow:auto">${inputs}</div>
-    </details>
-    <p class="note">Asset value is the EM-recovered V_A; the default point is the quarter's debt carried
-      forward to each trading day, which is why it steps rather than drifts.</p>`;
+      <p class="note">Asset value is the EM-recovered V_A; the default point steps on quarter ends rather than
+        drifting, because that is when the filings change.</p>
+    </details>`;
+}
+
+function quartersTable(series) {
+  const rows = series?.quarters ?? [];
+  if (!rows.length) return `<p class="note" style="border:0;padding:0">No quarterly filings in the capture.</p>`;
+  const money = (v) => (v == null ? "\u2014" : moneyK(v));
+  const body = rows
+    .slice()
+    .reverse()
+    .map((q) => `<tr>
+      <td>${esc(q.periodEnd)}</td>
+      <td>${esc(q.filed ?? "\u2014")}</td>
+      <td>${money(q.debtCurrent)}</td>
+      <td>${money(q.longTermDebt)}</td>
+      <td>${money(q.totalLiabilities)}</td>
+      <td>${money(q.totalCurrentLiabilities)}</td>
+      <td>${q.shares == null ? "\u2014" : shares(q.shares)}</td>
+    </tr>`)
+    .join("");
+  return `<table class="entries"><thead><tr>
+      <th>Period end</th><th>Filed</th><th>Current debt</th><th>LT debt + leases</th>
+      <th>Total liabilities</th><th>Current liabilities</th><th>Basic shares</th>
+    </tr></thead><tbody>${body}</tbody></table>`;
 }
 
 function perDayTable(series) {
+
   const rows = [];
   for (let i = series.dates.length - 1; i >= 0; i--) {
     const bar = series.ohlc && series.ohlc.dates[i] === series.dates[i] ? i : null;
