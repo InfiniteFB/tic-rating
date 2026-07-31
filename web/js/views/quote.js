@@ -37,14 +37,15 @@ export function mountQuote(root) {
       caption.textContent = "";
       return;
     }
-    const drawn = renderCandles(chart, current.ohlc, { range });
+    const drawn = renderCandles(chart, current.ohlc, { range, weekly: current.weekly });
     if (!drawn) {
       caption.innerHTML = `Daily bars are unavailable for ${esc(current.ticker)}.`;
       return;
     }
-    caption.innerHTML = `<b>${esc(current.ticker)}</b> ${drawn.bars} daily bars,
+    const unit = (range === "5Y" || range === "MAX") ? "weekly" : "daily";
+    caption.innerHTML = `<b>${esc(current.ticker)}</b> ${drawn.bars} ${unit} bars,
       ${esc(drawn.from)} → ${esc(drawn.to)}. Hollow bodies closed up, solid bodies closed down;
-      the strip beneath is volume. Hover or drag for a per-day readout.`;
+      the strip beneath is volume. Hover or drag for a per-bar readout.`;
   }
 
   note.innerHTML = `These are raw split-adjusted aggregates. The rating calibrates on
@@ -67,7 +68,7 @@ export function mountQuote(root) {
         caption.textContent = "";
         return;
       }
-      current = { ticker: row.ticker, ohlc: series.ohlc };
+      current = { ticker: row.ticker, ohlc: series.ohlc, weekly: series.ohlcW ?? null };
       draw();
     },
   };

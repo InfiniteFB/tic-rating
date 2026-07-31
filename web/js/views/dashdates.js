@@ -1,10 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   views/dashdates.js — the dashboard's pair of dates.
+   views/dashdates.js — the dashboard's pair of dates, side by side.
 
-   One calendar for the whole page. It is taken from the longest history in
-   the list, so the sliders span everything the list can show; names whose own
-   history starts later simply drop out of a figure at that date rather than
-   being drawn at the wrong one.
+   Both sliders run over the SAME fixed axis — the full calendar — so a
+   thumb never jumps because the other thumb moved. The constraint is
+   enforced on the values instead: the comparison day is always strictly
+   earlier than the rating day, and dragging one across the other pushes,
+   it never rescales. (The first version re-ranged the second slider's max
+   on every move of the first, which made the thumb walk on its own.)
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { esc } from "../format.js";
@@ -12,90 +14,79 @@ import { seriesOf } from "../store.js";
 
 const BACK = [
   { label: "1M", days: 21 },
-  { label: "3M", days: 63 },
   { label: "6M", days: 125 },
   { label: "1Y", days: 250 },
-  { label: "Start", days: Infinity },
+  { label: "5Y", days: 1250 },
+  { label: "Max", days: Infinity },
 ];
 
 export function mountDashDates(mount, { onChange }) {
   mount.className = "dpair";
-  mount.innerHTML = `
-    <div class="dpair__row">
-      <span class="dctl__lead">Rating as of</span>
-      <output class="dctl__date" id="dp-later" aria-live="polite">—</output>
-      <div class="dctl__presets" id="dp-later-presets" role="group" aria-label="Rating date"></div>
-    </div>
-    <input class="dctl__slider" id="dp-later-slider" type="range" min="0" max="0" step="1"
-           aria-label="Rating date" />
-    <div class="dpair__row">
-      <span class="dctl__lead">Compared with</span>
-      <output class="dctl__date" id="dp-earlier" aria-live="polite">—</output>
-      <div class="dctl__presets" id="dp-earlier-presets" role="group" aria-label="Comparison date"></div>
-    </div>
-    <input class="dctl__slider" id="dp-earlier-slider" type="range" min="0" max="0" step="1"
-           aria-label="Comparison date" />
-    <div class="dctl__scale"><span id="dp-from"></span><span id="dp-to"></span></div>`;
+  mount.innerHTML = ["later", "earlier"].map((kind) => `
+    <div class="dpair__cell dpair__cell--${kind}">
+      <div class="dpair__row">
+        <span class="dctl__lead">${kind === "later" ? "Rating as of" : "Compared with"}</span>
+        <output class="dctl__date" id="dp-${kind}" aria-live="polite">—</output>
+      </div>
+      <input class="dctl__slider" id="dp-${kind}-slider" type="range" min="0" max="0" step="1"
+             aria-label="${kind === "later" ? "Rating date" : "Comparison date"}" />
+      <div class="dctl__presets" id="dp-${kind}-presets" role="group"
+           aria-label="${kind === "later" ? "Jump the rating date" : "Comparison distance"}"></div>
+    </div>`).join("") + `
+    <div class="dctl__scale dpair__scale"><span id="dp-from"></span><span id="dp-to"></span></div>`;
 
   const el = (id) => mount.querySelector(`#${id}`);
-  const laterSlider = el("dp-later-slider");
-  const earlierSlider = el("dp-earlier-slider");
+  const sliders = { later: el("dp-later-slider"), earlier: el("dp-earlier-slider") };
 
   let calendar = [];
-  let later = -1;
-  let earlier = -1;
+  let picked = { later: -1, earlier: -1 };
   let signature = "";
 
-  for (const [presets, isLater] of [[el("dp-later-presets"), true], [el("dp-earlier-presets"), false]]) {
-    presets.innerHTML = BACK.map(
+  for (const kind of ["later", "earlier"]) {
+    el(`dp-${kind}-presets`).innerHTML = BACK.map(
       (b) => `<button type="button" class="dctl__preset" data-back="${b.days}">${b.label}</button>`
     ).join("");
-    presets.addEventListener("click", (event) => {
+    el(`dp-${kind}-presets`).addEventListener("click", (event) => {
       const button = event.target.closest("[data-back]");
       if (!button || !calendar.length) return;
       const back = Number(button.dataset.back);
-      const anchor = isLater ? calendar.length - 1 : later;
-      const target = Number.isFinite(back) ? Math.max(0, anchor - back) : 0;
-      if (isLater) setLater(target);
-      else setEarlier(target);
+      const anchor = kind === "later" ? calendar.length - 1 : picked.later;
+      set(kind, Number.isFinite(back) ? Math.max(0, anchor - back) : 0);
     });
+    sliders[kind].addEventListener("input", () => set(kind, Number(sliders[kind].value)));
   }
 
-  laterSlider.addEventListener("input", () => setLater(Number(laterSlider.value)));
-  earlierSlider.addEventListener("input", () => setEarlier(Number(earlierSlider.value)));
-
-  function setLater(i) {
-    later = Math.max(1, Math.min(calendar.length - 1, i));
-    if (earlier >= later) earlier = Math.max(0, later - 1);
-    paint();
-    onChange();
-  }
-
-  function setEarlier(i) {
-    earlier = Math.max(0, Math.min(later - 1, i));
+  /** all constraint logic in one place: values move, bounds never do */
+  function set(kind, value) {
+    const last = calendar.length - 1;
+    if (last < 1) return;
+    if (kind === "later") {
+      picked.later = Math.max(1, Math.min(last, Math.round(value)));
+      if (picked.earlier >= picked.later) picked.earlier = picked.later - 1;
+    } else {
+      // the comparison can be dragged anywhere strictly before the rating day
+      picked.earlier = Math.max(0, Math.min(picked.later - 1, Math.round(value)));
+    }
     paint();
     onChange();
   }
 
   function paint() {
-    if (!calendar.length) return;
-    laterSlider.max = String(calendar.length - 1);
-    laterSlider.value = String(later);
-    earlierSlider.max = String(Math.max(0, later - 1));
-    earlierSlider.value = String(earlier);
-    el("dp-later").textContent = calendar[later] ?? "—";
-    el("dp-earlier").textContent = calendar[earlier] ?? "—";
+    const last = calendar.length - 1;
+    for (const kind of ["later", "earlier"]) {
+      sliders[kind].min = "0";
+      sliders[kind].max = String(last);   // fixed axis for both — see the header note
+      sliders[kind].value = String(picked[kind]);
+      el(`dp-${kind}`).textContent = calendar[picked[kind]] ?? "—";
+    }
     el("dp-from").textContent = esc(calendar[0] ?? "");
-    el("dp-to").textContent = esc(calendar[calendar.length - 1] ?? "");
-
-    for (const [presets, isLater] of [[el("dp-later-presets"), true], [el("dp-earlier-presets"), false]]) {
-      const anchor = isLater ? calendar.length - 1 : later;
-      const chosen = isLater ? later : earlier;
-      for (const button of presets.querySelectorAll("[data-back]")) {
+    el("dp-to").textContent = esc(calendar[last] ?? "");
+    for (const kind of ["later", "earlier"]) {
+      const anchor = kind === "later" ? last : picked.later;
+      for (const button of el(`dp-${kind}-presets`).querySelectorAll("[data-back]")) {
         const back = Number(button.dataset.back);
         const target = Number.isFinite(back) ? Math.max(0, anchor - back) : 0;
-        button.disabled = isLater ? false : later < 1;
-        button.setAttribute("aria-pressed", String(target === chosen));
+        button.setAttribute("aria-pressed", String(target === picked[kind]));
       }
     }
   }
@@ -106,20 +97,22 @@ export function mountDashDates(mount, { onChange }) {
       const key = rows.map((r) => r.ticker).sort().join(",");
       if (key === signature && calendar.length) return;
       signature = key;
-
       const all = await Promise.all(rows.map((r) => seriesOf(r.ticker).catch(() => null)));
-      const longest = all.filter(Boolean).reduce(
-        (best, s) => ((s?.dates?.length ?? 0) > (best?.dates?.length ?? 0) ? s : best),
-        null
-      );
-      calendar = longest?.dates ?? [];
-      if (!calendar.length) return;
-      later = calendar.length - 1;
-      earlier = Math.max(0, calendar.length - 1 - 125);
+      // the weekly history is the calendar: it spans the decade, and the
+      // watchlist figures are weekly anyway
+      const longest = all.filter(Boolean).reduce((best, s) => {
+        const dates = s?.history?.[String(s.window ?? 150)]?.dates ?? s?.dates ?? [];
+        const bestDates = best?.history?.[String(best.window ?? 150)]?.dates ?? best?.dates ?? [];
+        return dates.length > bestDates.length ? s : best;
+      }, null);
+      calendar = longest?.history?.[String(longest.window ?? 150)]?.dates ?? longest?.dates ?? [];
+      if (calendar.length < 2) return;
+      picked.later = calendar.length - 1;
+      picked.earlier = Math.max(0, calendar.length - 1 - 25);   // ≈ six months of weeks
       paint();
     },
     selection() {
-      return { later: calendar[later] ?? null, earlier: calendar[earlier] ?? null };
+      return { later: calendar[picked.later] ?? null, earlier: calendar[picked.earlier] ?? null };
     },
   };
 }

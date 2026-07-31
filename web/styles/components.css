@@ -399,3 +399,107 @@ table.wl { width: 100%; min-width: 46rem; border-collapse: collapse; font-size: 
 .fold > summary::before { content: "+"; color: var(--red); font-weight: 700; }
 .fold[open] > summary::before { content: "−"; }
 .fold__ct { margin-left: auto; font-weight: 400; color: var(--ink-3); font-size: var(--t-small); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   rating history — the step chart and the methodology knob beside it
+   ═══════════════════════════════════════════════════════════════════════ */
+.hist__bar { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem 1rem; margin-bottom: 0.7rem; }
+.hist__knob { display: flex; gap: 0; }
+.hist__w {
+  border: 1px solid var(--rule); border-right: 0; background: none; font: inherit;
+  font-size: var(--t-small); font-weight: 700; padding: 0.32rem 0.7rem; cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.hist__w:last-child { border-right: 1px solid var(--rule); }
+.hist__w[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: var(--paper); }
+.hist__w:disabled { opacity: 0.35; cursor: not-allowed; }
+.hist__note { font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.hist__readout { margin-left: auto; font-size: var(--t-body); font-weight: 600; min-height: 1.2em; }
+.hist__readout .spec { color: var(--red); }
+.hist__frame { border-top: 1px solid var(--ink); padding-top: 0.5rem; }
+.hist__svg { display: block; width: 100%; height: auto; cursor: crosshair; }
+.hist__line { fill: none; stroke: var(--ink); stroke-width: 1.8; }
+.hist__ylab.spec { fill: var(--red); }
+.hist__foot { margin-top: 0.6rem; }
+
+/* ── the rating-scale reference card ────────────────────────────────── */
+.verdict__letterrow { position: relative; display: flex; align-items: flex-start; gap: 0.5rem; }
+.verdict__why {
+  border: 1px solid var(--rule); background: none; color: var(--ink-3);
+  font: inherit; font-size: 0.8rem; line-height: 1; padding: 0.22rem 0.4rem;
+  cursor: pointer; margin-top: 0.4rem;
+}
+.verdict__why:hover, .verdict__why[aria-expanded="true"] { color: var(--red); border-color: var(--red); }
+.scalecard {
+  display: none; position: absolute; left: 0; top: calc(100% + 0.5rem); z-index: 30;
+  width: min(21rem, 80vw); max-height: 19rem; overflow: auto;
+  background: var(--paper); border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--paper-3);
+  padding: 0.7rem 0.8rem;
+}
+.scalecard.is-open { display: block; }
+.scalecard__head { font-size: var(--t-small); color: var(--ink-2); margin-bottom: 0.5rem; }
+.scalecard table { width: 100%; border-collapse: collapse; font-size: var(--t-small); }
+.scalecard th { text-align: left; font-size: var(--t-micro); letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-3); padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--rule); }
+.scalecard td { padding: 0.18rem 0.4rem; border-bottom: 1px solid var(--paper-3); }
+.scalecard td:first-child { font-weight: 700; }
+.scalecard td.spec { color: var(--red); }
+.scalecard tr.is-here { background: var(--ink); }
+.scalecard tr.is-here td { color: var(--paper); }
+.scalecard tr.is-here td.spec { color: oklch(0.78 0.12 30); }
+
+/* ── compare companies ──────────────────────────────────────────────── */
+.pcmp__bar { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; margin-bottom: 0.8rem; }
+.pcmp__adder { position: relative; display: flex; gap: 0.4rem; }
+.pcmp__q { width: 14rem; }
+.pcmp__list { position: absolute; top: 100%; left: 0; width: 20rem; z-index: 10; }
+.pcmp__hint { font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.pcmp__table th.pcmp__col { text-align: right; position: relative; padding-right: 1.4rem; }
+.pcmp__table th.pcmp__col a { font-family: var(--black); font-size: 1rem; letter-spacing: -0.02em; text-decoration: none; }
+.pcmp__colname { display: block; font-weight: 400; font-size: var(--t-micro); letter-spacing: 0;
+  text-transform: none; color: var(--ink-3); max-width: 11rem; margin-left: auto;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pcmp__drop { position: absolute; top: 0.1rem; right: 0.2rem; border: 0; background: none;
+  color: var(--ink-3); cursor: pointer; font-size: 0.9rem; }
+.pcmp__drop:hover { color: var(--red); }
+.pcmp__table td { text-align: right; }
+.pcmp__table td.cmp-grade { font-family: var(--black); font-size: 1.05rem; }
+.pcmp__table td.cmp-grade.spec { color: var(--red); }
+
+/* dashboard extras: wide plates, compact date pair, the two new figures */
+.plate--wide { grid-column: 1 / -1; }
+.dpair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--pad); align-items: start;
+  border: 1px solid var(--ink); padding: 0.7rem 0.9rem 0.6rem; }
+@media (max-width: 760px) { .dpair { grid-template-columns: 1fr; } }
+.dpair__cell { min-width: 0; }
+.dpair__row { display: flex; align-items: baseline; gap: 0.6rem; }
+.dpair .dctl__date { font-size: clamp(0.95rem, 1.8vw, 1.2rem); }
+.dpair .dctl__slider { margin-top: 0.2rem; height: 18px; }
+.dpair .dctl__presets { margin: 0.1rem 0 0.2rem; }
+.dpair__scale { grid-column: 1 / -1; margin-top: 0.1rem; }
+
+.sc { display: block; width: 100%; height: auto; }
+.sc-dot { fill: var(--paper); stroke: var(--ink-2); stroke-width: 0.9; }
+.sc-dot.spec { stroke: var(--red); }
+.sc-dot.is-hot { fill: var(--red); stroke: var(--red); }
+.sc-dot:hover { stroke-width: 2.2; }
+
+.mh__legend { display: flex; flex-wrap: wrap; gap: 0.25rem 0.35rem; margin-bottom: 0.5rem; }
+.mh__chip { border: 1px solid var(--rule); background: none; font: inherit; font-size: var(--t-micro);
+  font-weight: 700; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; cursor: default; }
+.mh__chip.is-hot { background: var(--red); border-color: var(--red); color: var(--paper); }
+.mh__svg { display: block; width: 100%; height: auto; }
+.mh__line { fill: none; stroke: var(--ink-3); stroke-width: 1.1; opacity: 0.55;
+  transition: opacity var(--fast) var(--ease), stroke var(--fast) var(--ease); }
+.mh__line.is-hot { stroke: var(--red); stroke-width: 2; opacity: 1; }
+.mh__line.is-dim { opacity: 0.14; }
+.mh__span { fill: var(--red); opacity: 0.06; }
+
+/* the universe table earns its full width: the company name breathes, the
+   sector fills what used to be dead space, and rows get real padding */
+table.reg td, table.reg thead th { padding: 0.52rem 0.9rem; }
+.register__name { max-width: none; }
+.register__sector { color: var(--ink-3); white-space: nowrap; }
+.reg__bar { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.7rem; flex-wrap: wrap; }
+.reg__bar .field { max-width: 18rem; }

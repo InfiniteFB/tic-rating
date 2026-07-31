@@ -1,18 +1,17 @@
 /* ═══════════════════════════════════════════════════════════════════════
    ticker.js — bootstrap for one company's page.
 
-   This page answers a single question: how did this name arrive at this
-   letter? So the calculation leads — chain, entries, diagnostics — and the
-   comparison and appendix follow it. Anything index-wide (the register, the
-   distribution, the whole grid) belongs on the dashboard, not here.
+   One question: how did this name arrive at this letter? The calculation
+   leads — rating, a decade of history, the workings — and the comparison
+   and appendix follow. Anything about more than one name lives on the
+   dashboard, except the explicit side-by-side the reader builds here.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import {
-  load, peerSnapshots, peers, select, setAsOf, setCompareAt, snapshots, state, subscribe,
-} from "./store.js";
+import { load, select, setAsOf, snapshotAt, snapshots, state, subscribe } from "./store.js";
 import { mountSearch } from "./views/search.js";
 import { mountDateControl } from "./views/dates.js";
-import { renderCompare } from "./views/compare.js";
+import { mountHistory } from "./views/history.js";
+import { mountPeersCompare } from "./views/peersCompare.js";
 import { renderVerdict, renderChain } from "./views/verdict.js";
 import { mountQuote } from "./views/quote.js";
 import { renderEntries } from "./views/entries.js";
@@ -37,40 +36,56 @@ async function boot() {
   }
 
   const generated = state.summary?.generated_for ?? {};
-  $("m-window").textContent = generated.window ? `${generated.window} trading days` : "—";
+  $("m-window").textContent = generated.detail_days
+    ? `${generated.detail_days} trading days`
+    : "—";
 
   const quote = mountQuote($("s-quote"));
   const search = mountSearch($("s-search"), { onPick: goto });
+  const compare = mountPeersCompare($("compare"));
   const asOfCtl = mountDateControl($("ctl-asof"), { kind: "asof", onChange: setAsOf });
-  const cmpCtl = mountDateControl($("ctl-compare"), { kind: "compare", onChange: setCompareAt });
 
-  let peerToken = 0;
+  // the methodology knob: at the default window the whole page is daily; at
+  // another window only the weekly history and the latest-day snapshot exist,
+  // so the date slider steps aside rather than pretending
+  const history = mountHistory($("history"), { onWindowChange: (w) => paintDated(w) });
 
-  /** everything that depends on which two days are selected */
-  async function paintDated() {
+  function paintDated(windowChoice = null) {
     const row = state.selected;
-    const [cur, prior] = snapshots();
+    const defaultWindow = state.series?.window ?? 150;
+    const w = windowChoice ?? history.window ?? defaultWindow;
+    const offDefault = state.series && w !== defaultWindow;
 
-    renderVerdict($("verdict"), row, cur, prior);
+    let cur;
+    let prior;
+    if (offDefault) {
+      cur = { ...state.series.latest?.[String(w)], rate: state.series.rate?.at(-1) };
+      const h = state.series.history?.[String(w)];
+      const back = h && h.dates.length > 31 ? h.dates.length - 1 - 30 : null; // ~30 weeks ≈ one 150d window
+      prior = back != null
+        ? { date: h.dates[back], spRating: h.spRating[back], dd: h.dd[back] }
+        : null;
+    } else {
+      [cur, prior] = snapshots();
+    }
+
+    renderVerdict($("verdict"), row, cur, prior, state.series);
     renderChain($("chain"), row, cur);
     renderEntries($("t-snap"), $("t-calib"), row, cur, prior);
-    renderCompare($("compare"), row, cur, prior);
     renderReading($("read-head"), $("read-body"), row, cur, prior);
+    renderDiagnostics($("s-diagnostics"), row, state.series, state.seriesStatus, cur, prior);
 
-    $("s-compare").hidden = !row?.snaps;
-    asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1,
+    asOfCtl.update(offDefault ? null : state.series, state.asOf,
+      state.series?.dates?.length - 1,
       cur ? { date: cur.date, letter: cur.spRating } : null);
-    cmpCtl.update(state.series, state.compareAt, Math.max(0, state.asOf - 1),
-      prior ? { date: prior.date, letter: prior.spRating } : null);
-
-    // draw immediately from the index, then upgrade once the peers' own series
-    // land — the plates must sit at the selected dates, not at the frozen pair
-    renderDiagnostics($("s-diagnostics"), row, state.series, state.seriesStatus, cur, prior, null);
-    if (!row?.snaps || !cur) return;
-    const token = ++peerToken;
-    const cohort = await peerSnapshots(peers(row, 12), cur.date, prior?.date);
-    if (token !== peerToken) return;   // a newer date won the race
-    renderDiagnostics($("s-diagnostics"), row, state.series, state.seriesStatus, cur, prior, cohort);
+    $("ctl-asof").hidden = !row?.snaps;
+    if (offDefault) {
+      $("ctl-asof").querySelector(".dctl__scale") ?.replaceChildren(
+        Object.assign(document.createElement("span"), {
+          className: "dctl__from",
+          textContent: `daily detail is computed at the ${defaultWindow}-day window — at ${w} days the rating is weekly, latest day shown`,
+        }));
+    }
   }
 
   subscribe((s, reason) => {
@@ -78,16 +93,19 @@ async function boot() {
       const letter = s.selected.snaps ? s.selected.snaps[0].spRating : "not rateable";
       document.title = `${s.selected.ticker} — ${letter} · TiC Rating`;
       $("id-ticker").textContent = s.selected.ticker;
-      $("id-name").textContent = s.selected.name;
+      $("id-name").textContent = s.selected.legalName ?? s.selected.name;
       $("id-sector").textContent = s.selected.sector ?? "";
       search.setValue(s.selected.ticker);
       $("results").hidden = false;
+      compare.setSubject(s.selected.ticker);
     }
-    paintDated();
     if (reason !== "dates") {
+      history.update(s.series);
       quote.update(s.selected, s.series, s.seriesStatus);
       renderTickerAppendix($("s-appendix"), s.selected, s.series);
+      $("s-history").hidden = !s.series?.history;
     }
+    paintDated();
   });
 
   const initial = fromHash();
@@ -118,8 +136,8 @@ async function goto(ticker, { replace = false } = {}) {
   const symbol = String(ticker).toUpperCase();
   const hash = `#${encodeURIComponent(symbol)}`;
   if (location.hash !== hash) {
-    if (replace) history.replaceState(null, "", hash);
-    else history.pushState(null, "", hash);
+    if (replace) window.history.replaceState(null, "", hash);
+    else window.history.pushState(null, "", hash);
   }
   await select(symbol);
 }

@@ -38,6 +38,7 @@ import re
 import sys
 import threading
 import time
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
@@ -52,10 +53,18 @@ from rating_inputs import build_inputs
 
 WIKI_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 DEFAULT_OUT = Path("sp500_cache")
-DEFAULT_DAYS = 760          # calendar days requested; the feed caps at ~501 bars (2 years)
-DEFAULT_QUARTERS = 16       # every priced day needs a quarter at or before it
+DEFAULT_DAYS = 760          # calendar days requested from Massive; the feed caps at ~501 bars
+DEFAULT_QUARTERS = 45       # ~11 years of balance sheets — every priced day needs one at or before it
+
+# Massive's price feed refuses anything older than ~2 years (HTTP 403 on a purely
+# historical window, every granularity anchored to today). Fundamentals are not
+# capped the same way, so the deep price history comes from Yahoo's chart API —
+# key-less, 10 years of daily bars, and its adjclose matches Massive's
+# dividend-adjusted close to within 0.0001% on the 501-day overlap (measured on
+# KO), so mixing the two sources introduces no reconciliation drift.
+YAHOO_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range={range}&interval=1d"
+YAHOO_RANGE = "10y"
 DEFAULT_WINDOW = 150        # trading days the engine calibrates on (matches the workbook)
-DEFAULT_PRIOR = "2026-01-02"  # the workbook's earlier snapshot date
 DEFAULT_WORKERS = 8
 FALLBACK_RATE = 0.045
 
@@ -97,6 +106,43 @@ def fetch_constituents(timeout: float = 30.0) -> list[dict[str, str]]:
         out.append({"ticker": symbol, "name": name, "sector": sector})
     if len(out) < 400:
         raise SystemExit(f"only parsed {len(out)} constituents — refusing to run on a partial list")
+    return out
+
+
+def fetch_yahoo(ticker: str, timeout: float = 45.0) -> dict[str, Any]:
+    """Ten years of daily bars from Yahoo's chart API, as parallel arrays.
+
+    Dotted share classes trade as hyphenated symbols there (BRK.B → BRK-B).
+    Days where Yahoo reports a null close (halts, partial rows) are dropped so
+    every array stays aligned.
+    """
+    symbol = ticker.replace(".", "-")
+    url = YAHOO_URL.format(symbol=urllib.parse.quote(symbol), range=YAHOO_RANGE)
+    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (pfpa-research)"})
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+
+    result = (payload.get("chart", {}).get("result") or [None])[0]
+    if not result:
+        raise ValueError(f"yahoo returned no result for {symbol}: {str(payload)[:160]}")
+    stamps = result.get("timestamp") or []
+    quote = (result.get("indicators", {}).get("quote") or [{}])[0]
+    adj = (result.get("indicators", {}).get("adjclose") or [{}])[0].get("adjclose") or []
+
+    out: dict[str, list[Any]] = {k: [] for k in ("date", "o", "h", "l", "c", "adj", "v")}
+    for i, ts in enumerate(stamps):
+        close = (quote.get("close") or [None] * len(stamps))[i]
+        if close is None:
+            continue
+        out["date"].append(datetime.fromtimestamp(ts, timezone.utc).date().isoformat())
+        for key, field in (("o", "open"), ("h", "high"), ("l", "low"), ("v", "volume")):
+            value = (quote.get(field) or [None] * len(stamps))[i]
+            out[key].append(round(value, 4) if isinstance(value, float) else value)
+        out["c"].append(round(close, 4))
+        a = adj[i] if i < len(adj) else None
+        out["adj"].append(round(a, 6) if isinstance(a, (int, float)) else close)
+    if len(out["date"]) < 100:
+        raise ValueError(f"yahoo returned only {len(out['date'])} usable bars for {symbol}")
     return out
 
 
@@ -161,13 +207,16 @@ def fetch_stage(
     end = date.today()
     start = end - timedelta(days=days)
     iso_start, iso_end = start.isoformat(), end.isoformat()
+    # the risk-free series has to cover the deep Yahoo history, not just the
+    # Massive price window
+    deep_start = (end - timedelta(days=3800)).isoformat()
 
     # Both rate feeds are key-less and shared by every ticker — pull once, but
     # insist on a real series: silently falling back to a flat rate would apply
     # to all 503 names at once.
     (treasury, treasury_note), _ = _retry(
         "FRED DGS1",
-        lambda: rp.fetch_treasury_yields(iso_start, iso_end, timeout=timeout),
+        lambda: rp.fetch_treasury_yields(deep_start, iso_end, timeout=timeout),
         ok=lambda r: bool(r[0]),
     )
     (sofr, sofr_note), _ = _retry(
@@ -220,6 +269,32 @@ def fetch_stage(
         if raw is None:
             return ticker, "fetch failed: no response"
 
+        # the deep price history, from Yahoo (see the note at YAHOO_URL)
+        try:
+            raw["yahoo"], _ = _retry(
+                f"{ticker} yahoo", lambda: fetch_yahoo(ticker, timeout=timeout),
+                ok=lambda y: bool(y and y.get("date")), attempts=retries + 1, delay=2.0,
+            )
+        except Exception as exc:
+            raw["yahoo"] = None
+            raw.setdefault("errors", {})["yahoo"] = " ".join(str(exc).split())[:160]
+
+        # quarterly share counts — buybacks move the count enough over a decade
+        # that yesterday's shares × a 2016 price is not a 2016 market cap
+        try:
+            income, _ = _retry(
+                f"{ticker} income",
+                lambda: client().get(
+                    "/stocks/financials/v1/income-statements",
+                    {"tickers": ticker, "timeframe": "quarterly",
+                     "limit": quarters, "sort": "period_end.desc"},
+                ),
+                ok=lambda p: bool(_rows(p)), attempts=retries + 1, delay=2.0,
+            )
+            raw["responses"]["income_statement"] = income
+        except Exception as exc:
+            raw.setdefault("errors", {})["income_statement"] = " ".join(str(exc).split())[:160]
+
         prices = raw.get("derived", {}).get("daily_dividend_adjusted_prices", [])
         for row in prices:
             on = str(row.get("date", ""))
@@ -240,7 +315,12 @@ def fetch_stage(
             json.dump(raw, handle, ensure_ascii=False)
         tmp.replace(raw_dir / f"{ticker}.json")
 
-        note = f"{len(prices)} price rows, {len(_rows(raw['responses'].get('balance_sheet')))} quarters"
+        yahoo_bars = len((raw.get("yahoo") or {}).get("date", []))
+        note = (
+            f"{len(prices)} massive rows, {yahoo_bars} yahoo bars, "
+            f"{len(_rows(raw['responses'].get('balance_sheet')))} quarters, "
+            f"{len(_rows(raw['responses'].get('income_statement')))} income stmts"
+        )
         if used:
             note += f", {used} retr{'y' if used == 1 else 'ies'}"
         if raw.get("errors"):
@@ -272,6 +352,11 @@ def fetch_stage(
 
 # ──────────────────────────────── derive stage ───────────────────────────────
 
+WINDOWS = (90, 150, 250)     # calibration windows offered as a methodology knob
+DETAIL_DAYS = 501            # daily-resolution tail (matches the Massive window)
+WEEK_STEP = 5                # trading days per point in the deep-history grid
+
+
 def _sig(value: Any, digits: int = 7) -> Any:
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         return None
@@ -281,265 +366,316 @@ def _sig(value: Any, digits: int = 7) -> Any:
         return None
 
 
-def _truncated(sample: dict[str, Any], cutoff: str) -> dict[str, Any]:
-    """A shallow view of the capture with prices ending on or before ``cutoff``."""
-    derived = dict(sample.get("derived", {}))
-    derived["daily_dividend_adjusted_prices"] = [
-        row
-        for row in derived.get("daily_dividend_adjusted_prices", [])
-        if str(row.get("date", "")) <= cutoff
-    ]
-    return {**sample, "derived": derived}
-
-
-def _ohlc(sample: dict[str, Any]) -> dict[str, Any] | None:
-    """Daily bars for the candlestick view, straight off the cached aggregates.
-
-    These are the raw split-adjusted bars (``adjusted=true``); the model itself
-    calibrates on dividend-adjusted closes, so this close can sit a little away
-    from the ``equity`` path in the same payload. The UI says so rather than
-    quietly reconciling the two.
-    """
-    rows = _rows(sample.get("responses", {}).get("prices"))
-    if len(rows) < 2:
-        return None
-    dates, o, h, l, c, v = [], [], [], [], [], []
-    for row in rows:
-        stamp = row.get("t")
-        if stamp is None or row.get("c") is None:
-            continue
-        dates.append(datetime.fromtimestamp(stamp / 1000, tz=timezone.utc).date().isoformat())
-        o.append(_sig(row.get("o"), 6))
-        h.append(_sig(row.get("h"), 6))
-        l.append(_sig(row.get("l"), 6))
-        c.append(_sig(row.get("c"), 6))
-        v.append(round((row.get("v") or 0) / 1e3))     # thousands of shares
-    if len(dates) < 2:
-        return None
-    return {"dates": dates, "o": o, "h": h, "l": l, "c": c, "v": v}
-
-
 def _metrics_at(result: Any, days: list[Any], idx: int) -> Any:
-    """Re-evaluate the rating metrics at day ``idx`` using the SAME calibration.
-
-    The workbook carries one AssetVol / AssetRet / StockVol per company, not one
-    per snapshot: the professor calibrates once and then evaluates both dates
-    against that single fit, so only A, D and E move between snapshots.
-    Re-calibrating on the earlier window instead makes R_A drift, and since
-    mu = ln(A/D)/|R_A| and CCM = σ²/(ln(A/D)·|R_A|), both explode — KO's mu came
-    out at 211 years against the workbook's 6.6 before this was fixed.
-    """
-    snap = copy.copy(result)          # shares sigma_a / r_a, gets its own metrics
+    """Re-evaluate the rating metrics at day ``idx`` of an existing fit."""
+    snap = copy.copy(result)                 # shares sigma_a / r_a, own metrics
     snap.assets = result.assets[: idx + 1]   # _attach_rating reads assets[-1]
     _attach_rating(snap, days[idx])
     return snap
 
 
-def _snapshot(snap: Any, day: Any, shares: float | None) -> dict[str, Any]:
-    """The workbook's snapshot fields for one evaluated day.
-
-    Field names mirror the workbook, so the front end needs no translation layer.
-    The TTC half of the chain lives in ttc_conversion, not on EMResult — the two
-    are composed here exactly as app/pipeline.py composes them for the live API.
-    """
-    result = snap
+def _snapshot(result: Any, day: Any) -> dict[str, Any]:
+    """The workbook's fields for one evaluated day. Composed exactly as
+    app/pipeline.py composes them for the live API; ``price`` is filled by the
+    caller from the actual close, since equity ÷ today's shares is not a price
+    once the share count is allowed to move quarter by quarter."""
     sp = ttc_conversion.convert_fh_to_sp(result.ccm, result.mu, result.pd_fh)
-    last = day
     return {
-        "date": last.date,
-        "asset": _sig(result.asset_latest / 1e3, 6),      # thousands of USD, as in the workbook
+        "date": day.date,
+        "asset": _sig(result.asset_latest / 1e3, 6),   # thousands of USD
         "marketCap": _sig(result.equity_latest / 1e3, 6),
-        "price": _sig(last.equity / shares, 6) if shares else None,
+        "price": None,
         "mu": _sig(result.mu),
         "ccm": _sig(result.ccm),
-        "rs": _sig(result.risk_score),                    # RS = 100 · TiC
+        "rs": _sig(result.risk_score),                 # first-passage scale
+        "rsSp": _sig(sp["rs_sp"]),                     # the score Table 8 is read with
         "fpPd": _sig(result.pd_fh),
         "alpha": _sig(sp["alpha"]),
         "spCcm": _sig(sp["ccm_star"]),
         "spPd": _sig(sp["sp_ttc_pd"]),
         "spRating": sp["sp_letter_fine"],
         "dd": _sig(result.dd),
-        "edf": _sig(result.pit_pd),                       # EDF = Phi(-DD)
-        "outlook": sp["outlook"],                         # "+" / "-", professor's convention
-        # carried for the conversion chain the UI draws, not in the workbook grid
-        "rsSp": _sig(sp["rs_sp"]),
-        "tic": _sig(result.tic),
-        "creditOutlook": _sig(sp["credit_outlook"]),
+        "edf": _sig(result.pit_pd),
+        "outlook": sp["outlook"],
     }
+
+
+def _filled_rates(dates: list[str], series: list[dict[str, Any]]) -> list[float]:
+    """Forward-filled risk-free rate per date — one pointer walk, both sorted."""
+    out: list[float] = []
+    i, current = 0, FALLBACK_RATE
+    for day in dates:
+        while i < len(series) and str(series[i]["date"]) <= day:
+            current = float(series[i]["rate"])
+            i += 1
+        out.append(current)
+    return out
+
+
+def _deep_price_rows(sample: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """The ten-year price series as build_inputs expects it: Yahoo's adjclose is
+    the dividend-adjusted close (verified within 0.0001% of Massive's on the
+    overlap), with the FRED rate forward-filled per day."""
+    yahoo = sample.get("yahoo")
+    if not yahoo or not yahoo.get("date"):
+        return None
+    rates = _filled_rates(yahoo["date"], sample.get("derived", {}).get("risk_free_rate_1y_series", []))
+    return [
+        {"date": d, "dividend_adjusted_close": adj, "risk_free_rate_1y": r}
+        for d, adj, r in zip(yahoo["date"], yahoo["adj"], rates)
+    ]
+
+
+def _weekly(yahoo: dict[str, Any]) -> dict[str, Any]:
+    """Weekly bars for the long price view: one bar per ISO week."""
+    dates, o, h, l, c, v = [], [], [], [], [], []
+    week = None
+    for i, day in enumerate(yahoo["date"]):
+        iso = date.fromisoformat(day).isocalendar()[:2]
+        if iso != week:
+            week = iso
+            dates.append(day)
+            o.append(yahoo["o"][i]); h.append(yahoo["h"][i]); l.append(yahoo["l"][i])
+            c.append(yahoo["c"][i]); v.append(0)
+        else:
+            dates[-1] = day
+            hi, lo = yahoo["h"][i], yahoo["l"][i]
+            if hi is not None and (h[-1] is None or hi > h[-1]): h[-1] = hi
+            if lo is not None and (l[-1] is None or lo < l[-1]): l[-1] = lo
+            c[-1] = yahoo["c"][i]
+        v[-1] += round((yahoo["v"][i] or 0) / 1e3)
+    return {"dates": dates, "o": o, "h": h, "l": l, "c": c, "v": v}
+
+
+def _legal_name(sample: dict[str, Any]) -> str | None:
+    results = sample.get("responses", {}).get("ticker_overview", {}).get("results")
+    if isinstance(results, dict):
+        name = results.get("name")
+        return str(name) if name else None
+    return None
+
+
+def _derive_one(job: tuple[str, str, int, str]) -> tuple[str, dict[str, Any] | None, str | None, str]:
+    """Worker: one capture → (ticker, index row | None, unrateable reason, series path).
+
+    Module-level and argument-picklable so it runs under ProcessPoolExecutor —
+    the full-index derive is ~90 core-minutes and embarrassingly parallel.
+    """
+    raw_path, series_dir, detail_window, cutoff = job
+    sample = json.loads(Path(raw_path).read_text(encoding="utf-8"))
+    ticker = sample.get("ticker", Path(raw_path).stem)
+    entry = sample.get("constituent", {})
+    row: dict[str, Any] = {
+        "ticker": ticker,
+        "name": entry.get("name") or ticker,
+        "legalName": _legal_name(sample) or entry.get("name") or ticker,
+        "sector": entry.get("sector"),
+        "asof": cutoff,
+        "window": detail_window,
+    }
+
+    deep = _deep_price_rows(sample)
+    source = "yahoo 10y"
+    if deep is None:
+        source = "massive 2y (no yahoo capture)"
+        deep = [r for r in sample.get("derived", {}).get("daily_dividend_adjusted_prices", [])]
+    deep = [r for r in deep if str(r.get("date", "")) <= cutoff]
+    deep_sample = {**sample, "derived": {**sample.get("derived", {}), "daily_dividend_adjusted_prices": deep}}
+
+    bundle = build_inputs(deep_sample, window=None)
+    if bundle.unrateable_reason:
+        return ticker, None, bundle.unrateable_reason, source
+    days = bundle.days
+    if len(days) < detail_window:
+        return ticker, None, f"fewer than {detail_window} priced days available", source
+
+    close_by_date = {r["date"]: r["dividend_adjusted_close"] for r in deep}
+
+    def fit_at(idx: int, window: int) -> dict[str, Any] | None:
+        slice_ = days[idx - window + 1 : idx + 1]
+        try:
+            engine = rate_company(slice_)
+            snap = _snapshot(_metrics_at(engine, slice_, len(slice_) - 1), slice_[-1])
+        except Exception:
+            return None
+        snap["price"] = _sig(close_by_date.get(slice_[-1].date), 6)
+        snap["assetVol"] = _sig(engine.sigma_a)
+        snap["assetRet"] = _sig(engine.r_a)
+        snap["stockVol"] = _sig(engine.sigma_e)
+        snap["_engine"] = engine
+        return snap
+
+    # ── daily detail, last DETAIL_DAYS, at the default window ──
+    first = detail_window - 1
+    detail_idx = list(range(max(first, len(days) - DETAIL_DAYS), len(days)))
+    detail = []
+    for i in detail_idx:
+        snap = fit_at(i, detail_window)
+        if snap is not None:
+            detail.append((i, snap))
+    if not detail:
+        return ticker, None, "no day in the detail range would calibrate", source
+
+    path_keys = ("spRating", "dd", "spPd", "fpPd", "edf", "rs", "rsSp", "ccm", "mu",
+                 "alpha", "spCcm", "outlook", "price", "assetVol", "assetRet", "stockVol")
+    idxs = [i for i, _ in detail]
+    snaps = [s for _, s in detail]
+    series_out: dict[str, Any] = {
+        "window": detail_window,
+        "windows": list(WINDOWS),
+        "priceSource": source,
+        "dates": [days[i].date for i in idxs],
+        "asset": [_sig(s["asset"], 6) for s in snaps],
+        "equity": [_sig(days[i].equity / 1e3, 6) for i in idxs],
+        "debt": [_sig(days[i].debt / 1e3, 6) for i in idxs],
+        "rate": [_sig(days[i].rate, 5) for i in idxs],
+        "path": {k: [s[k] for s in snaps] for k in path_keys},
+    }
+
+    # ── the deep history: a weekly grid per window, whole span ──
+    history: dict[str, Any] = {}
+    grid_cache: dict[int, list[int]] = {}
+    for window in WINDOWS:
+        start = window - 1
+        if start >= len(days):
+            continue
+        grid = list(range(start, len(days), WEEK_STEP))
+        if grid[-1] != len(days) - 1:
+            grid.append(len(days) - 1)
+        grid_cache[window] = grid
+    if grid_cache:
+        # one shared date axis: the union is just the densest grid's dates
+        for window, grid in grid_cache.items():
+            fits = [(i, fit_at(i, window)) for i in grid]
+            fits = [(i, s) for i, s in fits if s is not None]
+            history[str(window)] = {
+                "dates": [days[i].date for i, _ in fits],
+                "spRating": [s["spRating"] for _, s in fits],
+                "dd": [s["dd"] for _, s in fits],
+            }
+    series_out["history"] = history
+
+    # ── the latest full snapshot per window, for the methodology toggle ──
+    latest: dict[str, Any] = {}
+    for window in WINDOWS:
+        if window - 1 >= len(days):
+            continue
+        snap = fit_at(len(days) - 1, window)
+        if snap is None:
+            continue
+        engine = snap.pop("_engine")
+        snap["iterations"] = engine.iterations
+        snap["converged"] = bool(engine.converged)
+        latest[str(window)] = snap
+    series_out["latest"] = latest
+
+    # calibration block for the default window (existing UI reads these names)
+    default_engine = snaps[-1]["_engine"]
+    series_out.update(
+        {
+            "iterations": default_engine.iterations,
+            "converged": bool(default_engine.converged),
+            "sigmaA": _sig(default_engine.sigma_a),
+            "sigmaE": _sig(default_engine.sigma_e),
+            "rA": _sig(default_engine.r_a),
+            "sigmaHistory": [_sig(v) for v in default_engine.sigma_history],
+        }
+    )
+    for s in snaps:
+        s.pop("_engine", None)
+
+    # ── price bars: daily tail plus a weekly series for the long view ──
+    yahoo = sample.get("yahoo")
+    if yahoo and yahoo.get("date"):
+        tail = slice(max(0, len(yahoo["date"]) - DETAIL_DAYS), None)
+        series_out["ohlc"] = {
+            "dates": yahoo["date"][tail],
+            "o": yahoo["o"][tail], "h": yahoo["h"][tail], "l": yahoo["l"][tail],
+            "c": yahoo["c"][tail],
+            "v": [round((x or 0) / 1e3) for x in yahoo["v"][tail]],
+        }
+        series_out["ohlcW"] = _weekly(yahoo)
+
+    # ── the index row: latest snapshot, and one window earlier for the move ──
+    last_snap = dict(snaps[-1])
+    prior_snap = dict(snaps[-1 - detail_window]) if len(snaps) > detail_window else None
+    row.update(
+        {
+            "quote": last_snap.get("price"),
+            "assetVol": series_out["sigmaA"],
+            "assetRet": series_out["rA"],
+            "stockVol": series_out["sigmaE"],
+            "snaps": [last_snap, prior_snap] if prior_snap else [last_snap],
+        }
+    )
+
+    out_path = Path(series_dir) / f"{ticker}.json"
+    tmp = out_path.with_name(f".{ticker}.json.tmp")
+    tmp.write_text(json.dumps(series_out, separators=(",", ":")), encoding="utf-8")
+    tmp.replace(out_path)
+    return ticker, row, None, source
 
 
 def derive_stage(
     out_dir: Path,
     *,
     window: int = DEFAULT_WINDOW,
-    prior: str = DEFAULT_PRIOR,
     current: str | None = None,
     data_out: Path | None = None,
+    workers: int | None = None,
+    tickers: list[str] | None = None,
 ) -> dict[str, Any]:
     raw_dir = out_dir / "raw"
-    # the deployable payload can be written straight into the web root
     data_dir = data_out or (out_dir / "data")
     series_dir = data_dir / "series"
     series_dir.mkdir(parents=True, exist_ok=True)
 
-    cutoff_now = current or date.today().isoformat()
+    cutoff = current or date.today().isoformat()
     files = sorted(raw_dir.glob("*.json"))
+    if tickers:
+        wanted = {t.upper() for t in tickers}
+        files = [f for f in files if f.stem.upper() in wanted]
     if not files:
         raise SystemExit(f"no captures in {raw_dir} — run the fetch stage first")
 
+    jobs = [(str(p), str(series_dir), window, cutoff) for p in files]
     index: list[dict[str, Any]] = []
     reasons: dict[str, int] = {}
-    rated = 0
+    sources: dict[str, int] = {}
+    t0 = time.monotonic()
 
-    for path in files:
-        sample = json.loads(path.read_text(encoding="utf-8"))
-        ticker = sample.get("ticker", path.stem)
-        entry = sample.get("constituent", {})
-        row: dict[str, Any] = {
-            "ticker": ticker,
-            "name": entry.get("name") or ticker,
-            "sector": entry.get("sector"),
-            "asof": cutoff_now,
-            "window": window,
-        }
+    from concurrent.futures import ProcessPoolExecutor
 
-        def fail(reason: str) -> None:
-            row["unrateable_reason"] = reason
-            reasons[reason] = reasons.get(reason, 0) + 1
-            index.append(row)
-
-        # A calibration for every evaluated day, each fitted on the `window`
-        # trading days ending at that day. The newest day's fit is exactly the
-        # workbook's single calibration, so the reconciliation still holds where
-        # it was measured — but every earlier day now carries the volatility
-        # that was observable *then*, instead of one borrowed from the future.
-        bundle = build_inputs(_truncated(sample, cutoff_now), window=window)
-        if bundle.unrateable_reason:
-            fail(bundle.unrateable_reason)
-            continue
-        # A name with less history than the window cannot be calibrated on the
-        # window we claim to use. Rating it on whatever is there would put the
-        # index and the rolling series into disagreement — MRSH, listed in
-        # January, is the live example.
-        if len(bundle.days) < window:
-            fail(f"fewer than {window} priced days available")
-            continue
-        try:
-            engine = rate_company(bundle.days)
-        except Exception as exc:
-            fail(f"compute failed: {type(exc).__name__}: {exc}")
-            continue
-
-        days = bundle.days
-        shares = bundle.shares or None
-        # every priced day the capture carries, so the roll can start as early
-        # as the data allows rather than at the last window
-        all_days = build_inputs(_truncated(sample, cutoff_now), window=None).days
-        # the prior snapshot is the last day at or before the prior cutoff
-        prior_idx = next((i for i in range(len(days) - 1, -1, -1) if days[i].date <= prior), None)
-        try:
-            now = _snapshot(_metrics_at(engine, days, len(days) - 1), days[-1], shares)
-            before = (
-                _snapshot(_metrics_at(engine, days, prior_idx), days[prior_idx], shares)
-                if prior_idx is not None
-                else {"date": prior, "unrateable_reason": "prior date precedes the calibration window"}
-            )
-        except Exception as exc:
-            fail(f"conversion failed: {type(exc).__name__}: {exc}")
-            continue
-
-        row.update(
-            {
-                "quote": _sig(days[-1].equity / shares, 6) if shares else None,
-                "assetVol": _sig(engine.sigma_a),
-                "assetRet": _sig(engine.r_a),
-                "stockVol": _sig(engine.sigma_e),
-                "snaps": [now, before],
-            }
-        )
-        index.append(row)
-        rated += 1
-
-        # Roll the window back one day at a time. ~5 ms per day, so a whole
-        # company costs about two seconds — cheap enough to buy a real history
-        # instead of a re-reading of today's calibration.
-        walk, wdates, wasset, wequity, wdebt, wsigma, wret, wsige = [], [], [], [], [], [], [], []
-        for cut in all_days:
-            if cut.date > cutoff_now:
-                break
-            b = build_inputs(_truncated(sample, cut.date), window=window)
-            if b.unrateable_reason or len(b.days) < window:
-                continue                      # not enough history yet at this day
-            try:
-                eng = rate_company(b.days)
-                snap = _snapshot(_metrics_at(eng, b.days, len(b.days) - 1), b.days[-1], b.shares or None)
-            except Exception:
-                continue                      # one bad day must not lose the series
-            walk.append(snap)
-            wdates.append(b.days[-1].date)
-            wasset.append(_sig(eng.asset_latest / 1e3, 6))
-            wequity.append(_sig(b.days[-1].equity / 1e3, 6))
-            wdebt.append(_sig(b.days[-1].debt / 1e3, 6))
-            wsigma.append(_sig(eng.sigma_a))
-            wret.append(_sig(eng.r_a))
-            wsige.append(_sig(eng.sigma_e))
-
-        path = {key: [w[key] for w in walk] for key in
-                ("spRating", "dd", "spPd", "fpPd", "edf", "rs", "ccm", "mu",
-                 "alpha", "spCcm", "outlook", "price")}
-        # the calibration is now a series of its own, not a constant
-        path["assetVol"] = wsigma
-        path["assetRet"] = wret
-        path["stockVol"] = wsige
-
-        series_dir.joinpath(f"{ticker}.json").write_text(
-            json.dumps(
-                {
-                    "iterations": engine.iterations,
-                    "converged": bool(engine.converged),
-                    "sigmaA": _sig(engine.sigma_a),
-                    "sigmaE": _sig(getattr(engine, "sigma_e", None)),
-                    "rA": _sig(getattr(engine, "r_a", None)),
-                    "sigmaHistory": [_sig(v) for v in engine.sigma_history],
-                    "dates": wdates,
-                    "equity": wequity,
-                    "asset": wasset,
-                    "debt": wdebt,
-                    # the rating re-evaluated on every one of those days
-                    "path": path,
-                    # daily bars for the candlestick view (split-adjusted, raw)
-                    "ohlc": _ohlc(sample),
-                },
-                separators=(",", ":"),
-            ),
-            encoding="utf-8",
-        )
+    n_workers = workers or max(1, (os.cpu_count() or 4) - 2)
+    with ProcessPoolExecutor(max_workers=n_workers) as pool:
+        for k, (ticker, row, reason, source) in enumerate(pool.map(_derive_one, jobs), 1):
+            sources[source] = sources.get(source, 0) + 1
+            if row is None:
+                entry = json.loads(Path(raw_dir / f"{ticker}.json").read_text())["constituent"]
+                index.append({"ticker": ticker, "name": entry.get("name") or ticker,
+                              "legalName": entry.get("name") or ticker,
+                              "sector": entry.get("sector"), "asof": cutoff,
+                              "window": window, "unrateable_reason": reason})
+                reasons[reason] = reasons.get(reason, 0) + 1
+            else:
+                index.append(row)
+            if k % 50 == 0 or k == len(jobs):
+                print(f"derive [{k}/{len(jobs)}] {time.monotonic()-t0:.0f}s", file=sys.stderr, flush=True)
 
     index.sort(key=lambda r: r["ticker"])
     data_dir.joinpath("index.json").write_text(
         json.dumps(index, separators=(",", ":"), ensure_ascii=False), encoding="utf-8"
     )
-    # The prior snapshot can fail on its own while the company still rates, and
-    # that failure is invisible unless counted here: --prior has to land inside
-    # the --window calibration span, so shortening the window silently strips
-    # every comparison. At window=150 the prior sits on trading day 8 of 150 —
-    # anything under ~143 loses it for the whole index.
-    no_prior = [r for r in index if "snaps" in r and "unrateable_reason" in r["snaps"][1]]
+    rated = sum(1 for r in index if "snaps" in r)
     summary = {
-        "generated_for": {"current": cutoff_now, "prior": prior, "window": window},
+        "generated_for": {"current": cutoff, "window": window,
+                          "windows": list(WINDOWS), "detail_days": DETAIL_DAYS},
         "constituents": len(index),
         "rated": rated,
         "unrateable": len(index) - rated,
         "reasons": dict(sorted(reasons.items(), key=lambda kv: -kv[1])),
-        "without_prior_snapshot": len(no_prior),
-        "without_prior_tickers": [r["ticker"] for r in no_prior][:20],
+        "price_sources": sources,
     }
-    if rated and len(no_prior) > rated * 0.1:
-        print(
-            f"WARNING: {len(no_prior)}/{rated} names lost their prior snapshot — "
-            f"--prior {prior} falls outside a {window}-day calibration window",
-            file=sys.stderr,
-        )
     data_dir.joinpath("summary.json").write_text(
         json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8"
     )
@@ -567,7 +703,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--limit", type=int, default=None, help="first N constituents only")
     parser.add_argument("--days", type=int, default=DEFAULT_DAYS)
     parser.add_argument("--window", type=int, default=DEFAULT_WINDOW)
-    parser.add_argument("--prior", default=DEFAULT_PRIOR)
     parser.add_argument("--current", default=None, help="current snapshot cutoff (default: today)")
     parser.add_argument("--data-out", type=Path, default=None,
                         help="write the deployable payload here instead of <out>/data (e.g. web/data)")
@@ -611,8 +746,8 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     if args.stage in ("derive", "all"):
-        derive_stage(args.out, window=args.window, prior=args.prior, current=args.current,
-                     data_out=args.data_out)
+        derive_stage(args.out, window=args.window, current=args.current,
+                     data_out=args.data_out, workers=args.workers, tickers=args.tickers)
 
     return 0
 

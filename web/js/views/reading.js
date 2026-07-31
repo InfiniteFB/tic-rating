@@ -38,8 +38,8 @@ export function renderReading(headMount, bodyMount, row, cur, prior) {
     <p class="reading__lead">${lead}</p>
     <p>Assets of <b>${moneyK(cur.asset)}</b> stand against a default point of <b>${moneyK(wedge)}</b> —
     <b>${num(coverage, 2)}×</b> coverage, and <b>${num(cur.dd, 4)}</b> asset-volatility units of clearance.
-    Calibration over ${row.window} trading days puts AssetVol at <b>${pct(row.assetVol)}</b> against StockVol of
-    <b>${pct(row.stockVol)}</b>, with drift <b>${num(row.assetRet, 4)}</b> and implied life expectancy
+    The rating date's own ${row.window}-day calibration puts AssetVol at <b>${pct(cur.assetVol ?? row.assetVol)}</b> against StockVol of
+    <b>${pct(cur.stockVol ?? row.stockVol)}</b>, with drift <b>${num(cur.assetRet ?? row.assetRet, 4)}</b> and implied life expectancy
     <b>${num(cur.mu, 3)}</b> years.</p>
     <p>${prior
       ? `Between the two dates the cycle multiplier went ${cur.ccm > prior.ccm ? "up" : "down"} from

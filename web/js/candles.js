@@ -20,7 +20,11 @@ export const RANGES = [
   { key: "1M", label: "1M", days: 21 },
   { key: "3M", label: "3M", days: 63 },
   { key: "6M", label: "6M", days: 126 },
-  { key: "ALL", label: "All", days: Infinity },
+  { key: "1Y", label: "1Y", days: 250 },
+  // beyond the daily tail the bars switch to the weekly series — a decade of
+  // daily candles is noise at this width, and the weekly file carries it
+  { key: "5Y", label: "5Y", weekly: true, bars: 261 },
+  { key: "MAX", label: "Max", weekly: true, bars: Infinity },
 ];
 
 const el = (name, attrs = {}) => {
@@ -42,16 +46,18 @@ const niceStep = (span, target = 5) => {
  */
 export function renderCandles(mount, ohlc, opts = {}) {
   mount.textContent = "";
+  // weekly ranges draw from the second series when the caller provides one
+  const span = RANGES.find((r) => r.key === (opts.range ?? "3M")) ?? RANGES[1];
+  if (span.weekly && opts.weekly) ohlc = opts.weekly;
   if (!ohlc || !Array.isArray(ohlc.dates) || ohlc.dates.length < 2) {
     mount.innerHTML = `<div class="plate__empty"><b>No daily bars.</b>
       The cached capture for this name carries no price aggregates.</div>`;
     return;
   }
 
-  const rangeKey = opts.range ?? "3M";
-  const span = RANGES.find((r) => r.key === rangeKey) ?? RANGES[1];
   const total = ohlc.dates.length;
-  const from = Number.isFinite(span.days) ? Math.max(0, total - span.days) : 0;
+  const keep = span.weekly ? span.bars : span.days;
+  const from = Number.isFinite(keep) ? Math.max(0, total - keep) : 0;
 
   const d = {
     dates: ohlc.dates.slice(from),

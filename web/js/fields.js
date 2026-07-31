@@ -118,3 +118,25 @@ export function deltaInfo(field, cur, prior) {
   const magnitude = String(field.f(Math.abs(d))).replace(/^[−+]/, "");
   return { text: `${d > 0 ? "+" : "−"}${magnitude}`, cls };
 }
+
+/* ── the scales the letter is read off — for the hover reference card ────
+   Mirrors ttc_conversion._SP_FINE_SCALE / _SP_TABLE8 verbatim: the UI must
+   never disagree with the code that produced the letter. Buckets are
+   closed-left / open-right: grade i wins while PD_i ≤ SP_PD < PD_{i+1}. */
+export const FINE_SCALE = [
+  ["AAA", 0.0000], ["AAA-", 0.0001], ["AA+", 0.0002], ["AA", 0.0004],
+  ["AA-", 0.0005], ["A+", 0.0006], ["A", 0.0007], ["A-", 0.0013],
+  ["BBB+", 0.0018], ["BBB", 0.0023], ["BBB-", 0.0045], ["BB+", 0.0066],
+  ["BB", 0.0088], ["BB-", 0.0206], ["B+", 0.0323], ["B", 0.0441],
+  ["B-", 0.0765], ["CCC+", 0.1090], ["CCC", 0.1414], ["CCC-", 0.1738],
+  ["CC+", 0.2062], ["CC", 0.2386], ["CC-", 0.2710], ["C+", 0.3034],
+  ["C", 0.3359], ["C-", 0.3683], ["D", 0.4007],
+];
+
+/* S&P Table 8 anchors (letter, RiskScore, one-year PD) — what RS_SP is read
+   against before the fine bucketing. */
+export const TABLE8 = [
+  ["AAA", 2.7, 0.0001], ["AA", 3.5, 0.0003], ["A", 5.2, 0.0007],
+  ["BBB", 9.9, 0.0023], ["BB", 22.2, 0.0088], ["B", 50.7, 0.0441],
+  ["CCC/C", 154.8, 0.3359],
+];

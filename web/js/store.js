@@ -51,19 +51,24 @@ export function snapshotAt(series, i) {
     marketCap: series.equity?.[k],
     debt: series.debt?.[k],
     price: at("price"),
-    mu: at("mu"), ccm: at("ccm"), rs: at("rs"), fpPd: at("fpPd"),
+    rate: series.rate?.[k],
+    mu: at("mu"), ccm: at("ccm"), rs: at("rs"), rsSp: at("rsSp"), fpPd: at("fpPd"),
     alpha: at("alpha"), spCcm: at("spCcm"), spPd: at("spPd"),
     spRating: at("spRating"), dd: at("dd"), edf: at("edf"),
     outlook: at("outlook"),
+    assetVol: at("assetVol"), assetRet: at("assetRet"), stockVol: at("stockVol"),
   };
 }
 
-/** the pair the views read: [as-of, comparison]. Falls back to the index row
- *  while the series is still in flight, so nothing waits on the network. */
+/** the pair the views read: [as-of, one calibration window earlier].
+ *  The comparison distance is pinned to the window — "what moved over one
+ *  window of history" — rather than being a second thing to choose. Falls back
+ *  to the index row while the series is still in flight. */
 export function snapshots() {
-  const { series, selected, asOf, compareAt } = state;
+  const { series, selected, asOf } = state;
   if (series?.path && asOf >= 0) {
-    return [snapshotAt(series, asOf), compareAt >= 0 ? snapshotAt(series, compareAt) : null];
+    const back = asOf - (series.window ?? 150);
+    return [snapshotAt(series, asOf), back >= 0 ? snapshotAt(series, back) : null];
   }
   return selected?.snaps ? [selected.snaps[0], selected.snaps[1] ?? null] : [null, null];
 }
@@ -92,16 +97,30 @@ export async function peerSnapshots(cohort, isoA, isoB) {
   const out = [];
   for (const [row, series] of loaded) {
     if (!series?.path) continue;
-    const ia = indexOfDate(series, isoA);
-    const ib = indexOfDate(series, isoB);
-    if (ia === null) continue;
-    out.push({
-      ticker: row.ticker,
-      name: row.name,
-      snaps: [snapshotAt(series, ia), ib === null ? null : snapshotAt(series, ib)],
-    });
+    const a = snapshotNear(series, isoA);
+    const b = snapshotNear(series, isoB);
+    if (!a) continue;
+    out.push({ ticker: row.ticker, name: row.name, snaps: [a, b] });
   }
   return out;
+}
+
+/**
+ * The snapshot at (or just before) an ISO date, from whichever resolution
+ * carries it: the daily tail gives every field; before the tail begins, the
+ * weekly deep history gives the letter and DD, and the rest reads as absent
+ * rather than borrowed from a nearby year.
+ */
+export function snapshotNear(series, iso) {
+  if (!iso) return null;
+  const i = indexOfDate(series, iso);
+  if (i !== null) return snapshotAt(series, i);
+  const h = series.history?.[String(series.window ?? 150)];
+  if (!h?.dates?.length || iso < h.dates[0]) return null;
+  let k = h.dates.length - 1;
+  while (k >= 0 && h.dates[k] > iso) k -= 1;
+  if (k < 0) return null;
+  return { date: h.dates[k], spRating: h.spRating[k], dd: h.dd[k], deep: true };
 }
 
 export function setAsOf(i) {

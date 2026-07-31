@@ -129,6 +129,24 @@ def _as_of(points: list[tuple[date, float]], on: date) -> tuple[date, float] | N
     return chosen
 
 
+def _share_points(responses: dict[str, Any]) -> list[tuple[date, float]]:
+    """Quarterly share counts from the income statement, oldest first.
+
+    Over a decade buybacks move the count far enough that today's shares times
+    a 2016 price is not a 2016 market cap — Apple retired roughly a third of
+    its float in that span. Absent income statements (the live API path) the
+    caller falls back to the static count from the ticker overview.
+    """
+    points: list[tuple[date, float]] = []
+    for row in _rows(responses.get("income_statement", {})):
+        period_end = row.get("period_end")
+        count = row.get("basic_shares_outstanding") or row.get("diluted_shares_outstanding")
+        if period_end and count:
+            points.append((_iso(str(period_end)[:10]), float(count)))
+    points.sort(key=lambda p: p[0])
+    return points
+
+
 def build_inputs(
     sample: dict[str, Any],
     *,
@@ -142,6 +160,7 @@ def build_inputs(
     responses = sample.get("responses", {})
     derived = sample.get("derived", {})
     shares = _shares_outstanding(responses.get("ticker_overview", {}))
+    share_pts = _share_points(responses)
     prices = derived.get("daily_dividend_adjusted_prices", [])
     points = _default_points(responses.get("balance_sheet", {}), st_debt_fallback, debt_basis)
 
@@ -174,10 +193,13 @@ def build_inputs(
         # (FRED DGS1); fall back to the flat rate for legacy samples.
         row_rate = row.get("risk_free_rate_1y")
         day_rate = float(row_rate) if row_rate is not None else rate
+        # the share count as of this day, when the quarterly history carries it
+        on_shares = _as_of(share_pts, on)
+        day_shares = on_shares[1] if on_shares else shares
         days.append(
             DayInput(
                 date=pdate,
-                equity=float(close) * shares,
+                equity=float(close) * day_shares,
                 debt=debt,
                 rate=day_rate,
                 tau=tau,

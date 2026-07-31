@@ -4,8 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TiC Rating — company</title>
-<meta name="description" content="How one S&P 500 constituent arrives at its Merton/KMV structural credit rating: the calibration, the conversion chain, every model entry, and the diagnostics behind the letter." />
+<meta name="description" content="How one company arrives at its Merton/KMV structural credit rating: a decade of rating history, the calibration, the conversion chain, every model entry, and the diagnostics behind the letter." />
 <meta name="color-scheme" content="light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23191c21'/%3E%3Crect x='9' y='9' width='5' height='5' fill='%23d33a22'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet" />
@@ -24,6 +25,7 @@
     <nav class="rail__nav" aria-label="Sections">
       <a href="./">Dashboard</a>
       <a href="#s-rating">Rating</a>
+      <a href="#s-history">History</a>
       <a href="#s-workings">Workings</a>
       <a href="#s-quote">Price</a>
       <a href="#s-diagnostics">Diagnostics</a>
@@ -35,6 +37,13 @@
   </aside>
 
   <div class="body">
+    <!-- ══════════════════ masthead ══════════════════ -->
+    <header class="mast">
+      <h1 class="mast__title"><a href="./" style="text-decoration:none">TiC Rating<span>.</span></a></h1>
+      <p class="mast__sub">Merton / KMV structural model · point-in-time converted to through-the-cycle
+        on the S&amp;P scale</p>
+    </header>
+
     <!-- ══════════════════ identity ══════════════════ -->
     <header class="section ident" id="s-search">
       <div class="ident__search">
@@ -46,10 +55,10 @@
                    autocomplete="off" spellcheck="false" role="combobox"
                    aria-expanded="false" aria-controls="q-list" aria-autocomplete="list" />
           </div>
-          <ul class="q-list" id="q-list" role="listbox" aria-label="Matching constituents" hidden></ul>
+          <ul class="q-list" id="q-list" role="listbox" aria-label="Matching companies" hidden></ul>
         </div>
         <div class="search__hint">
-          press <kbd>/</kbd> to search · calibrated over <span id="m-window">—</span>
+          press <kbd>/</kbd> to search · daily detail over <span id="m-window">—</span>
         </div>
         <div class="search__status" id="q-status" hidden></div>
       </div>
@@ -68,16 +77,26 @@
         <h2 class="section__head">
           <span class="section__no">01</span>
           <span>Rating</span>
-          <span class="section__note">pick the trading day</span>
+          <span class="section__note">pick the trading day · change vs one window earlier</span>
         </h2>
         <div id="ctl-asof" hidden></div>
         <div class="verdict" id="verdict"></div>
       </section>
 
-      <!-- ══════════════════ 02 workings ══════════════════ -->
-      <section class="section" id="s-workings">
+      <!-- ══════════════════ 02 history ══════════════════ -->
+      <section class="section" id="s-history">
         <h2 class="section__head">
           <span class="section__no">02</span>
+          <span>Rating history</span>
+          <span class="section__note">a decade, one calibration per week — and the methodology knob</span>
+        </h2>
+        <div id="history"></div>
+      </section>
+
+      <!-- ══════════════════ 03 workings ══════════════════ -->
+      <section class="section" id="s-workings">
+        <h2 class="section__head">
+          <span class="section__no">03</span>
           <span>Workings</span>
           <span class="section__note">how the letter is arrived at</span>
         </h2>
@@ -86,24 +105,23 @@
         <div class="cols-2" style="margin-top:1.4rem">
           <div>
             <div class="tscroll"><table class="entries" id="t-snap"></table></div>
-            <p class="note"><b>†</b> RS = 100 · TiC. The TiC scale disagrees with the worked example in the
-              course deck, so RS is carried as the practical scale. Asset and MarketCap arrive in thousands of
-              USD and are printed at full magnitude.</p>
+            <p class="note"><b>†</b> RS = 100 · TiC is the first-passage score; RS_SP is the one Table 8 is
+              read with. Asset and MarketCap arrive in thousands of USD and are printed at full magnitude.</p>
           </div>
           <div>
             <div class="tscroll"><table class="entries" id="t-calib"></table></div>
-            <p class="note">Calibration is fitted once over the window and shared by every date, so it carries
-              no change column — moving the date moves A, D and E, never the volatility assumption.</p>
+            <p class="note">Every day carries its own trailing calibration, so AssetVol, AssetRet and StockVol
+              are series — the values here are the rating date's own fit.</p>
           </div>
         </div>
       </section>
 
-      <!-- ══════════════════ 03 price ══════════════════ -->
+      <!-- ══════════════════ 04 price ══════════════════ -->
       <section class="section" id="s-quote">
         <h2 class="section__head">
-          <span class="section__no">03</span>
+          <span class="section__no">04</span>
           <span>Price</span>
-          <span class="section__note">daily bars · hover for a readout</span>
+          <span class="section__note">daily bars to 1Y, weekly beyond · hover for a readout</span>
         </h2>
         <div class="quote__bar">
           <div class="label">Candlestick, split-adjusted</div>
@@ -114,16 +132,14 @@
         <p class="note" id="quote-note"></p>
       </section>
 
-      <!-- ══════════════════ 04 diagnostics ══════════════════ -->
+      <!-- ══════════════════ 05 diagnostics ══════════════════ -->
       <section class="section" id="s-diagnostics">
         <h2 class="section__head">
-          <span class="section__no">04</span>
+          <span class="section__no">05</span>
           <span>Diagnostics</span>
-          <span class="section__note">drawn at the two selected dates</span>
+          <span class="section__note">this name only — cross-sections live on the dashboard</span>
         </h2>
         <div class="plates">
-          <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
-          <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
           <figure class="plate"><div id="p-pd"></div><figcaption id="c-pd"></figcaption></figure>
           <figure class="plate"><div id="p-ae"></div><figcaption id="c-ae"></figcaption></figure>
           <figure class="plate"><div id="p-em"></div><figcaption id="c-em"></figcaption></figure>
@@ -131,10 +147,10 @@
         </div>
       </section>
 
-      <!-- ══════════════════ 05 reading ══════════════════ -->
+      <!-- ══════════════════ 06 reading ══════════════════ -->
       <section class="section" id="s-reading">
         <h2 class="section__head">
-          <span class="section__no">05</span>
+          <span class="section__no">06</span>
           <span>Reading</span>
           <span class="section__note">assembled from the figures above, not a language model</span>
         </h2>
@@ -144,26 +160,25 @@
         </div>
       </section>
 
-      <!-- ══════════════════ 06 compare ══════════════════ -->
+      <!-- ══════════════════ 07 compare ══════════════════ -->
       <section class="section" id="s-compare">
         <h2 class="section__head">
-          <span class="section__no">06</span>
-          <span>Compare</span>
-          <span class="section__note">against any earlier trading day</span>
+          <span class="section__no">07</span>
+          <span>Compare companies</span>
+          <span class="section__note">side by side, up to four</span>
         </h2>
-        <div id="ctl-compare" hidden></div>
         <div id="compare"></div>
       </section>
 
-      <!-- ══════════════════ 07 appendix ══════════════════ -->
+      <!-- ══════════════════ 08 appendix ══════════════════ -->
       <section class="section" id="s-appendix"></section>
     </div>
 
     <footer class="foot">
       <span>Merton / KMV structural</span>
       <span>PIT → TTC</span>
-      <span>massive-api · FRED DGS1 · SOFR</span>
-      <span style="margin-left:auto"><a href="./">All 503 constituents →</a></span>
+      <span>massive-api · yahoo (deep price history) · FRED DGS1</span>
+      <span style="margin-left:auto"><a href="./">Dashboard →</a></span>
     </footer>
   </div>
 </div>

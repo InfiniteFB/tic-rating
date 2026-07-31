@@ -82,7 +82,10 @@ select.field { appearance: none; padding-right: 1.6rem;
 }
 
 /* ── tables that must scroll rather than widen the page ─────────────── */
-.tscroll { overflow-x: auto; overscroll-behavior-x: contain; }
+/* position:relative matters: an absolutely-positioned descendant (the
+   .sr-only header cell) otherwise resolves its containing block OUTSIDE the
+   clip and drags the document 350px wide on phones */
+.tscroll { overflow-x: auto; overscroll-behavior-x: contain; position: relative; }
 
 /* ── entrance: one orchestrated reveal, transform/opacity only ──────── */
 @media (prefers-reduced-motion: no-preference) {

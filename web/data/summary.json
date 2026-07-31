@@ -1,8 +1,13 @@
 {
  "generated_for": {
-  "current": "2026-07-30",
-  "prior": "2026-01-02",
-  "window": 150
+  "current": "2026-07-31",
+  "window": 150,
+  "windows": [
+   90,
+   150,
+   250
+  ],
+  "detail_days": 501
  },
  "constituents": 503,
  "rated": 497,
@@ -11,6 +16,8 @@
   "no quarter reports total_liabilities": 5,
   "fewer than 150 priced days available": 1
  },
- "without_prior_snapshot": 0,
- "without_prior_tickers": []
+ "price_sources": {
+  "yahoo 10y": 501,
+  "massive 2y (no yahoo capture)": 2
+ }
 }

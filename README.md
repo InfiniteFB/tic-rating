@@ -5,19 +5,32 @@ it is computed from market equity and balance-sheet debt with a Merton/KMV
 structural model, then converted from a point-in-time probability of default to a
 through-the-cycle letter on the S&P scale.
 
-498 of the 503 S&P 500 constituents are pre-computed and cached. The rating is
-recomputed for **every trading day**, each on its own trailing calibration
-window — so an earlier date shows the rating that was observable then, not
-today's volatility read backwards. Pick any date; compare against any earlier one.
+497 of the 503 S&P 500 constituents are pre-computed and cached, with **a
+decade of rating history**: daily resolution over the last two years, weekly
+back to 2017, each point fitted on its own trailing calibration window — so an
+earlier date shows the rating that was observable then, not today's volatility
+read backwards. The calibration window itself (90 / 150 / 250 trading days) is
+a knob on every company page.
 
 ```bash
-python3 devserve.py                             # the dashboard on :8143, no build step
+python3 devserve.py                             # the site on :8143, no build step
 python3 -m uvicorn app.main:app --port 8137     # optional: the live single-ticker API
 ```
 
-Two pages: `/` is the dashboard — search, a watchlist you own, one pair of dates
-every figure obeys, and the whole index. `/t.html#TICKER` is one company, and
-carries only that company's workings.
+Two pages. `/` is the **dashboard**: search, a watchlist that starts as the
+course workbook's ten names and is then yours to edit, one pair of dates every
+figure obeys (sliders share one fixed axis, so neither thumb ever jumps because
+the other moved), four figures — the list's DD, its migration, a decade of its
+letters, and the whole universe as a rating-by-size scatter — and the full
+universe table underneath. `/t.html#TICKER` is **one company**: rating with a
+date slider, ten years of rating history with the window knob, the workings,
+price candles (daily to 1Y, weekly to Max), single-name diagnostics, a plain
+reading, a side-by-side of up to four companies, and that name's appendix.
+
+Deep price history comes from Yahoo's chart API (key-less; its adjclose matches
+Massive's dividend-adjusted close to 0.0001% on the overlap), fundamentals and
+the recent window from Massive, share counts quarterly from income statements —
+so a 2017 market cap uses 2017's float, not today's.
 
 ## What is in here
 

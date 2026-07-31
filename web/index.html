@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TiC Rating — structural credit ratings for the S&amp;P 500</title>
+<title>TiC Rating — dashboard</title>
 <meta name="description" content="A dashboard over Merton/KMV structural credit ratings for the S&P 500: keep a watchlist, pick any two trading days, and see distance to default and rating migration redraw against them." />
 <meta name="color-scheme" content="light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23191c21'/%3E%3Crect x='9' y='9' width='5' height='5' fill='%23d33a22'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet" />
@@ -22,9 +23,10 @@
     <div class="rail__mark" aria-hidden="true">◪</div>
     <nav class="rail__nav" aria-label="Sections">
       <a href="#s-search">Search</a>
+      <a href="#s-dates">Dates</a>
       <a href="#s-watchlist">Watchlist</a>
       <a href="#s-plates">Figures</a>
-      <a href="#s-index">Index</a>
+      <a href="#s-universe">Universe</a>
     </nav>
     <div class="rail__foot">KMV / TIC</div>
   </aside>
@@ -32,8 +34,8 @@
   <div class="body">
     <header class="mast">
       <h1 class="mast__title">TiC Rating<span>.</span></h1>
-      <p class="mast__sub">Merton / KMV structural model · point-in-time converted to through-the-cycle
-        on the S&amp;P scale · <span id="m-coverage">—</span></p>
+      <p class="mast__sub">Dashboard · Merton / KMV structural model, point-in-time converted to
+        through-the-cycle on the S&amp;P scale · <span id="m-coverage">—</span></p>
     </header>
 
     <div class="boot-error" id="boot-error" hidden></div>
@@ -108,15 +110,17 @@
       <div class="plates">
         <figure class="plate"><div id="p-dd"></div><figcaption id="c-dd"></figcaption></figure>
         <figure class="plate"><div id="p-mig"></div><figcaption id="c-mig"></figcaption></figure>
+        <figure class="plate plate--wide"><div id="p-multi"></div><figcaption id="c-multi"></figcaption></figure>
+        <figure class="plate plate--wide"><div id="p-scatter"></div><figcaption id="c-scatter"></figcaption></figure>
       </div>
     </section>
 
-    <!-- ══════════════════ the index ══════════════════ -->
-    <section class="section" id="s-index">
+    <!-- ══════════════════ the universe ══════════════════ -->
+    <section class="section" id="s-universe">
       <h2 class="section__head">
         <span class="section__no">05</span>
-        <span>The index</span>
-        <span class="section__note">filter, sort, open</span>
+        <span>Universe</span>
+        <span class="section__note">S&amp;P 500 constituents today — the pipeline is index-agnostic</span>
       </h2>
       <div class="reg__bar">
         <input class="field" id="reg-q" type="search" placeholder="Filter by symbol or company" />
@@ -124,7 +128,7 @@
         <span class="label" id="reg-count">—</span>
       </div>
       <div class="dist" id="dist" aria-hidden="true"></div>
-      <div class="tscroll">
+      <div class="register tscroll">
         <table class="reg">
           <thead><tr id="reg-head"></tr></thead>
           <tbody id="reg-body"></tbody>

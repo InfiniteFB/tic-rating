@@ -14,6 +14,7 @@ const COLUMNS = [
   { key: "n", label: "#", sort: null, align: "left" },
   { key: "ticker", label: "Name", get: (r) => r.ticker, align: "left" },
   { key: "name", label: "Company", get: (r) => r.name, align: "left" },
+  { key: "sector", label: "Sector", get: (r) => r.sector ?? "", align: "left" },
   { key: "spRating", label: "SP_Rating", get: (r) => (r.snaps ? ratingIdx(r.snaps[0].spRating) : 99) },
   { key: "prior", label: "Prior", get: (r) => (r.snaps?.[1] ? ratingIdx(r.snaps[1].spRating) : 99) },
   { key: "move", label: "Move", get: (r) => migration(r).notches },
@@ -100,7 +101,8 @@ export function mountRegister(root, { onPick }) {
             <td class="register__no">${i + 1}</td>
             <td class="register__tk"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.ticker)}</a></td>
             <td class="register__name"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.name)}</a></td>
-            <td colspan="${COLUMNS.length - 3}">${esc(r.unrateable_reason)}</td></tr>`;
+            <td class="register__sector">${esc(r.sector ?? "—")}</td>
+            <td colspan="${COLUMNS.length - 4}">${esc(r.unrateable_reason)}</td></tr>`;
         }
         const [cur, prior] = r.snaps;
         const m = migration(r);
@@ -109,6 +111,7 @@ export function mountRegister(root, { onPick }) {
           <td class="register__no">${i + 1}</td>
           <td class="register__tk"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.ticker)}</a></td>
           <td class="register__name"><a href="./t.html#${encodeURIComponent(r.ticker)}">${esc(r.name)}</a></td>
+          <td class="register__sector">${esc(r.sector ?? "—")}</td>
           <td class="register__grade ${isIG(cur.spRating) ? "" : "spec"}">${esc(cur.spRating)}</td>
           <td class="flat">${esc(prior?.spRating ?? "—")}</td>
           <td class="${m.dir}">${m.notches ? `${m.notches > 0 ? "↑ " : "↓ "}${Math.abs(m.notches)}` : "—"}</td>
