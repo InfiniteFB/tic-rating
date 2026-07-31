@@ -33,5 +33,6 @@ massive_api_raw_samples_backup*/
 .omc/
 .codex/
 .playwright-mcp/
+.wrangler/
 .impeccable.md
 *-full.png

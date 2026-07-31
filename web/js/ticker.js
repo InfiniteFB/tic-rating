@@ -17,6 +17,7 @@ import { mountQuote } from "./views/quote.js";
 import { renderEntries } from "./views/entries.js";
 import { renderDiagnostics } from "./views/diagnostics.js";
 import { renderReading } from "./views/reading.js";
+import { mountAiReading } from "./views/aiReading.js";
 import { renderTickerAppendix } from "./views/appendix.js";
 import { esc } from "./format.js";
 
@@ -44,6 +45,14 @@ async function boot() {
   const search = mountSearch($("s-search"), { onPick: goto });
   const compare = mountPeersCompare($("compare"));
   const asOfCtl = mountDateControl($("ctl-asof"), { kind: "asof", onChange: setAsOf });
+  const aiReading = mountAiReading({
+    button: $("ai-generate"),
+    status: $("ai-status"),
+    output: $("ai-output"),
+    caliber: $("ai-caliber"),
+    result: $("ai-result"),
+    model: $("ai-model"),
+  });
 
   // the methodology knob lives inside the history section and repaints only
   // that chart — the verdict above always reads the default (150-day) build,
@@ -58,6 +67,7 @@ async function boot() {
     renderChain($("chain"), row, cur);
     renderEntries($("t-snap"), $("t-calib"), row, cur, prior);
     renderReading($("read-head"), $("read-body"), row, cur, prior);
+    aiReading.update(row, cur);
     renderDiagnostics($("s-diagnostics"), row, state.series, state.seriesStatus, cur, prior);
 
     asOfCtl.update(state.series, state.asOf, state.series?.dates?.length - 1,
