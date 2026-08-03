@@ -202,7 +202,7 @@ test("company-page AI payload maps the selected rating snapshot", async () => {
 });
 
 test("Pages explain handler rejects an IP that exhausted its model quota", async () => {
-  const { handlePost } = await import("./functions/api/explain.js");
+  const { handlePost, REQUESTS_PER_HOUR } = await import("./functions/api/explain.js");
   const response = await handlePost(
     {
       request: new Request("https://example.com/api/explain", {
@@ -215,7 +215,8 @@ test("Pages explain handler rejects an IP that exhausted its model quota", async
       }),
       env: {
         RATE_LIMIT: {
-          get: async () => "5",
+          // read from the module so retuning the quota cannot drift the test
+          get: async () => String(REQUESTS_PER_HOUR),
           put: async () => assert.fail("blocked requests must not write"),
         },
       },
@@ -272,4 +273,78 @@ test("AI reading keeps an in-flight request when the same snapshot repaints", as
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+/* ── the DeepSeek channel ────────────────────────────────────────────────
+   Pages Functions run at the edge nearest the visitor, and OpenAI answers
+   403 unsupported_country_region_territory from some colos (LAX every time,
+   SIN never). DeepSeek answers from all of them, so it is the default. */
+
+test("deepseek is the default channel and carries its own credentials", async () => {
+  const { explain } = await import("./cloudflare/llm.mjs");
+  let request;
+  const fakeFetch = async (url, init) => {
+    request = { url, init };
+    return Response.json({
+      choices: [{
+        finish_reason: "stop",
+        message: { content: "### CALIBER EXPLANATION\nA.\n### RESULT ANALYSIS\nB." },
+      }],
+    });
+  };
+
+  // no LLM_PROVIDER at all — the deployment must still pick deepseek
+  const result = await explain(samplePayload, { DEEPSEEK_API_KEY: "ds-key" }, fakeFetch);
+
+  assert.equal(request.url, "https://api.deepseek.com/v1/chat/completions");
+  assert.equal(request.init.headers.Authorization, "Bearer ds-key");
+  assert.equal(JSON.parse(request.init.body).model, "deepseek-v4-flash");
+  assert.equal(result.error, null);
+  assert.equal(result.model, "deepseek-v4-flash");
+});
+
+test("reasoning_effort 'none' is sent, not swallowed", async () => {
+  // The regression this guards: an earlier version treated "none" as
+  // "send nothing", which silently left DeepSeek v4 thinking — 8354
+  // reasoning tokens and 78 seconds instead of 5.
+  const { explain } = await import("./cloudflare/llm.mjs");
+  let body;
+  const fakeFetch = async (_url, init) => {
+    body = JSON.parse(init.body);
+    return Response.json({
+      choices: [{ finish_reason: "stop", message: { content: "### RESULT ANALYSIS\nB." } }],
+    });
+  };
+
+  await explain(samplePayload, { DEEPSEEK_API_KEY: "ds-key" }, fakeFetch);
+  assert.equal(body.reasoning_effort, "none");
+
+  // "default" is the sentinel that means inherit the model's own choice
+  await explain(
+    samplePayload,
+    { DEEPSEEK_API_KEY: "ds-key", LLM_REASONING_EFFORT: "default" },
+    fakeFetch
+  );
+  assert.equal("reasoning_effort" in body, false);
+});
+
+test("a missing DeepSeek key names DEEPSEEK_API_KEY, not the OpenAI one", async () => {
+  const { health } = await import("./cloudflare/llm.mjs");
+  const result = await health(
+    { LLM_PROVIDER: "deepseek" },
+    async () => assert.fail("network must not be called without a key")
+  );
+  assert.equal(result.reachable, false);
+  assert.match(result.detail, /DEEPSEEK_API_KEY/);
+});
+
+test("an unknown provider degrades with a legible error", async () => {
+  const { explain } = await import("./cloudflare/llm.mjs");
+  const result = await explain(
+    samplePayload,
+    { LLM_PROVIDER: "wat", DEEPSEEK_API_KEY: "ds-key" },
+    async () => assert.fail("network must not be called for an unknown provider")
+  );
+  assert.match(result.error, /unknown LLM_PROVIDER/);
+  assert.match(result.error, /deepseek/);
 });

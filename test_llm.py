@@ -102,12 +102,69 @@ def test_unknown_provider_degrades_not_crashes():
 
 
 def test_model_follows_provider():
-    env = {"OPENAI_MODEL": "gpt-x", "LLM_MODEL": "mm-x"}
+    env = {"OPENAI_MODEL": "gpt-x", "LLM_MODEL": "mm-x", "DEEPSEEK_MODEL": "ds-x"}
     with patch.dict(os.environ, env):
         with patch("app.llm._provider", return_value="openai"):
             assert llm._model() == "gpt-x"
         with patch("app.llm._provider", return_value="anthropic"):
             assert llm._model() == "mm-x"
+        with patch("app.llm._provider", return_value="deepseek"):
+            assert llm._model() == "ds-x"
+
+
+def test_channel_defaults_without_any_env():
+    with patch.dict(os.environ, {}, clear=True):
+        with patch("app.llm._provider", return_value="deepseek"):
+            assert llm._model() == "deepseek-v4-flash"
+            assert llm._reasoning_effort() == "none"
+        with patch("app.llm._provider", return_value="openai"):
+            assert llm._model() == "gpt-5.6-luna"
+            assert llm._reasoning_effort() == "low"
+        with patch("app.llm._provider", return_value="anthropic"):
+            assert llm._model() == "MiniMax-M3"
+            assert llm._reasoning_effort() is None
+
+
+def test_reasoning_effort_none_is_sent_not_swallowed():
+    """The regression: treating "none" as "send nothing" silently left
+    DeepSeek v4 thinking -- 8354 reasoning tokens and 78s instead of 5."""
+    fake_client = MagicMock()
+    fake_client.chat.completions.create.return_value = _fake_completion("### RESULT ANALYSIS\nB.")
+    with patch.dict(os.environ, {}, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("app.llm._get_openai_client", return_value=fake_client):
+        llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
+    assert fake_client.chat.completions.create.call_args.kwargs["reasoning_effort"] == "none"
+
+    # "default" is the sentinel meaning inherit the model's own choice
+    with patch.dict(os.environ, {"LLM_REASONING_EFFORT": "default"}, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("app.llm._get_openai_client", return_value=fake_client):
+        llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
+    assert "reasoning_effort" not in fake_client.chat.completions.create.call_args.kwargs
+
+
+def test_deepseek_uses_its_own_credentials_and_endpoint():
+    env = {"DEEPSEEK_API_KEY": "ds-key", "OPENAI_API_KEY": "oai-key"}
+    with patch.dict(os.environ, env, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("openai.OpenAI") as fake_ctor:
+        llm._openai_client = None
+        llm._openai_client_provider = None
+        llm._get_openai_client()
+    kwargs = fake_ctor.call_args.kwargs
+    assert kwargs["api_key"] == "ds-key"
+    assert kwargs["base_url"] == "https://api.deepseek.com/v1"
+    llm._openai_client = None
+    llm._openai_client_provider = None
+
+
+def test_unknown_provider_lists_every_known_channel():
+    with patch("app.llm._provider", return_value="wat"):
+        out = llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
+    assert "LLM_PROVIDER" in out["error"]
+    for known in ("deepseek", "openai", "anthropic"):
+        assert known in out["error"]
 
 
 def test_split_sections_case_insensitive_headings():

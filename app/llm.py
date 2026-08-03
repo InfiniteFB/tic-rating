@@ -1,17 +1,25 @@
 """LLM narration for the KMV rating dashboard.
 
-Two interchangeable provider channels, selected by ``LLM_PROVIDER``:
+Three interchangeable provider channels, selected by ``LLM_PROVIDER``:
 
-- ``openai``: OpenAI's Chat Completions API via the official ``openai``
-  SDK -- configured by ``OPENAI_API_KEY`` / ``OPENAI_BASE_URL`` /
-  ``OPENAI_MODEL`` (defaults: the official endpoint, ``gpt-5.6-luna``) and
-  ``OPENAI_REASONING_EFFORT``.
+- ``deepseek``: DeepSeek's OpenAI-compatible Chat Completions API --
+  configured by ``DEEPSEEK_API_KEY`` / ``DEEPSEEK_BASE_URL`` /
+  ``DEEPSEEK_MODEL`` (defaults: ``https://api.deepseek.com/v1``,
+  ``deepseek-v4-flash``). Reachable from regions and edge locations where
+  OpenAI answers 403 ``unsupported_country_region_territory``.
+- ``openai``: OpenAI's Chat Completions API -- configured by
+  ``OPENAI_API_KEY`` / ``OPENAI_BASE_URL`` / ``OPENAI_MODEL`` (defaults:
+  the official endpoint, ``gpt-5.6-luna``).
 - ``anthropic`` (default): any Anthropic-Messages-compatible endpoint via
   the official ``anthropic`` SDK -- configured by ``LLM_API_KEY`` /
   ``LLM_BASE_URL`` / ``LLM_MODEL`` (defaults: MiniMax's compatibility
   endpoint, ``MiniMax-M3``).
 
-Either channel turns a rated payload (see ``app.pipeline.rate_ticker``)
+``deepseek`` and ``openai`` share one transport: both speak OpenAI Chat
+Completions, so they differ only in credentials, base URL, model, and how
+much deliberation they are told to spend (``LLM_REASONING_EFFORT``).
+
+Any channel turns a rated payload (see ``app.pipeline.rate_ticker``)
 into two plain-English sections: a methodology explainer and a per-ticker
 result analysis. Every public function degrades gracefully -- network or
 API failures never raise, they just come back as an "error" field with
@@ -31,24 +39,51 @@ import openai
 DEFAULT_PROVIDER = "anthropic"
 DEFAULT_ANTHROPIC_BASE_URL = "https://api.minimaxi.com/anthropic"
 DEFAULT_ANTHROPIC_MODEL = "MiniMax-M3"
-DEFAULT_OPENAI_MODEL = "gpt-5.6-luna"
+
+# The OpenAI-compatible channels, table-driven: same transport, different
+# credentials and defaults. `effort` is what this channel's model should be
+# told when nothing is configured -- see _reasoning_effort for the sentinels.
+OPENAI_COMPATIBLE = {
+    "openai": {
+        "key_var": "OPENAI_API_KEY",
+        "base_var": "OPENAI_BASE_URL",
+        "model_var": "OPENAI_MODEL",
+        "base": None,                       # the SDK's own default endpoint
+        "model": "gpt-5.6-luna",
+        "effort": "low",
+    },
+    "deepseek": {
+        "key_var": "DEEPSEEK_API_KEY",
+        "base_var": "DEEPSEEK_BASE_URL",
+        "model_var": "DEEPSEEK_MODEL",
+        "base": "https://api.deepseek.com/v1",
+        "model": "deepseek-v4-flash",
+        # DeepSeek v4 thinks by default, and on this prompt that cost 8354
+        # reasoning tokens and 78 seconds for prose no better than the 5-second
+        # answer with thinking off. The facts arrive pre-computed; there is
+        # nothing here to deliberate about.
+        "effort": "none",
+    },
+}
 
 # Reasoning models bill their thinking against this budget, so it has to cover
 # the reasoning *and* the visible answer -- at 1200 a hard prompt spends the
 # whole allowance thinking and returns nothing at all.
 DEFAULT_MAX_TOKENS = 4000
-# "low" is the right default for narration: the facts arrive pre-computed, so
-# extended deliberation only starves the answer. Set to "default" to send no
-# reasoning_effort at all and inherit the model's own choice.
-DEFAULT_REASONING_EFFORT = "low"
 
 _client: anthropic.Anthropic | None = None
 _openai_client: openai.OpenAI | None = None
+_openai_client_provider: str | None = None
 
 
 def _provider() -> str:
     """The configured channel name, lowercased; validated at dispatch time."""
     return (os.environ.get("LLM_PROVIDER") or DEFAULT_PROVIDER).strip().lower()
+
+
+def _channel() -> dict[str, Any] | None:
+    """The OpenAI-compatible channel config, or None for other providers."""
+    return OPENAI_COMPATIBLE.get(_provider())
 
 
 def _api_key() -> str | None:
@@ -60,8 +95,8 @@ def _base_url() -> str:
 
 
 def _model() -> str:
-    if _provider() == "openai":
-        return os.environ.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
+    if channel := _channel():
+        return os.environ.get(channel["model_var"]) or channel["model"]
     return os.environ.get("LLM_MODEL") or DEFAULT_ANTHROPIC_MODEL
 
 
@@ -73,9 +108,19 @@ def _max_tokens() -> int:
 
 
 def _reasoning_effort() -> str | None:
-    """Effort level for the OpenAI channel; None means send no such field."""
-    effort = (os.environ.get("OPENAI_REASONING_EFFORT") or DEFAULT_REASONING_EFFORT).strip()
-    return None if effort.lower() in ("", "default", "none") else effort
+    """How much deliberation to ask for; None means send no such field.
+
+    ``"none"`` is a real, meaningful value -- it is how DeepSeek v4 is told
+    not to think -- so it must go over the wire. Only ``"default"`` (or an
+    empty setting) means "send nothing and inherit the model's own choice".
+    """
+    channel = _channel()
+    configured = (
+        os.environ.get("LLM_REASONING_EFFORT")
+        or os.environ.get("OPENAI_REASONING_EFFORT")  # the older name
+        or (channel["effort"] if channel else "")
+    ).strip()
+    return None if configured.lower() in ("", "default") else configured
 
 
 def _get_client() -> anthropic.Anthropic:
@@ -91,19 +136,23 @@ def _get_client() -> anthropic.Anthropic:
 
 
 def _get_openai_client() -> openai.OpenAI:
-    """Construct (and cache) the OpenAI SDK client.
+    """Construct (and cache) the client for the active OpenAI-compatible channel.
 
     Same patch-point contract as ``_get_client``: tests replace this to
-    avoid the real SDK and network. A missing ``OPENAI_API_KEY`` makes the
-    constructor raise, which the callers' catch-all turns into an "error"
-    field rather than a crash.
+    avoid the real SDK and network. A missing API key makes the constructor
+    raise, which the callers' catch-all turns into an "error" field rather
+    than a crash. The cache is keyed on the provider so switching
+    ``LLM_PROVIDER`` mid-process cannot hand back the other channel's client.
     """
-    global _openai_client
-    if _openai_client is None:
+    global _openai_client, _openai_client_provider
+    provider = _provider()
+    channel = OPENAI_COMPATIBLE[provider]
+    if _openai_client is None or _openai_client_provider != provider:
         _openai_client = openai.OpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY"),
-            base_url=os.environ.get("OPENAI_BASE_URL") or None,
+            api_key=os.environ.get(channel["key_var"]),
+            base_url=os.environ.get(channel["base_var"]) or channel["base"],
         )
+        _openai_client_provider = provider
     return _openai_client
 
 
@@ -285,15 +334,18 @@ def _chat_openai(system: str, user: str) -> str:
     return text
 
 
+def _unknown_provider(provider: str) -> ValueError:
+    known = ", ".join(sorted([*OPENAI_COMPATIBLE, "anthropic"]))
+    return ValueError(f"unknown LLM_PROVIDER {provider!r}; use one of: {known}")
+
+
 def _chat(system: str, user: str) -> str:
     provider = _provider()
-    if provider == "openai":
+    if provider in OPENAI_COMPATIBLE:
         return _chat_openai(system, user)
     if provider == "anthropic":
         return _chat_anthropic(system, user)
-    raise ValueError(
-        f"unknown LLM_PROVIDER {provider!r}; use 'openai' or 'anthropic'"
-    )
+    raise _unknown_provider(provider)
 
 
 _CALIBER_RE = re.compile(r"###\s*CALIBER EXPLANATION\s*", re.IGNORECASE)
@@ -360,13 +412,18 @@ def health() -> dict[str, Any]:
     """Probe the configured LLM endpoint with a minimal request. Never raises."""
     provider = _provider()
     try:
-        if provider == "openai":
-            # Reasoning models may spend the whole budget thinking; 16 tokens
-            # keeps the probe cheap while leaving room for a non-empty reply.
+        if provider in OPENAI_COMPATIBLE:
+            # A thinking model can spend the whole budget deliberating; 64
+            # tokens keeps the probe cheap while leaving room for a reply
+            # even when the channel's effort setting is not "none".
+            kwargs: dict[str, Any] = {}
+            if effort := _reasoning_effort():
+                kwargs["reasoning_effort"] = effort
             _get_openai_client().chat.completions.create(
                 model=_model(),
-                max_completion_tokens=16,
+                max_completion_tokens=64,
                 messages=[{"role": "user", "content": "ping"}],
+                **kwargs,
             )
         elif provider == "anthropic":
             _get_client().messages.create(
@@ -376,9 +433,7 @@ def health() -> dict[str, Any]:
                 messages=_user_messages("ping"),
             )
         else:
-            raise ValueError(
-                f"unknown LLM_PROVIDER {provider!r}; use 'openai' or 'anthropic'"
-            )
+            raise _unknown_provider(provider)
         return {"reachable": True, "detail": "ok"}
     except Exception as exc:  # noqa: BLE001 - health probe must never crash the caller
         return {"reachable": False, "detail": str(exc)}

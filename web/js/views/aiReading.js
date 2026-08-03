@@ -22,11 +22,55 @@ export function payloadFor(row, cur) {
   };
 }
 
+/**
+ * Why a response that isn't JSON isn't JSON.
+ *
+ * `/api/explain` is a Cloudflare Pages Function. The static dev server that
+ * serves `web/` has no such route and answers POST with a 501 HTML page, so
+ * parsing the body first turns a plain "wrong server" into an unreadable
+ * `Unexpected token '<'`. Say which situation this is instead.
+ */
+export function describeNonJson(status, contentType = "", body = "") {
+  const looksHtml = /^\s*</.test(body) || /html/i.test(contentType);
+  if (status === 501 || status === 405) {
+    return "this page is being served by the static dev server, which has no " +
+      "/api/explain — run `npx wrangler pages dev` or open the deployed site";
+  }
+  if (status === 404) {
+    return "/api/explain is not routed here — the Pages Function is missing " +
+      "from this deployment";
+  }
+  if (looksHtml) {
+    return `the server answered HTTP ${status} with an HTML page, not JSON`;
+  }
+  return `the server answered HTTP ${status} with an unreadable body`;
+}
+
+/**
+ * Undo the Markdown the model was asked not to write.
+ *
+ * The prompt says plain paragraphs, and some models honour that while others
+ * emit `- **Label**: text` regardless. This mount renders with textContent,
+ * so an unhonoured instruction shows the reader literal asterisks. Stripping
+ * the markers here makes the page's own presentation the one that decides,
+ * whichever model is configured.
+ */
+export function stripMarkdown(chunk) {
+  return String(chunk || "")
+    .replace(/^\s{0,3}[-*+]\s+/, "")          // a leading bullet
+    .replace(/^\s{0,3}#{1,6}\s+/, "")         // a stray heading
+    .replace(/\*\*(.+?)\*\*/gs, "$1")         // bold
+    .replace(/__(.+?)__/gs, "$1")             // bold, the other spelling
+    .replace(/(^|\s)\*(?=\S)(.+?)\*(?=\s|$)/gs, "$1$2")  // italics, not A*B
+    .replace(/`([^`]+)`/g, "$1")              // inline code
+    .trim();
+}
+
 function renderPlainText(mount, text) {
   mount.replaceChildren();
   const chunks = String(text || "")
     .split(/\n{2,}/)
-    .map((chunk) => chunk.trim())
+    .map(stripMarkdown)
     .filter(Boolean);
   for (const chunk of chunks) {
     const paragraph = document.createElement("p");
@@ -65,11 +109,26 @@ export function mountAiReading({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(current),
         });
-        body = await response.json();
-        if (!response.ok) {
-          throw new Error(body.error || `HTTP ${response.status}`);
+        // Read as text and parse by hand: response.json() on an HTML error
+        // page throws before there is any chance to explain what happened.
+        const raw = await response.text();
+        let parsed = null;
+        try {
+          parsed = JSON.parse(raw);
+        } catch {
+          throw new Error(
+            describeNonJson(
+              response.status,
+              response.headers.get("content-type") || "",
+              raw
+            )
+          );
         }
-        if (body.error) throw new Error(body.error);
+        if (!response.ok) {
+          throw new Error(parsed.error || `HTTP ${response.status}`);
+        }
+        if (parsed.error) throw new Error(parsed.error);
+        body = parsed;
         cache.set(contextKey, body);
       }
       if (mine !== requestToken) return;

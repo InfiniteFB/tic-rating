@@ -1,7 +1,7 @@
 import { explain } from "../../cloudflare/llm.mjs";
 
 const MAX_BODY_BYTES = 64 * 1024;
-const REQUESTS_PER_HOUR = 5;
+export const REQUESTS_PER_HOUR = 50;
 
 const json = (body, status = 200) =>
   Response.json(body, {

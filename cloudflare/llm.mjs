@@ -1,6 +1,37 @@
-const DEFAULT_OPENAI_MODEL = "gpt-5.6-luna";
+/**
+ * The OpenAI-compatible channels this deployment can speak, table-driven:
+ * same wire protocol, different credentials and defaults.
+ *
+ * `deepseek` is the default because Pages Functions execute at the edge
+ * location nearest the visitor, and OpenAI answers 403
+ * `unsupported_country_region_territory` from some of those colos (LAX
+ * reproduced it every time while SIN succeeded). DeepSeek answers from all
+ * of them.
+ */
+const CHANNELS = {
+  openai: {
+    keyVar: "OPENAI_API_KEY",
+    baseVar: "OPENAI_BASE_URL",
+    modelVar: "OPENAI_MODEL",
+    base: "https://api.openai.com/v1",
+    model: "gpt-5.6-luna",
+    effort: "low",
+  },
+  deepseek: {
+    keyVar: "DEEPSEEK_API_KEY",
+    baseVar: "DEEPSEEK_BASE_URL",
+    modelVar: "DEEPSEEK_MODEL",
+    base: "https://api.deepseek.com/v1",
+    model: "deepseek-v4-flash",
+    // v4 thinks by default; on this prompt that cost 8354 reasoning tokens
+    // and 78 seconds for prose no better than the 5-second answer with
+    // thinking off. The figures arrive pre-computed — nothing to deliberate.
+    effort: "none",
+  },
+};
+
+const DEFAULT_PROVIDER = "deepseek";
 const DEFAULT_MAX_TOKENS = 4000;
-const DEFAULT_REASONING_EFFORT = "low";
 
 const SYSTEM_PROMPT = `You are a credit-risk methodology explainer for a
 KMV/Merton structural credit model dashboard. The model treats equity as a
@@ -30,8 +61,43 @@ function format(value) {
   return String(value);
 }
 
+export function provider(env) {
+  return (env.LLM_PROVIDER || DEFAULT_PROVIDER).trim().toLowerCase();
+}
+
+function channel(env) {
+  const found = CHANNELS[provider(env)];
+  if (!found) {
+    throw new Error(
+      `unknown LLM_PROVIDER '${provider(env)}'; use one of: ` +
+        Object.keys(CHANNELS).sort().join(", ")
+    );
+  }
+  return found;
+}
+
 function model(env) {
-  return env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL;
+  const found = CHANNELS[provider(env)];
+  // Named before validation so an error response can still say which model
+  // was asked for rather than reporting "undefined".
+  return env[found?.modelVar] || found?.model || env.OPENAI_MODEL || "unknown";
+}
+
+/**
+ * How much deliberation to ask for; null means send no such field.
+ *
+ * "none" is a real, meaningful value — it is how DeepSeek v4 is told not to
+ * think — so it must go over the wire. Only "default" (or an empty setting)
+ * means "send nothing and inherit the model's own choice".
+ */
+function reasoningEffort(env) {
+  const configured = (
+    env.LLM_REASONING_EFFORT ||
+    env.OPENAI_REASONING_EFFORT || // the older name
+    CHANNELS[provider(env)]?.effort ||
+    ""
+  ).trim();
+  return ["", "default"].includes(configured.toLowerCase()) ? null : configured;
 }
 
 function maxTokens(env) {
@@ -120,27 +186,26 @@ export function splitSections(text = "") {
 }
 
 async function openAiChat(env, messages, tokenLimit, fetchImpl) {
-  if (!env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not configured");
+  const active = channel(env);
+  const key = env[active.keyVar];
+  if (!key) {
+    throw new Error(`${active.keyVar} is not configured`);
   }
-  const baseUrl = (env.OPENAI_BASE_URL || "https://api.openai.com/v1")
-    .replace(/\/+$/, "");
+  const baseUrl = (env[active.baseVar] || active.base).replace(/\/+$/, "");
   const body = {
     model: model(env),
     max_completion_tokens: tokenLimit,
     messages,
   };
-  const effort = (
-    env.OPENAI_REASONING_EFFORT || DEFAULT_REASONING_EFFORT
-  ).trim();
-  if (effort && !["default", "none"].includes(effort.toLowerCase())) {
+  const effort = reasoningEffort(env);
+  if (effort) {
     body.reasoning_effort = effort;
   }
 
   const response = await fetchImpl(`${baseUrl}/chat/completions`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+      Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
@@ -163,9 +228,6 @@ async function openAiChat(env, messages, tokenLimit, fetchImpl) {
 export async function explain(payload, env, fetchImpl = fetch) {
   const selectedModel = model(env);
   try {
-    if ((env.LLM_PROVIDER || "openai").toLowerCase() !== "openai") {
-      throw new Error("Cloudflare deployment currently supports LLM_PROVIDER=openai");
-    }
     const prompt = buildPrompt(payload);
     const text = await openAiChat(
       env,
@@ -193,13 +255,12 @@ export async function explain(payload, env, fetchImpl = fetch) {
 
 export async function health(env, fetchImpl = fetch) {
   try {
-    if ((env.LLM_PROVIDER || "openai").toLowerCase() !== "openai") {
-      throw new Error("Cloudflare deployment currently supports LLM_PROVIDER=openai");
-    }
+    // 64 rather than 16: a thinking model can spend the whole budget
+    // deliberating and come back empty, which reads as an outage.
     await openAiChat(
       env,
       [{ role: "user", content: "Reply with OK." }],
-      16,
+      64,
       fetchImpl
     );
     return { reachable: true, detail: "ok" };

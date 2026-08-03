@@ -48,6 +48,17 @@
         "web"
       ],
       "port": 8144
+    },
+    {
+      "name": "web-functions",
+      "runtimeExecutable": "node_modules/.bin/wrangler",
+      "runtimeArgs": [
+        "pages",
+        "dev",
+        "--port",
+        "8145"
+      ],
+      "port": 8145
     }
   ]
 }

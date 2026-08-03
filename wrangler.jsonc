@@ -9,10 +9,12 @@
       "id": "4b38fb0b4cd24c48a02a2eb1b9782f8d"
     }
   ],
+  // DEEPSEEK_API_KEY is a secret, not a var — set it with
+  // `wrangler pages secret put DEEPSEEK_API_KEY`, never here.
   "vars": {
-    "LLM_PROVIDER": "openai",
-    "OPENAI_MODEL": "gpt-5.6-luna",
-    "OPENAI_REASONING_EFFORT": "low",
+    "LLM_PROVIDER": "deepseek",
+    "DEEPSEEK_MODEL": "deepseek-v4-flash",
+    "LLM_REASONING_EFFORT": "none",
     "LLM_MAX_TOKENS": "4000"
   }
 }

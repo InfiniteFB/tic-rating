@@ -1,5 +1,6 @@
 # Secrets — never commit
 .env
+.dev.vars
 *.key
 
 # Python
@@ -28,6 +29,7 @@ PFPA*.pdf
 sp500_cache/
 massive_api_raw_samples_2*/
 massive_api_raw_samples_backup*/
+massive_financial_archive/
 
 # Agent / tooling scratch
 .omc/
@@ -36,3 +38,6 @@ massive_api_raw_samples_backup*/
 .wrangler/
 .impeccable.md
 *-full.png
+
+# npm
+node_modules/
