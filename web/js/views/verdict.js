@@ -195,7 +195,8 @@ export function renderChain(mount, row, cur) {
     return;
   }
   mount.hidden = false;
-  mount.innerHTML = CHAIN.map((hop) => `<div class="chain__hop" data-how="${hop.key}"
+  mount.innerHTML = CHAIN.map((hop, i) => `<div class="chain__hop${
+      i === CHAIN.length - 1 ? " chain__end" : ""}" data-how="${hop.key}"
       role="button" tabindex="0" aria-expanded="${chainOpen === hop.key}"
       aria-label="${hop.label} — show the derivation">
       <span class="label">${hop.label}</span>

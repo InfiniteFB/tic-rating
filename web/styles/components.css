@@ -128,8 +128,10 @@
 /* conversion chain: PIT measures → TTC letter, one cell per hop */
 .chain { display: flex; flex-wrap: wrap; margin-top: 1.2rem; border: 1px solid var(--ink); }
 .chain > div { flex: 1 1 8rem; padding: 0.6rem 0.7rem; border-right: 1px solid var(--rule); min-width: 0; }
-.chain > div:last-child { border-right: 0; background: var(--red); color: var(--paper); }
-.chain > div:last-child .label { color: oklch(92% 0.04 30); }
+/* the terminal hop wears the accent by its own name, not by :last-child —
+   the derivation panel appends after it and must never inherit the red */
+.chain > .chain__end { border-right: 0; background: var(--red); color: var(--paper); }
+.chain > .chain__end .label { color: oklch(92% 0.04 30); }
 .chain__v { font-weight: 700; font-size: 0.98rem; display: block; margin-top: 0.2rem; }
 
 /* ─────────────────────────────── entries ────────────────────────────── */
@@ -728,6 +730,8 @@ tr.derive > td { padding: 0; border-bottom: 1px solid var(--rule); text-align: l
 .chain__hop { cursor: pointer; }
 .chain__hop:hover { background: var(--paper-2); }
 .chain__hop[aria-expanded="true"] { background: var(--paper-2); box-shadow: inset 0 -3px 0 var(--red); }
-.chain > div:last-child.chain__hop:hover { background: var(--red); }
-.chain__derive { flex: 1 1 100%; border-top: 1px solid var(--ink); }
+.chain__end.chain__hop:hover { background: var(--red); }
+/* .chain > div wins on specificity, so the panel states its own flex at
+   the same level — it must always break to a full-width row */
+.chain > .chain__derive { flex: 1 1 100%; border-top: 1px solid var(--ink); border-right: 0; background: var(--paper); color: var(--ink); }
 .chain__derive .derive__panel { border-left: 0; background: var(--paper); }
