@@ -11,6 +11,7 @@
 import { esc, moneyK, num, pct, usd } from "../format.js";
 import { CHAIN, FINE_SCALE, SNAP_FIELDS, deltaInfo, isIG, outlook } from "../fields.js";
 import { DERIVATIONS, renderDerivation } from "../derivations.js";
+import { openAllDerivations } from "./entries.js";
 
 const field = (key) => SNAP_FIELDS.find((f) => f.key === key);
 
@@ -52,7 +53,7 @@ export function renderVerdict(mount, row, cur, prior, series) {
   if (!row.snaps) {
     mount.innerHTML = `
       <div class="verdict__mark">
-        <div class="verdict__letter spec">n/a</div>
+        <div class="verdict__letter is-spec">n/a</div>
         <div class="verdict__bar"></div>
         <div class="verdict__meta"><span>not rateable</span></div>
       </div>
@@ -116,7 +117,7 @@ export function renderVerdict(mount, row, cur, prior, series) {
     <div class="verdict__mark">
       <div class="verdict__tk">${esc(row.ticker)}</div>
       <div class="verdict__letterrow">
-        <div class="verdict__letter">${esc(cur.spRating)}</div>
+        <div class="verdict__letter${isIG(cur.spRating) ? "" : " is-spec"}">${esc(cur.spRating)}</div>
         <button class="verdict__why" type="button" aria-expanded="false"
           aria-label="Show the rating scale">i</button>
         ${scaleCard(cur.spRating, cur.spPd)}
@@ -136,7 +137,17 @@ export function renderVerdict(mount, row, cur, prior, series) {
       <b>${num(coverage, 2)}×</b> asset coverage. Asset volatility calibrates to <b>${pct(cur.assetVol ?? row.assetVol)}</b>
       against <b>${pct(cur.stockVol ?? row.stockVol)}</b> observed on the equity, leaving
       <b>${num(cur.dd, 3)}</b> standard deviations of clearance to the default barrier.</p>
+    </div>
+    <div class="verdict__cta">
+      <button class="btn btn--go" type="button" id="v-fullcalc">Every number, derived — open the full calculation ↓</button>
+      <a class="btn" href="./method.html">Read the method →</a>
     </div>`;
+
+  // the full-calculation door: open every derivation, then go to them
+  mount.querySelector("#v-fullcalc")?.addEventListener("click", () => {
+    openAllDerivations();
+    document.getElementById("s-workings")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   // the reference card toggles on click and stays; a click anywhere else
   // dismisses it — hover-only popovers die the moment the pointer travels

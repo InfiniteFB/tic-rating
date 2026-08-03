@@ -93,6 +93,12 @@ export function renderEntries(snapMount, calibMount, row, cur, prior) {
     </tbody>`;
 }
 
+/** the verdict's "full calculation" button: every derivation at once */
+export function openAllDerivations() {
+  for (const f of [...SNAP_FIELDS, ...CALIB_FIELDS]) if (DERIVATIONS[f.key]) open.add(f.key);
+  if (last) renderEntries(last.snapMount, last.calibMount, last.row, last.cur, last.prior);
+}
+
 /** one delegated listener per mount; innerHTML rewrites never drop it */
 function wireToggles(mount) {
   if (mount.dataset.howWired) return;
