@@ -1,0 +1,16 @@
+{
+  "ticker": "KO",
+  "name": "Coca-Cola Company",
+  "date": "2026-07-30",
+  "letter": "AAA-",
+  "fact_sheet": "TICKER: KO   NAME: Coca-Cola Company   SECTOR: Consumer Staples\nRATING DATE: 2026-07-30   CALIBRATION WINDOW: 150 trading days\n\nTHE MARK\n  letter (fine S&P scale)   AAA-   [investment grade]\n  outlook                   negative\n  through-the-cycle PD      SP_PD 0.0100%\n\nTHE FIGURES A READER CHECKS FIRST\n  close (2026-07-30)       $88.49   (−0.66% on the day)\n  equity / market cap       $380.77B\n  risk-free 1y (FRED DGS1)  4.040%\n  distance-to-default (DD)  12.792 standard deviations\n  RS_SP (Table 8 is read with this, not RS)   0.0005\n\nTHE BALANCE SHEET AS THE MODEL SEES IT\n  calibrated asset value    $447.82B\n  equity                    $380.77B\n  implied debt wedge        $67.05B\n  asset coverage            6.68×\n\nTHE CALIBRATION\n  asset volatility          17.14%   (equity volatility observed: 20.49%)\n  asset return              33.15%\n  point-in-time EDF         0\n\nTHE CONVERSION CHAIN (point-in-time → through-the-cycle)\n  CCM 0.047630 → RS 0.8481 → FP_PD 0 → Alpha 1.000000 → SP_CCM 0.238419 → SP_PD 0.0100% → AAA-\n\nAGAINST THE PRIOR CALIBRATION (2025-12-22)\n  letter                    AAA- → AAA-  [unchanged]\n  DD                        13.712 → 12.792\n  SP_PD                     0.0100% → 0.0100%\n  equity                    $298.13B → $380.77B\n  asset volatility          11.83% → 17.14%",
+  "sections": {
+    "THE MARK": "The model assigns Coca-Cola Company an AAA- letter on the fine S&P scale, with a negative outlook, dated 2026-07-30. Distance-to-default is 12.792 standard deviations, the figure that most directly drives the mark.",
+    "THE BALANCE SHEET": "Calibrated assets are $447.82B against equity of $380.77B, leaving an implied debt wedge of $67.05B. Asset coverage is 6.68×. The calibration produced asset volatility of 17.14% against observed equity volatility of 20.49%, alongside an asset return of 33.15%. Equity therefore sits 12.792 standard deviations above the default point.",
+    "THE CHAIN": "The point-in-time EDF is 0 and the first-passage PD is 0. The conversion runs from CCM 0.047630 through RS 0.8481 and Alpha 1.000000 to SP_CCM 0.238419. RS is a diagnostic scale; RS_SP 0.0005 is the score read with Table 8. SP_PD is 0.0100%, which lands on AAA-.",
+    "THE CAVEAT": "The letter is unchanged from 2025-12-22, while DD moved from 13.712 to 12.792 and SP_PD remained 0.0100%. Equity moved from $298.13B to $380.77B, and asset volatility from 11.83% to 17.14%. This model sees market prices and a balance-sheet default point only; it is blind to qualitative factors. The calibration uses one window of 150 trading days ending on the rating date."
+  },
+  "model": "gpt-5.6-luna",
+  "error": null,
+  "seconds": 7.4
+}

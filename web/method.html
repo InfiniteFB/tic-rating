@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TiC Rating — the method</title>
+<meta name="description" content="From market prices to a letter: why credit ratings are not default probabilities, how EM recovers the unobservable asset path, and how a point-in-time read becomes a through-the-cycle letter. Prof. Yimin Yang's Time-Consistent rating, told with this site's own data." />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23191c21'/%3E%3Crect x='9' y='9' width='5' height='5' fill='%23d33a22'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles/tokens.css" />
+<link rel="stylesheet" href="./styles/base.css" />
+<link rel="stylesheet" href="./styles/layout.css" />
+<link rel="stylesheet" href="./styles/components.css" />
+<link rel="stylesheet" href="./styles/method.css" />
+</head>
+<body class="method">
+<div class="frame">
+
+  <!-- ══════════════════ index rail ══════════════════ -->
+  <aside class="rail">
+    <a class="rail__mark" href="./" aria-label="Back to the dashboard">◪</a>
+    <nav class="rail__nav" aria-label="Sections">
+      <a href="./">Dashboard</a>
+      <a href="#s-why">Problem</a>
+      <a href="#s-option">Option</a>
+      <a href="#s-invert">Inversion</a>
+      <a href="#s-em">Calibration</a>
+      <a href="#s-dd">Distance</a>
+      <a href="#s-pd">Probability</a>
+      <a href="#s-pit">Whipsaw</a>
+      <a href="#s-ttc">Conversion</a>
+      <a href="#s-limits">Limits</a>
+    </nav>
+    <div class="rail__foot">KMV / TIC</div>
+  </aside>
+
+  <div class="body">
+    <!-- ══════════════════ masthead ══════════════════ -->
+    <header class="mast">
+      <h1 class="mast__title"><a href="./" style="text-decoration:none">TiC Rating<span>.</span></a></h1>
+      <p class="mast__sub">The method, from need to letter — every figure below is drawn from this
+        site's own cached model output, mostly Coca-Cola's, and every formula is the one the engine
+        actually runs. The framework is Prof. Yimin Yang's Time-Consistent (TiC) credit rating.</p>
+    </header>
+
+    <div class="boot-error" id="boot-error" hidden></div>
+
+    <!-- ══════════════════ 01 problem ══════════════════ -->
+    <section class="section" id="s-why">
+      <h2 class="section__head">
+        <span class="section__no">01</span>
+        <span>The problem</span>
+        <span class="section__note">a rating is not a default probability</span>
+      </h2>
+      <div class="method__prose">
+        <p>Agency ratings are careful, slow, and cover whom they choose to cover. When the U.S.
+        Congress asked in 2012 whether rating systems could be standardised, the SEC's report
+        concluded it <q>may not be feasible</q> given how differently each system is built
+        <span class="src">· SEC 2012, quoted on deck s79</span>. Banks meanwhile sit on a harder
+        problem: for a single large company there is no default frequency to count.
+        <b>There is exactly one IBM</b> — it either fails or it does not, and a probability
+        estimated on a sample of one is not an estimate.</p>
+        <p>The chart below is the sharper surprise. Take every issuer Moody's rates B — the same
+        letter, the same meaning, supposedly — and count the share that defaulted within a year.
+        The answer swings from 0.0% to 9.8% depending on the year you ask.</p>
+      </div>
+      <figure class="plate"><div id="fig-moodysb"></div>
+        <figcaption><b>Fig 1</b> One-year default rates of Moody's B-rated issuers, 2001–2016
+        (2006 absent in the source table). If a rating <i>were</i> a PD, this chart would be flat.
+        Paper Table 1.</figcaption></figure>
+      <div class="method__prose">
+        <p>The orthodox reading is that this is a flaw. The method's founding observation is that
+        it is not: <b>the default rate rides the credit cycle; the letter holds the company's place
+        in the queue</b>. A rating encodes the shape of a company's whole survival distribution,
+        and the one-year PD is just the slice of it the current cycle exposes. Stock prices watch
+        that distribution every trading day — which suggests computing the rating from the market
+        instead of waiting for one. The rest of this page is how.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 02 option ══════════════════ -->
+    <section class="section" id="s-option">
+      <h2 class="section__head">
+        <span class="section__no">02</span>
+        <span>Equity is a call option</span>
+        <span class="section__note">Merton's identity — the one observable thing</span>
+      </h2>
+      <div class="method__prose">
+        <p>Three quantities describe a levered company, and they are awkward in three different
+        ways: the <b>asset value</b> is a market value nobody quotes; the <b>debt</b> is a promise
+        due in the future; only the <b>equity</b> trades today
+        <span class="src">· deck s55</span>. Merton's 1974 observation connects them: at the
+        debt's maturity, shareholders keep whatever exceeds the debt and walk away from anything
+        less. That payoff — everything above a strike, nothing below — is a call option's.</p>
+      </div>
+      <figure class="plate"><div id="fig-payoff"></div>
+        <figcaption><b>Fig 2</b> At maturity, equity collects max(A − D, 0) and debt collects
+        min(A, D). Equity <i>is</i> a call on the assets struck at the default point.</figcaption>
+      </figure>
+      <div class="method__prose">
+        <p>The identity matters because it points the telescope the useful way round: the market
+        prices the option (equity) all day long, and option prices can be inverted for the value
+        of the thing underneath. The market cap on this site is the day's dividend-adjusted close
+        times that quarter's basic share count — so a 2017 equity value uses 2017's float, and
+        dividends paid out are added back rather than read as losses.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 03 inversion ══════════════════ -->
+    <section class="section" id="s-invert">
+      <h2 class="section__head">
+        <span class="section__no">03</span>
+        <span>Inverting the option</span>
+        <span class="section__note">one monotone curve, one solution per day</span>
+      </h2>
+      <div class="method__prose">
+        <p>Under Black–Scholes–Merton the equity of a levered firm is priced as a call on its
+        assets:</p>
+      </div>
+      <div class="method__fx" data-fx="teach:bsm"><span class="fx-cap">the equity equation · deck s93</span></div>
+      <div class="method__prose">
+        <p>Divide through by the discounted debt and the equation collapses to one shape. Both
+        sides become ratios — <i>x</i>, assets over discounted debt, and <i>z</i>, equity over
+        discounted debt — and the whole pricing relation is a single function g:</p>
+      </div>
+      <div class="method__fx" data-fx="teach:g"><span class="fx-cap">the normalised form · deck s102</span></div>
+      <div class="method__fx" data-fx="teach:z"><span class="fx-cap">what the data supplies each trading day · deck s101 — the quarter's filings and rate, never a later one</span></div>
+      <div class="method__prose">
+        <p>g rises monotonically in <i>x</i>: more assets always mean more equity. A monotone
+        function is invertible by the oldest trick there is — bisection. Each trading day the
+        engine observes <i>z</i>, walks the bracket down to the unique <i>x</i> with
+        g(<i>x</i>) = <i>z</i>, and books that day's asset value. No gradient, no guess, no
+        dependence on a starting point.</p>
+      </div>
+      <figure class="plate"><div id="fig-g"></div>
+        <figcaption><b>Fig 3</b> The g curve at KO's own calibrated σ_A, with the latest day's
+        solve marked: the observed z meets the curve at exactly one x, which is the day's
+        asset-to-discounted-debt ratio.</figcaption></figure>
+    </section>
+
+    <!-- ══════════════════ 04 calibration ══════════════════ -->
+    <section class="section" id="s-em">
+      <h2 class="section__head">
+        <span class="section__no">04</span>
+        <span>The EM calibration</span>
+        <span class="section__note">two unknowns, one equation, a fixed point</span>
+      </h2>
+      <div class="method__prose">
+        <p>The inversion needs σ_A — but σ_A is exactly what nobody knows. One equation, two
+        unknowns. Classic KMV closes the gap with a second equation linking equity and asset
+        volatility; the deck notes those joint solutions run <q>less stable</q>
+        <span class="src">· deck s93</span>. This method iterates instead, which is the EM
+        algorithm doing what it always does — alternate between recovering the hidden data and
+        re-estimating the parameter:</p>
+      </div>
+      <div class="method__fx" data-fx="teach:em0"><span class="fx-cap">start — pretend assets are equity, read off a first σ</span></div>
+      <div class="method__fx" data-fx="teach:emE"><span class="fx-cap">E-step — with σ fixed, bisect out the whole asset path</span></div>
+      <div class="method__fx" data-fx="teach:emM"><span class="fx-cap">M-step — with the path fixed, re-estimate σ</span></div>
+      <div class="method__prose">
+        <p>The loop contracts fast — two to four rounds and σ_A stops moving. The recovered path
+        sits above the equity path by the value of the debt claim, and the default point steps
+        only on quarter ends, because that is when the filings change.</p>
+      </div>
+      <figure class="plate"><div id="fig-em"></div>
+        <figcaption><b>Fig 4</b> σ_A per EM iteration on KO's build — the fixed point arrives
+        almost immediately, which is why the deck calls the algorithm fast.</figcaption></figure>
+      <figure class="plate"><div id="fig-paths"></div>
+        <figcaption><b>Fig 5</b> What the calibration recovers: the asset path (filled), the
+        observed equity below it, and the default point stepping on quarter ends.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ══════════════════ 05 distance ══════════════════ -->
+    <section class="section" id="s-dd">
+      <h2 class="section__head">
+        <span class="section__no">05</span>
+        <span>Distance to default</span>
+        <span class="section__note">the cushion, measured in volatilities</span>
+      </h2>
+      <div class="method__prose">
+        <p>With the asset path in hand, two summary numbers fall out: the annualised drift R_A
+        and the volatility σ_A. (The deck's literal mean is short by a factor of √250 — the
+        engine annualises, which is the form that reproduces the professor's own workbook.)
+        Distance to default asks the natural question: <b>how many volatility-units of bad luck
+        would it take to eat the whole cushion?</b></p>
+      </div>
+      <div class="method__fx" data-fx="d:dd"><span class="fx-cap">distance to default · deck s96, s108</span></div>
+      <figure class="plate"><div id="fig-ddstrip"></div>
+        <figcaption><b>Fig 6</b> Every rated constituent of the S&amp;P 500 on one axis, in σ
+        units from its default point. Strong balance sheets sit ten-plus volatilities out —
+        which is also the first hint of the method's large-cap optimism (section 09).</figcaption>
+      </figure>
+      <div class="method__prose">
+        <p>DD is honest about what it contains: the drift η_A sits in its numerator, and drift
+        estimated from a stock-price window is the least stable number in the whole pipeline.
+        The deck compresses the diagnosis to five words — <q>η_A makes both unstable</q>
+        <span class="src">· deck s96</span> — <i>both</i> meaning DD and the probability read
+        from it. Hold that thought for section 07.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 06 probability ══════════════════ -->
+    <section class="section" id="s-pd">
+      <h2 class="section__head">
+        <span class="section__no">06</span>
+        <span>From distance to probability</span>
+        <span class="section__note">ending below vs ever touching</span>
+      </h2>
+      <div class="method__prose">
+        <p>Merton's closed form reads default off the endpoint: EDF = Φ(−DD) is the chance the
+        assets sit below the debt <b>at maturity</b>. But a borrower who spends March through
+        September under water and recovers by December has still defaulted in every sense a
+        lender cares about. The first-passage view counts those paths: default is the first time
+        the asset path <i>touches</i> the barrier, not where it happens to end.</p>
+      </div>
+      <figure class="plate"><div id="fig-barrier"></div>
+        <figcaption><b>Fig 7</b> Two asset paths over one year. Both end above the default
+        point; one touched it in June. Maturity-only default (EDF) misses the touch, first
+        passage counts it.</figcaption></figure>
+      <div class="method__fx" data-fx="d:fpPd"><span class="fx-cap">first-passage probability of default, one-year horizon · paper eq 13</span></div>
+      <div class="method__prose">
+        <p>This is the PIT PD the site's cards show. It is the more conservative of the two —
+        and, for a bank that must mark a loan the day it sours, the more truthful one.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 07 whipsaw ══════════════════ -->
+    <section class="section" id="s-pit">
+      <h2 class="section__head">
+        <span class="section__no">07</span>
+        <span>The trouble with point-in-time</span>
+        <span class="section__note">right information, wrong clock</span>
+      </h2>
+      <div class="method__prose">
+        <p>KMV worked. It read real credit information out of market prices — Moody's paid $220
+        million for it. The deck's verdict is double-edged: it is <q>a Point-In-Time forward
+        looking rating</q>, and its <q>most significant problem: unstable rating with huge
+        volatility</q> <span class="src">· deck s71</span>. It moves whenever the stock moves,
+        and a lender does not re-underwrite a loan because Tuesday was volatile. In Prof. Yang's
+        telling, the complaint from every bank was the same: a warning that arrives days before
+        the failure is no warning at all — and a rating that upgrades on Monday and downgrades
+        on Thursday cannot be planned against.</p>
+      </div>
+      <figure class="plate"><div id="fig-pit"></div>
+        <figcaption><b>Fig 8</b> A decade of one volatile name, weekly. The point-in-time
+        distance (top) rides every market squall; the through-the-cycle letter (bottom) steps
+        only when the credit itself moves. The conversion that separates them is the next
+        section.</figcaption></figure>
+      <div class="method__prose">
+        <p>The stock's behaviour and the credit's behaviour are different things. The task is to
+        subtract the first and keep the second.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 08 conversion ══════════════════ -->
+    <section class="section" id="s-ttc">
+      <h2 class="section__head">
+        <span class="section__no">08</span>
+        <span>The Time-Consistent conversion</span>
+        <span class="section__note">the drift cancels; the confidence level carries over</span>
+      </h2>
+      <div class="method__prose">
+        <p>The paper's move is to describe a credit by its <b>behaviour</b> rather than by any
+        one probability: μ = E[τ], how long the borrower is expected to live, and CCM — the
+        Credit Corrosion Measure — how violently that lifetime is spread. The rating is their
+        ratio:</p>
+      </div>
+      <div class="method__fx" data-fx="teach:ticQ"><span class="fx-cap">the Time-Consistent rating · paper def 4.1</span></div>
+      <div class="method__fx" data-fx="teach:ccmMu"><span class="fx-cap">under first passage both factors have closed forms · paper eq 11</span></div>
+      <div class="method__fx" data-fx="teach:ticFp"><span class="fx-cap">and at Q = 1 the drift cancels · paper eq 12</span></div>
+      <div class="method__pull">The whole instability of section 07 lived in η_A. TiC divides it
+        away: the rating no longer depends on the drift at all, so it is the same under the
+        risk-neutral and the empirical measure — the market's mood term is gone, the credit term
+        stays.<span class="src">Girsanov invariance · paper prop 4.4.1</span></div>
+      <div class="method__prose">
+        <p>What remains is to say it in S&amp;P's language. The paper's rule is that a conversion
+        must not manufacture regulatory arbitrage: the loss reserve (the PD) and the capital
+        confidence level (α) must both survive the translation. α turns out to depend on CCM
+        alone — so the recipe is: compute the first-passage confidence level, find the S&amp;P
+        corrosion CCM* that carries the same α, evaluate the S&amp;P RiskScore there, and read
+        Table 8.</p>
+      </div>
+      <div class="method__fx" data-fx="d:alpha"><span class="fx-cap">step one — the confidence level of the first-passage read · paper §5.3</span></div>
+      <div class="method__fx" data-fx="d:spCcm"><span class="fx-cap">step two — the equal-confidence corrosion in the S&amp;P system</span></div>
+      <div class="method__fx" data-fx="d:spPd"><span class="fx-cap">step three — RiskScore at CCM*, read against Table 8</span></div>
+      <div class="method__prose">
+        <p>Here is the whole chain run on KO's latest build — the same chain every company page
+        prints, and every hop below opens its derivation:</p>
+      </div>
+      <div class="chain" id="fig-chain" hidden></div>
+      <figure class="plate"><div id="fig-table8"></div>
+        <figcaption><b>Fig 9</b> The Table 8 anchors on a log RiskScore axis, and where KO's
+        RS_SP lands. Strong large caps land far left of the AAA anchor and clamp there — the
+        scale simply has no finer grade to give.</figcaption></figure>
+      <div class="method__prose">
+        <p>The outlook is the last, quietly contrarian touch: Outlook = PD_FH − TTC PD. If
+        point-in-time pressure sits <i>above</i> the cycle level and risk reverts to the cycle,
+        the pressure is expected to decay — so PIT above TTC reads as <b>positive</b>
+        <span class="src">· paper prop 5.3</span>.</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 09 limits ══════════════════ -->
+    <section class="section" id="s-limits">
+      <h2 class="section__head">
+        <span class="section__no">09</span>
+        <span>Honest limitations</span>
+        <span class="section__note">what this model cannot see</span>
+      </h2>
+      <div class="method__prose">
+        <p><b>Large caps flatter.</b> When market equity dwarfs the default point, DD runs to
+        ten-plus volatilities, every PD underflows, and most of the mega-cap universe lands AAA.
+        AT&amp;T rates AAA here while the agencies hold it around BBB — the structural read sees
+        an enormous equity cushion and cannot see covenant, sector, or management risk. That is
+        a property of the Merton family, not a bug in this build; the ratings are most
+        informative where the cushion is thin.</p>
+        <p><b>Default ratings only.</b> The model prices the chance of failure, not the recovery
+        after it — senior unsecured, no LGD <span class="src">· deck s45</span>.</p>
+        <p><b>The teaching deck has known misprints.</b> Two matter: the annualisation of R_A
+        (short by √250 as literally printed) and one worked TiC value that cannot be reproduced
+        from its own inputs. The engine follows the paper's forms and the professor's answer
+        workbook, and the project's knowledge base documents every discrepancy with page numbers
+        — a dashboard that hides its sources' rough edges would be advertising, not research.</p>
+        <p><b>The fine scale is a course artifact.</b> Grades like “AAA-” do not exist on the
+        real S&amp;P scale; they come from the course's fine bucketing of TTC PD and are kept
+        verbatim so the site never disagrees with the model output.</p>
+        <p><b>Data has seams.</b> Deep history is Yahoo's chart API spliced onto Massive's
+        window (they agree to 0.0001% on the overlap); filings arrive with a lag and step on
+        quarter ends; the risk-free series is FRED's DGS1. The appendix on every company page
+        traces each number to its source.</p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>Merton / KMV structural</span>
+      <span>PIT → TTC</span>
+      <span>framework: Prof. Yimin Yang — Universal Time-Consistent (TiC) Credit Rating</span>
+      <span style="margin-left:auto"><a href="./">Dashboard →</a> · <a href="./t.html#KO">One company →</a></span>
+    </footer>
+  </div>
+</div>
+
+<script type="module" src="./js/method.js"></script>
+</body>
+</html>

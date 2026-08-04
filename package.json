@@ -1,0 +1,13 @@
+{
+  "name": "tic-rating-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:cloudflare": "node --test test_cloudflare_llm.mjs",
+    "test:web": "node --test test_ai_reading.mjs",
+    "test": "node --test test_cloudflare_llm.mjs test_ai_reading.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.118.0"
+  }
+}
