@@ -9,11 +9,14 @@
       "id": "4b38fb0b4cd24c48a02a2eb1b9782f8d"
     }
   ],
-  // DEEPSEEK_API_KEY is a secret, not a var — set it with
-  // `wrangler pages secret put DEEPSEEK_API_KEY`, never here.
+  // DEEPSEEK_API_KEY (primary) and LLM_API_KEY (the MiniMax standby) are
+  // secrets, not vars — set them with `wrangler pages secret put NAME`.
   "vars": {
     "LLM_PROVIDER": "deepseek",
     "DEEPSEEK_MODEL": "deepseek-v4-flash",
+    "LLM_FALLBACK_PROVIDER": "anthropic",
+    "LLM_MODEL": "MiniMax-M3",
+    "LLM_BASE_URL": "https://api.minimaxi.com/anthropic",
     "LLM_REASONING_EFFORT": "none",
     "LLM_MAX_TOKENS": "4000"
   }

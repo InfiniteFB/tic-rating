@@ -116,6 +116,7 @@ test("Pages health handler returns the provider probe as JSON", async () => {
     {
       env: {
         LLM_PROVIDER: "openai",
+        LLM_FALLBACK_PROVIDER: "none",
         OPENAI_API_KEY: "test-key",
         OPENAI_MODEL: "gpt-test",
       },
@@ -127,10 +128,11 @@ test("Pages health handler returns the provider probe as JSON", async () => {
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type"), /application\/json/);
-  assert.deepEqual(await response.json(), {
-    service: "tic-rating",
-    llm: { reachable: true, detail: "ok" },
-  });
+  const body = await response.json();
+  assert.equal(body.service, "tic-rating");
+  assert.equal(body.llm.reachable, true);
+  assert.equal(body.llm.detail, "ok");
+  assert.deepEqual(body.llm.channels.map((c) => c.provider), ["openai"]);
 });
 
 test("Pages explain handler validates JSON before calling the model", async () => {
@@ -347,4 +349,88 @@ test("an unknown provider degrades with a legible error", async () => {
   );
   assert.match(result.error, /unknown LLM_PROVIDER/);
   assert.match(result.error, /deepseek/);
+});
+
+/* ── MiniMax on standby ──────────────────────────────────────────────────
+   A second vendor on a second wire protocol, so an outage, a quota wall or
+   a geo block on the primary does not take the analyst down with it. */
+
+/** A fetch that fails the DeepSeek call and answers the MiniMax one. */
+function splitFetch({ onAnthropic } = {}) {
+  const seen = [];
+  const impl = async (url, init) => {
+    seen.push({ url, init });
+    if (url.includes("/v1/messages")) {
+      return (onAnthropic ?? (async () => Response.json({
+        content: [{ type: "text", text: "### CALIBER EXPLANATION\nA.\n### RESULT ANALYSIS\nB." }],
+        stop_reason: "end_turn",
+      })))();
+    }
+    return new Response("upstream said no", { status: 403 });
+  };
+  impl.seen = seen;
+  return impl;
+}
+
+test("a geo-blocked primary is answered by MiniMax", async () => {
+  const { explain } = await import("./cloudflare/llm.mjs");
+  const fetchImpl = splitFetch();
+  const result = await explain(
+    samplePayload,
+    { DEEPSEEK_API_KEY: "ds-key", LLM_API_KEY: "mm-key" },
+    fetchImpl
+  );
+
+  assert.equal(result.error, null);
+  assert.equal(result.caliber_explanation, "A.");
+  // the model reported is the one that actually spoke
+  assert.equal(result.model, "MiniMax-M3");
+
+  const [primary, standby] = fetchImpl.seen;
+  assert.equal(primary.url, "https://api.deepseek.com/v1/chat/completions");
+  assert.equal(standby.url, "https://api.minimaxi.com/anthropic/v1/messages");
+  // MiniMax authenticates on x-api-key and rejects a request with no version
+  assert.equal(standby.init.headers["x-api-key"], "mm-key");
+  assert.equal(standby.init.headers["anthropic-version"], "2023-06-01");
+  const body = JSON.parse(standby.init.body);
+  assert.equal(body.model, "MiniMax-M3");
+  assert.equal(body.max_tokens, 4000);          // not max_completion_tokens
+  assert.ok(body.system.includes("credit-risk"));
+  assert.equal(body.messages[0].content[0].text.includes("AAPL"), true);
+});
+
+test("both channels down reports both reasons", async () => {
+  const { explain } = await import("./cloudflare/llm.mjs");
+  const result = await explain(
+    samplePayload,
+    { DEEPSEEK_API_KEY: "ds-key", LLM_API_KEY: "mm-key" },
+    splitFetch({ onAnthropic: async () => new Response("minimax down", { status: 500 }) })
+  );
+
+  assert.equal(result.caliber_explanation, "");
+  assert.match(result.error, /deepseek: .*403/);
+  assert.match(result.error, /anthropic: .*500/);
+});
+
+test("health stays reachable while the standby answers", async () => {
+  const { health } = await import("./cloudflare/llm.mjs");
+  const result = await health(
+    { DEEPSEEK_API_KEY: "ds-key", LLM_API_KEY: "mm-key" },
+    splitFetch({ onAnthropic: async () => Response.json({
+      content: [{ type: "text", text: "OK" }], stop_reason: "end_turn",
+    }) })
+  );
+
+  assert.equal(result.reachable, true);
+  assert.match(result.detail, /serving from anthropic/);
+  assert.deepEqual(result.channels.map((c) => [c.provider, c.reachable]),
+                   [["deepseek", false], ["anthropic", true]]);
+});
+
+test("the standby can be switched off", async () => {
+  const { providerChain } = await import("./cloudflare/llm.mjs");
+  assert.deepEqual(providerChain({}), ["deepseek", "anthropic"]);
+  assert.deepEqual(providerChain({ LLM_FALLBACK_PROVIDER: "none" }), ["deepseek"]);
+  // a primary that already is the standby must not be tried twice
+  assert.deepEqual(providerChain({ LLM_PROVIDER: "anthropic" }), ["anthropic"]);
 });

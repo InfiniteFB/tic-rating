@@ -76,7 +76,8 @@ def test_explain_openai_channel_success():
 def test_explain_openai_channel_degrades_on_error():
     fake_client = MagicMock()
     fake_client.chat.completions.create.side_effect = Exception("quota exceeded")
-    with patch("app.llm._provider", return_value="openai"), \
+    with patch.dict(os.environ, {"LLM_FALLBACK_PROVIDER": "none"}), \
+         patch("app.llm._provider", return_value="openai"), \
          patch("app.llm._get_openai_client", return_value=fake_client):
         out = llm.explain({"ticker": "KO", "result": {"sp_letter": "AAA"},
                            "intermediate": {"metrics": {}}})
@@ -94,7 +95,8 @@ def test_health_openai_channel():
 
 
 def test_unknown_provider_degrades_not_crashes():
-    with patch("app.llm._provider", return_value="wat"):
+    with patch.dict(os.environ, {"LLM_FALLBACK_PROVIDER": "none"}), \
+         patch("app.llm._provider", return_value="wat"):
         out = llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
         h = llm.health()
     assert "LLM_PROVIDER" in out["error"]
@@ -160,11 +162,82 @@ def test_deepseek_uses_its_own_credentials_and_endpoint():
 
 
 def test_unknown_provider_lists_every_known_channel():
-    with patch("app.llm._provider", return_value="wat"):
+    with patch.dict(os.environ, {"LLM_FALLBACK_PROVIDER": "none"}), \
+         patch("app.llm._provider", return_value="wat"):
         out = llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
     assert "LLM_PROVIDER" in out["error"]
     for known in ("deepseek", "openai", "anthropic"):
         assert known in out["error"]
+
+
+# ── MiniMax on standby ────────────────────────────────────────────────────
+
+def test_chain_is_primary_then_standby_deduped():
+    with patch.dict(os.environ, {}, clear=True):
+        with patch("app.llm._provider", return_value="deepseek"):
+            assert llm._provider_chain() == ["deepseek", "anthropic"]
+        # a primary that already is the standby must not be tried twice
+        with patch("app.llm._provider", return_value="anthropic"):
+            assert llm._provider_chain() == ["anthropic"]
+    with patch.dict(os.environ, {"LLM_FALLBACK_PROVIDER": "none"}, clear=True):
+        with patch("app.llm._provider", return_value="deepseek"):
+            assert llm._provider_chain() == ["deepseek"]
+
+
+def test_a_failed_primary_is_answered_by_minimax():
+    dead = MagicMock()
+    dead.chat.completions.create.side_effect = Exception("403 unsupported_country")
+    standby = MagicMock()
+    standby.messages.create.return_value = _fake_msg(
+        "### CALIBER EXPLANATION\nDD measures ...\n### RESULT ANALYSIS\nKO looks safe.")
+
+    with patch.dict(os.environ, {}, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("app.llm._get_openai_client", return_value=dead), \
+         patch("app.llm._get_client", return_value=standby):
+        out = llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
+
+    assert out["error"] is None
+    assert "DD measures" in out["caliber_explanation"]
+    # the reported model is the one that actually spoke, not the one asked first
+    assert out["model"] == "MiniMax-M3"
+
+
+def test_both_channels_down_reports_both_reasons():
+    dead = MagicMock()
+    dead.chat.completions.create.side_effect = Exception("403 unsupported_country")
+    also_dead = MagicMock()
+    also_dead.messages.create.side_effect = Exception("minimax 500")
+
+    with patch.dict(os.environ, {}, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("app.llm._get_openai_client", return_value=dead), \
+         patch("app.llm._get_client", return_value=also_dead):
+        out = llm.explain({"ticker": "KO", "result": {}, "intermediate": {}})
+        h = llm.health()
+
+    assert "deepseek: " in out["error"] and "unsupported_country" in out["error"]
+    assert "anthropic: " in out["error"] and "minimax 500" in out["error"]
+    assert h["reachable"] is False
+    assert [c["provider"] for c in h["channels"]] == ["deepseek", "anthropic"]
+
+
+def test_health_stays_reachable_while_the_standby_answers():
+    dead = MagicMock()
+    dead.chat.completions.create.side_effect = Exception("403 unsupported_country")
+    standby = MagicMock()
+    standby.messages.create.return_value = _fake_msg("OK")
+
+    with patch.dict(os.environ, {}, clear=True), \
+         patch("app.llm._provider", return_value="deepseek"), \
+         patch("app.llm._get_openai_client", return_value=dead), \
+         patch("app.llm._get_client", return_value=standby):
+        h = llm.health()
+
+    assert h["reachable"] is True
+    assert "serving from anthropic" in h["detail"]
+    assert h["channels"][0]["reachable"] is False
+    assert h["channels"][1]["reachable"] is True
 
 
 def test_split_sections_case_insensitive_headings():
